@@ -1,0 +1,6 @@
+Summary of features of v0.01 (2011-10-15)
+=========================================
+
+	* Ability to convert devices to LUKS format without having to copy the
+	contained data over.
+
