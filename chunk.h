@@ -1,7 +1,7 @@
 /*
 	luksipc - Tool to convert block devices to LUKS in-place.
-	Copyright (C) 2011-2011 Johannes Bauer
-	
+	Copyright (C) 2011-2015 Johannes Bauer
+
 	This file is part of luksipc.
 
 	luksipc is free software; you can redistribute it and/or modify
@@ -28,15 +28,15 @@
 #include <stdbool.h>
 
 struct chunk {
-	int size;				/* Total chunk size */
-	int used;				/* Used chunk size */
-	unsigned char *data;	/* Data */
+	uint32_t size;			/* Total chunk size */
+	uint32_t used;			/* Used chunk size */
+	uint8_t *data;			/* Data */
 };
 
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
-void allocChunk(struct chunk *aChunk, int aSize);
+void allocChunk(struct chunk *aChunk, uint32_t aSize);
 void freeChunk(struct chunk *aChunk);
-ssize_t chunkReadAt(struct chunk *aChunk, int aFd, uint64_t aOffset, int aSize);
+ssize_t chunkReadAt(struct chunk *aChunk, int aFd, uint64_t aOffset, uint32_t aSize);
 ssize_t chunkWriteAt(const struct chunk *aChunk, int aFd, uint64_t aOffset);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 

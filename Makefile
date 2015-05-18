@@ -1,8 +1,8 @@
-.PHONY: all clean
+.PHONY: all clean test valgrind
 
 EXECUTABLE := luksipc
 CC := gcc
-CFLAGS := -Wall -std=c11 -O2 -pthread -g -D_LARGEFILE64_SOURCE
+CFLAGS := -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -std=c11 -O2 -D_LARGEFILE64_SOURCE -D_XOPEN_SOURCE=500 -Werror
 
 LDFLAGS :=
 
@@ -19,7 +19,7 @@ test: all
 valgrind: all
 	valgrind --leak-check=yes ./luksipc
 
-luksipc: $(OBJS) luksipc.o
+luksipc: $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $(@) $(OBJS)
 
 .c.o:

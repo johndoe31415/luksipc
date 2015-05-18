@@ -1,7 +1,7 @@
 /*
 	luksipc - Tool to convert block devices to LUKS in-place.
-	Copyright (C) 2011-2011 Johannes Bauer
-	
+	Copyright (C) 2011-2015 Johannes Bauer
+
 	This file is part of luksipc.
 
 	luksipc is free software; you can redistribute it and/or modify
@@ -31,7 +31,7 @@
 #include "logging.h"
 #include "chunk.h"
 
-void allocChunk(struct chunk *aChunk, int aSize) {
+void allocChunk(struct chunk *aChunk, uint32_t aSize) {
 	memset(aChunk, 0, sizeof(struct chunk));
 	aChunk->size = aSize;
 	aChunk->data = malloc(aSize);
@@ -39,6 +39,7 @@ void allocChunk(struct chunk *aChunk, int aSize) {
 		perror("malloc chunk");
 		exit(EXIT_FAILURE);
 	}
+	memset(aChunk->data, 0, aSize);
 }
 
 void freeChunk(struct chunk *aChunk) {
@@ -46,7 +47,7 @@ void freeChunk(struct chunk *aChunk) {
 	memset(aChunk, 0, sizeof(struct chunk));
 }
 
-static void safeSeek(int aFd, uint64_t aOffset, const char *aCaller) {
+static void safeSeek(int aFd, off64_t aOffset, const char *aCaller) {
 	off64_t curOffset = lseek64(aFd, aOffset, SEEK_SET);
 	if (curOffset != aOffset) {
 		logmsg(LLVL_WARN, "%s: tried seek to 0x%lx, went to 0x%lx (%s)\n", aCaller, aOffset, curOffset, strerror(errno));
@@ -54,7 +55,7 @@ static void safeSeek(int aFd, uint64_t aOffset, const char *aCaller) {
 	}
 }
 
-ssize_t chunkReadAt(struct chunk *aChunk, int aFd, uint64_t aOffset, int aSize) {
+ssize_t chunkReadAt(struct chunk *aChunk, int aFd, uint64_t aOffset, uint32_t aSize) {
 	ssize_t bytesRead;
 	safeSeek(aFd, aOffset, "chunkReadAt");
 	if (aSize > aChunk->size) {

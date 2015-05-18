@@ -1,3 +1,26 @@
+Summary of features of v0.02 (2015-05-17)
+=========================================
+
+	* Fixed interpretation of return code of "cryptsetup status" which had
+	changed with more recent cryptsetup versions to reflect the correct error
+	if no such LUKS name was known. Thanks to Eric Murray and Christian
+	Pulvermacher for reporting this issue.
+	* Forced chunk size to be 10 MiB instead of the default of 3 MiB. Thanks
+	to John Morrissey for the bug report (under some weird circumstances, the
+	LUKS header apparently can become a lot larger).
+	* Fixed a couple of warnings and used stricter compiler flags.
+	* Switched to -stc=c11 to be able to use static assertions.
+	* Improved error handling for wrong command line parameters (log level
+	integer parsing).
+	* Improved error handling at cleanup (unsynced luksClose may fail at the
+	first try because the device is still busy, sync() filesystems and try up
+	to three times now)
+	* Display estimated remaining time until finish.
+	* Assert resume file can be written to disk by writing it at very start
+	once and then seeking to its start.
+	* Added README file with detailed instructions.
+	* More helpful help page
+
 Summary of features of v0.01 (2011-10-15)
 =========================================
 

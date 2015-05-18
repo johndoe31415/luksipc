@@ -1,7 +1,7 @@
 /*
 	luksipc - Tool to convert block devices to LUKS in-place.
-	Copyright (C) 2011-2011 Johannes Bauer
-	
+	Copyright (C) 2011-2015 Johannes Bauer
+
 	This file is part of luksipc.
 
 	luksipc is free software; you can redistribute it and/or modify
@@ -27,9 +27,8 @@
 #include "utils.h"
 
 bool safestrcpy(char *aDest, const char *aSrc, size_t aDestArraySize) {
-	int srcLen;
 	bool success = true;
-	srcLen = strlen(aSrc);
+	size_t srcLen = strlen(aSrc);
 	if ((srcLen + 1) > aDestArraySize) {
 		/* String does not fit, copy best effort */
 		memcpy(aDest, aSrc, aDestArraySize - 1);

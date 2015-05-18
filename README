@@ -1,0 +1,267 @@
+AUTHORS
+=======
+luksipc is written by Johannes Bauer <JohannesBauer@gmx.de>. Please report all
+bugs directly to this email address. If you do not wish to be named in the
+changelog or this README file, please say so immediately in the mail, I'll omit
+your name then. Inversely, if I forgot to include you in this list and you
+would like to appear, please drop me a note and I'll fix it.
+
+There are several contributors to the project:
+
+  - Eric Murray (cryptsetup status issue)
+  - Christian Pulvermacher (cryptsetup status issue)
+  - John Morrissey (large header issue)
+
+
+DISCLAIMER
+==========
+If you use luksipc and it bricks your disk and destroys all your data then
+that's your fault, not mine. luksips comes without any warranty (neither
+expressed nor implied). Please have a backup for really, really important data.
+
+
+CHECKLIST
+=========
+If you skip over everything else, PLEASE at least read this:
+
+[ ]  Resized file system size, decreased size by at least 10 MiB
+[ ]  Umounted file system
+[ ]  Laptop is connected to A/C power (if applicable)
+
+
+COMPILING
+=========
+luksipc has no external dependencies, it should compile just fine if you have a
+recent Linux distribution with GNU make and gcc installed. Just type
+
+$ make
+
+That's it.
+
+
+USAGE
+=====
+The first thing you need to do is resize your file system to accomodate for the
+fact that the device is going to be a tiny bit smaller in the end (due to the
+LUKS header). The LUKS header size is usually 2048 kiB (it was 1028 kiB for
+previous versions of cryptsetup), but you can safely decrease the file system
+size by more (like 100 MiB) to be on the safe side.  If you decrease the size
+too much you have no drawbacks (and you can easily increase after the
+conversion has been performed).
+
+WARNING: DO NOT FORGET THIS STEP (resize file system)
+
+luksipc has no means of detecting wheter or not you have performed this step
+and will not warn you if you haven't (it has no knowledge of the underlying
+file system). This might lead to very weird file system errors in the case that
+your volume ever wants to use the whole space and it might even render your
+volume completely unmountable (depending on the check the file system driver
+performs on the block device before allowing mounting).
+
+For example, let's say you have a device at /dev/loop0 that has an ext4 file
+system. You want to LUKSify it. We first resize our volume. For this we find
+out how large the volume is currently:
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+# tune2fs -l /dev/loop0
+tune2fs 1.42.9 (4-Feb-2014)
+Filesystem volume name:   <none>
+Last mounted on:          <not available>
+Filesystem UUID:          713cc62e-b2a2-406a-a82a-c4c1d01464e1
+Filesystem magic number:  0xEF53
+Filesystem revision #:    1 (dynamic)
+Filesystem features:      has_journal ext_attr resize_inode dir_index filetype extent flex_bg sparse_super large_file huge_file uninit_bg dir_nlink extra_isize
+Filesystem flags:         signed_directory_hash 
+Default mount options:    user_xattr acl
+Filesystem state:         clean
+Errors behavior:          Continue
+Filesystem OS type:       Linux
+Inode count:              64000
+Block count:              256000
+Reserved block count:     12800
+Free blocks:              247562
+Free inodes:              63989
+First block:              0
+Block size:               4096
+[...]
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+So we now know that our device is 256000 blocks of 4096 bytes each, so exactly
+1000 MiB. We verify this is correct (it is in this case). So we now want to
+decrease the file system size to 900 MiB. 900 MiB = 900 * 1024 * 1024 bytes =
+943718400 bytes. With a file system block size of 4096 bytes we arrive at
+943718400 / 4096 = 230400 blocks for the file system with decreased size. So we
+resize the file system:
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+# resize2fs /dev/loop0 230400
+resize2fs 1.42.9 (4-Feb-2014)
+Resizing the filesystem on /dev/loop0 to 230400 (4k) blocks.
+The filesystem on /dev/loop0 is now 230400 blocks long.
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+That was successful. Perfect. Now (if you haven't already), umount the volume.
+
+WARNING: DO NOT FORGET THIS STEP (umount file system)
+
+Then we can proceed to LUKSify the device. By default the initial randomized
+key is read from /dev/urandom and written to /root/initial_keyfile.bin. This is
+okay for us, we will remove the appropriate keyslot for this random key anyways
+in the future. It is only used for bootstrapping.
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+# ./luksipc -d /dev/loop0
+WARNING! All data on /dev/loop0 is to be LUKSified! Ensure that:
+   1. You have resized the contained filesystem appropriately
+   2. You have unmounted the contained filesystem
+   3. You have ensured secure storage of the keyfile that will be generated
+   4. Power conditions are satisfied (i.e. your laptop is not running off battery)
+   5. You have a backup of all data on that device
+
+    /dev/loop0: 1000 MB = 1.0 GB
+    Chunk size: 10485760 bytes = 10.0 MiB
+    Keyfile: /root/initial_keyfile.bin
+    LUKS format parameters: None given
+
+Are all these conditions satisfied, then answer uppercase yes: 
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+Please, read the whole message thourougly. There is no going back from this. If
+and only if you're 100% sure that all preconditions are satisfied, answer
+"YES" and press return.
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+Are all these conditions satisfied, then answer uppercase yes: YES
+[I]: Size of /dev/loop0 is 1048576000 bytes (1000 MB + 0 bytes)
+[I]: Performing dm-crypt status lookup
+[I]: Performing luksFormat
+[I]: Performing luksOpen
+[I]: Size of cryptodisk is 1046478848 bytes (998 MB + 0 bytes)
+[I]: 2097152 bytes occupied by LUKS header (2048 kB + 0 bytes)
+[I]: Starting copying of data...
+[I]:  0:00:  11.0%       110 MB / 998 MB   547.2 MB/s       888 MB left
+[I]:  0:00:  21.0%       210 MB / 998 MB   531.9 MB/s       788 MB left
+[I]:  0:00:  31.1%       310 MB / 998 MB   476.8 MB/s       688 MB left
+[I]:  0:00:  41.1%       410 MB / 998 MB   410.6 MB/s       588 MB left
+[I]:  0:00:  51.1%       510 MB / 998 MB   357.7 MB/s       488 MB left
+[I]:  0:00:  61.1%       610 MB / 998 MB   330.8 MB/s       388 MB left
+[I]:  0:00:  71.1%       710 MB / 998 MB   322.8 MB/s       288 MB left
+[I]:  0:00:  81.2%       810 MB / 998 MB   321.1 MB/s       188 MB left
+[I]:  0:00:  91.2%       910 MB / 998 MB   320.1 MB/s        88 MB left
+[I]: Disk copy completed successfully.
+[I]: Synchronizing disks.
+[I]: Performing luksClose
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+The volume was successfully converted! Now let's first add a passphrase that we
+want to use for the volume (or any other method of key, your choice). You can
+actually even do this while the copying process is running.
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+# cryptsetup luksAddKey /dev/loop0 --key-file=/root/initial_keyfile.bin 
+Enter new passphrase for key slot: 
+Verify passphrase: 
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+Let's check this worked:
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+# cryptsetup luksDump /dev/loop0
+LUKS header information for /dev/loop0
+
+Version:       	1
+Cipher name:   	aes
+Cipher mode:   	xts-plain64
+Hash spec:     	sha1
+Payload offset:	4096
+MK bits:       	256
+MK digest:     	b2 34 b8 7b 70 e8 78 17 a4 12 00 41 dc a4 bc 70 a3 50 02 22 
+MK salt:       	ee 25 b4 f0 11 94 25 d1 2b 97 42 6c a6 ff 3d 1d 
+               	e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9 
+MK iterations: 	50125
+UUID:          	3e21bbe0-3d70-4189-8f19-04fb7d7c5bb9
+
+Key Slot 0: ENABLED
+	Iterations:         	201892
+	Salt:               	9d b6 a1 f5 0f 91 ee 24 be 49 0e f7 f9 62 a2 06 
+	                      	aa 45 79 7f 1a 56 5c 8c a3 03 15 a0 d2 9e ca e5 
+	Key material offset:	8
+	AF stripes:            	4000
+Key Slot 1: ENABLED
+	Iterations:         	198756
+	Salt:               	46 b4 21 fb e3 12 54 18 ff 8d 05 24 75 fc 3c 4b 
+	                      	3c 90 77 47 43 b6 0b 28 d9 b6 86 44 30 9e 20 d2 
+	Key material offset:	264
+	AF stripes:            	4000
+Key Slot 2: DISABLED
+Key Slot 3: DISABLED
+Key Slot 4: DISABLED
+Key Slot 5: DISABLED
+Key Slot 6: DISABLED
+Key Slot 7: DISABLED
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+You can see the initial keyfile (slot 0) and the passphrase we just added (slot
+1). Let's scrub the initial keyslot so the initial keyfile becomes useless. We
+do this by scrubbing slot 0. Don't worry, you cannot choose the wrong slot
+here; cryptsetup won't permit you to remove the wrong slot since you must prove
+that you still have at least access to one remaining slot (by entering your
+passphrase).
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+# cryptsetup luksKillSlot /dev/loop0 0
+Enter any remaining passphrase: 
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+And check again:
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+# cryptsetup luksDump /dev/loop0
+LUKS header information for /dev/loop0
+
+Version:       	1
+Cipher name:   	aes
+Cipher mode:   	xts-plain64
+Hash spec:     	sha1
+Payload offset:	4096
+MK bits:       	256
+MK digest:     	b2 34 b8 7b 70 e8 78 17 a4 12 00 41 dc a4 bc 70 a3 50 02 22 
+MK salt:       	ee 25 b4 f0 11 94 25 d1 2b 97 42 6c a6 ff 3d 1d 
+               	e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9 
+MK iterations: 	50125
+UUID:          	3e21bbe0-3d70-4189-8f19-04fb7d7c5bb9
+
+Key Slot 0: DISABLED
+Key Slot 1: ENABLED
+	Iterations:         	198756
+	Salt:               	46 b4 21 fb e3 12 54 18 ff 8d 05 24 75 fc 3c 4b 
+	                      	3c 90 77 47 43 b6 0b 28 d9 b6 86 44 30 9e 20 d2 
+	Key material offset:	264
+	AF stripes:            	4000
+Key Slot 2: DISABLED
+Key Slot 3: DISABLED
+Key Slot 4: DISABLED
+Key Slot 5: DISABLED
+Key Slot 6: DISABLED
+Key Slot 7: DISABLED
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+Perfect, only our slot 1 (passphrase) is left now, you can safely discard the
+initial_keyfile.bin now.
+
+Last step, resize the filesystem to its original size. For this we must first
+mount the cryptographic file system and then call the resize2fs utility again:
+
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+# cryptsetup luksOpen /dev/loop0 newcryptofs
+Enter passphrase for /dev/loop0: 
+
+# resize2fs /dev/mapper/newcryptofs 
+resize2fs 1.42.9 (4-Feb-2014)
+Resizing the filesystem on /dev/mapper/newcryptofs to 255488 (4k) blocks.
+The filesystem on /dev/mapper/newcryptofs is now 255488 blocks long.
+----------8<----------8<----------8<----------8<----------8<----------8<----------
+
+You can see that the filesystem now occupies all available space (998 MiB).
+
+

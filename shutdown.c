@@ -1,7 +1,7 @@
 /*
 	luksipc - Tool to convert block devices to LUKS in-place.
-	Copyright (C) 2011-2011 Johannes Bauer
-	
+	Copyright (C) 2011-2015 Johannes Bauer
+
 	This file is part of luksipc.
 
 	luksipc is free software; you can redistribute it and/or modify
@@ -29,6 +29,7 @@
 #include <stdbool.h>
 
 #include "logging.h"
+#include "shutdown.h"
 
 static bool quit = false;
 
@@ -53,7 +54,7 @@ void initSigHdlrs(void) {
 		fprintf(stderr, "Could not install SIGINT handler: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);
 	}
-	
+
 	if (sigaction(SIGTERM, &action, NULL) == -1) {
 		fprintf(stderr, "Could not install SIGTERM handler: %s\n", strerror(errno));
 		exit(EXIT_FAILURE);

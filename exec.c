@@ -1,7 +1,7 @@
 /*
 	luksipc - Tool to convert block devices to LUKS in-place.
-	Copyright (C) 2011-2011 Johannes Bauer
-	
+	Copyright (C) 2011-2015 Johannes Bauer
+
 	This file is part of luksipc.
 
 	luksipc is free software; you can redistribute it and/or modify
@@ -85,7 +85,7 @@ void argDump(const char **aArgs) {
 	}
 }
 
-static char *const *argCopy(const char **aArgs) {
+static char **argCopy(const char **aArgs) {
 	char **result = NULL;
 	int i;
 	result = malloc(sizeof(char*) * MAXARGS);
@@ -108,7 +108,7 @@ static char *const *argCopy(const char **aArgs) {
 	return result;
 }
 
-static void freeArgCopy(char* const *aArgCopy) {
+static void freeArgCopy(char** aArgCopy) {
 	int i;
 	for (i = 0; i < MAXARGS - 1; i++) {
 		if (aArgCopy[i] == NULL) {
@@ -120,7 +120,7 @@ static void freeArgCopy(char* const *aArgCopy) {
 }
 
 int execGetReturnCode(const char **aArguments) {
-	char * const *argcopy = argCopy(aArguments);
+	char **argcopy = argCopy(aArguments);
 	pid_t pid;
 	int status;
 
@@ -128,6 +128,9 @@ int execGetReturnCode(const char **aArguments) {
 	if (pid == -1) {
 		perror("fork");
 		exit(EXIT_FAILURE);
+	}
+	if (pid > 0) {
+		logmsg(LLVL_DEBUG, "Subprocess [PID %d]: Will execute %s\n", pid, aArguments[0]);
 	}
 	if (pid == 0) {
 		/* Child */
@@ -147,6 +150,8 @@ int execGetReturnCode(const char **aArguments) {
 	}
 
 	freeArgCopy(argcopy);
-	return WEXITSTATUS(status);
+	int returnCode = WEXITSTATUS(status);
+	logmsg(LLVL_DEBUG, "Subprocess [PID %d]: %s returned %d\n", pid, aArguments[0], returnCode);
+	return returnCode;
 }
 

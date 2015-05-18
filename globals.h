@@ -21,13 +21,9 @@
 	Johannes Bauer <JohannesBauer@gmx.de>
 */
 
-#ifndef __LUKS_H__
-#define __LUKS_H__
+#ifndef __GLOBALS_H__
+#define __GLOBALS_H__
 
-#include <stdbool.h>
-
-/*************** AUTO GENERATED SECTION FOLLOWS ***************/
-bool isLuks(const char *deviceName);
-/***************  AUTO GENERATED SECTION ENDS   ***************/
+#define LUKSIPC_VERSION			"0.02"
 
 #endif

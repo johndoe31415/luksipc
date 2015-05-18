@@ -1,7 +1,7 @@
 /*
 	luksipc - Tool to convert block devices to LUKS in-place.
-	Copyright (C) 2011-2011 Johannes Bauer
-	
+	Copyright (C) 2011-2015 Johannes Bauer
+
 	This file is part of luksipc.
 
 	luksipc is free software; you can redistribute it and/or modify
@@ -26,7 +26,7 @@
 
 #include <stdbool.h>
 
-#define MINBLOCKSIZE			(1024 * 1028)
+#define MINBLOCKSIZE			(1024 * 1024 * 10)
 
 struct parameters {
 	int blocksize;
