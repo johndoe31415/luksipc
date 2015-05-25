@@ -27,7 +27,7 @@
 #include <stdbool.h>
 
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
-bool genKeyfile(const char *aFilename);
+bool genKeyfile(const char *aFilename, bool aForce);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif

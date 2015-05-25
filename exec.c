@@ -30,8 +30,7 @@
 
 #include "exec.h"
 #include "logging.h"
-
-#define MAXARGS			64
+#include "globals.h"
 
 int argCount(const char **aArgs) {
 	int cnt = 0;
@@ -88,13 +87,13 @@ void argDump(const char **aArgs) {
 static char **argCopy(const char **aArgs) {
 	char **result = NULL;
 	int i;
-	result = malloc(sizeof(char*) * MAXARGS);
+	result = malloc(sizeof(char*) * EXEC_MAX_ARGCNT);
 	if (!result) {
 		perror("malloc");
 		exit(EXIT_FAILURE);
 	}
-	result[MAXARGS - 1] = NULL;
-	for (i = 0; i < MAXARGS - 1; i++) {
+	result[EXEC_MAX_ARGCNT - 1] = NULL;
+	for (i = 0; i < EXEC_MAX_ARGCNT - 1; i++) {
 		if (aArgs[i] == NULL) {
 			result[i] = NULL;
 			break;
@@ -110,13 +109,40 @@ static char **argCopy(const char **aArgs) {
 
 static void freeArgCopy(char** aArgCopy) {
 	int i;
-	for (i = 0; i < MAXARGS - 1; i++) {
+	for (i = 0; i < EXEC_MAX_ARGCNT - 1; i++) {
 		if (aArgCopy[i] == NULL) {
 			break;
 		}
 		free(aArgCopy[i]);
 	}
 	free((void*)aArgCopy);
+}
+
+static void convertCommandLine(char *aBuffer, int aBufSize, const char **aArguments) {
+	if ((!aBuffer) || (aBufSize < 4)) {
+		return;
+	}
+	aBuffer[0] = 0;
+	
+	int remaining = aBufSize - 4;
+	int position = 0;
+	int i = 0;
+	bool truncated = false;
+	while (aArguments[i]) {
+		int newChars = snprintf(aBuffer + position, remaining, "%s ", aArguments[i]);
+		if (newChars >= remaining) {
+			truncated = true;
+			break;
+		}
+		position += newChars;
+		remaining -= newChars;
+		i++;
+	}
+	if (truncated) {
+		strcpy(aBuffer + aBufSize - 5, "...");
+	} else {
+		aBuffer[position - 1] = 0;
+	}
 }
 
 int execGetReturnCode(const char **aArguments) {
@@ -130,7 +156,9 @@ int execGetReturnCode(const char **aArguments) {
 		exit(EXIT_FAILURE);
 	}
 	if (pid > 0) {
-		logmsg(LLVL_DEBUG, "Subprocess [PID %d]: Will execute %s\n", pid, aArguments[0]);
+		char commandLineBuffer[256];
+		convertCommandLine(commandLineBuffer, sizeof(commandLineBuffer), aArguments);
+		logmsg(LLVL_DEBUG, "Subprocess [PID %d]: Will execute '%s'\n", pid, commandLineBuffer);
 	}
 	if (pid == 0) {
 		/* Child */

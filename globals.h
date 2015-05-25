@@ -24,6 +24,22 @@
 #ifndef __GLOBALS_H__
 #define __GLOBALS_H__
 
-#define LUKSIPC_VERSION			"0.02"
+#define LUKSIPC_VERSION					"0.03"
+
+#define MAX_HANDLE_LENGTH				32
+
+#define MAX_ARG_CNT						32
+#define MAX_ARGLENGTH					256
+
+#define EXEC_MAX_ARGCNT					64
+
+#define RESUME_FILE_HEADER_MAGIC		"luksipc RESUME v1\0\xde\xad\xbe\xef & \xc0\xff\xee\0\0\0\0"
+#define RESUME_FILE_HEADER_MAGIC_LEN	32
+
+#define HEADER_BACKUP_BLOCKSIZE			(128 * 1024)
+#define HEADER_BACKUP_BLOCKCNT			1024
+#define HEADER_BACKUP_SIZE_BYTES		(HEADER_BACKUP_BLOCKSIZE * HEADER_BACKUP_BLOCKCNT)
+
+#define DEFAULT_RESUME_FILENAME			"resume.bin"
 
 #endif

@@ -1,5 +1,20 @@
-Summary of features of v0.02 (2015-05-18)
-=========================================
+Summary of changes of v0.03 (2015-05-25)
+========================================
+	* Allow reLUKSification of devices (i.e. converting LUKS to LUKS)
+	* Checking of mount status of file systems
+	* Resume files now have additional sanity checks
+	* Fast CRC64-based PRNG generator for filling volumes with check data
+	* Major code cleanups and refactoring
+	* Major regression testing facilities (auto-aborting and resuming on large
+	volumes and on loop devices)
+	* Help page of luksipc now looks more professional
+	* Partition backup file (128 MiB) is always generated at the start of a
+	LUKSification process
+	* Option to deactivate safety checks via command line parameter
+	(--no-seatbelt)
+
+Summary of changes of v0.02 (2015-05-18)
+========================================
 
 	* Fixed interpretation of return code of "cryptsetup status" which had
 	changed with more recent cryptsetup versions to reflect the correct error
@@ -21,8 +36,8 @@ Summary of features of v0.02 (2015-05-18)
 	* Added README file with detailed instructions.
 	* More helpful help page
 
-Summary of features of v0.01 (2011-10-15)
-=========================================
+Summary of changes of v0.01 (2011-10-15)
+========================================
 
 	* Ability to convert devices to LUKS format without having to copy the
 	contained data over.

@@ -24,9 +24,6 @@
 #ifndef __LUKSIPC_H__
 #define __LUKSIPC_H__
 
-#define MAX_ARGS			64
-#define MAX_ARGLENGTH		256
-
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
 int main(int argc, char **argv);
 /***************  AUTO GENERATED SECTION ENDS   ***************/

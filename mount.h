@@ -21,20 +21,11 @@
 	Johannes Bauer <JohannesBauer@gmx.de>
 */
 
-#ifndef __LUKS_H__
-#define __LUKS_H__
-
-#include <stdbool.h>
+#ifndef __MOUNT_H__
+#define __MOUNT_H__
 
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
-bool isLuks(const char *aBlockDevice);
-bool isLuksMapperAvailable(const char *aMapperName);
-bool luksFormat(const char *aBlkDevice, const char *aKeyFile, const char *aOptionalParams);
-bool luksOpen(const char *aBlkDevice, const char *aKeyFile, const char *aHandle);
-bool luksClose(const char *aMapperHandle);
-bool dmCreateAlias(const char *aSrcDevice, const char *aMapperHandle);
-char *dmCreateDynamicAlias(const char *aSrcDevice, const char *aAliasPrefix);
-bool dmRemoveAlias(const char *aMapperHandle);
+bool isBlockDeviceMounted(const char *aBlkDevice);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif

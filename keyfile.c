@@ -32,53 +32,43 @@
 
 #include "logging.h"
 #include "keyfile.h"
+#include "utils.h"
 
-bool genKeyfile(const char *aFilename) {
+bool genKeyfile(const char *aFilename, bool aForce) {
 	/* Does the file already exist? */
 	struct stat statBuf;
-	int statResult, fd, rnd;
-	statResult = stat(aFilename, &statBuf);
-	if ((statResult != -1) || (errno != ENOENT)) {
-		/* Either keyfile already exists or directory inaccessible */
-		logmsg(LLVL_ERROR, "Keyfile %s either already exists (refuse to overwrite) or directory is inaccessible (cannot create).\n", aFilename);
-		return false;
+	int statResult = stat(aFilename, &statBuf);
+	if (statResult == 0) {
+		/* Keyfile already exists */
+		if (!aForce) {
+			logmsg(LLVL_ERROR, "Keyfile %s already exists, refusing to overwrite.\n", aFilename);
+			return false;
+		} else {
+			logmsg(LLVL_WARN, "Keyfile %s already exists, overwriting because safety checks have been disabled.\n", aFilename);
+		}
 	}
 
-	fd = open(aFilename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+	int fd = open(aFilename, O_WRONLY | O_CREAT | O_TRUNC, 0600);
 	if (fd == -1) {
 		/* Cannot create keyfile */
 		logmsg(LLVL_ERROR, "Cannot create keyfile %s: %s\n", aFilename, strerror(errno));
 		return false;
 	}
 
-	rnd = open("/dev/urandom", O_RDONLY);
-	if (rnd == -1) {
-		/* Cannot open random file */
-		logmsg(LLVL_ERROR, "Cannot open random file to generate key: %s\n", strerror(errno));
+	uint8_t keyData[4096];
+	if (!readRandomData(keyData, sizeof(keyData))) {
+		logmsg(LLVL_ERROR, "Error reading random data.\n");
 		close(fd);
 		return false;
 	}
 
-	{
-		unsigned char buf[4096];
-		int dataRead, dataWritten;
-		dataRead = read(rnd, buf, sizeof(buf));
-		if (dataRead != sizeof(buf)) {
-			logmsg(LLVL_ERROR, "Short read from random device: wanted %ld, read %d bytes\n", sizeof(buf), dataRead);
-			close(rnd);
-			close(fd);
-			return false;
-		}
-		dataWritten = write(fd, buf, sizeof(buf));
-		if (dataWritten != sizeof(buf)) {
-			logmsg(LLVL_ERROR, "Short write to keyfile: wanted %ld, read %d bytes\n", sizeof(buf), dataWritten);
-			close(rnd);
-			close(fd);
-			return false;
-		}
+	int dataWritten = write(fd, keyData, sizeof(keyData));
+	if (dataWritten != sizeof(keyData)) {
+		logmsg(LLVL_ERROR, "Short write to keyfile: wanted %ld, read %d bytes\n", sizeof(keyData), dataWritten);
+		close(fd);
+		return false;
 	}
 
-	close(rnd);
 	close(fd);
 	return true;
 }

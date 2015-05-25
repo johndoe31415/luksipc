@@ -24,8 +24,17 @@
 #ifndef __UTILS_H__
 #define __UTILS_H__
 
+#include <stdint.h>
+#include <stdbool.h>
+
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
 bool safestrcpy(char *aDest, const char *aSrc, size_t aDestArraySize);
+uint64_t getDiskSizeOfFd(int aFd);
+uint64_t getDiskSizeOfPath(const char *aPath);
+double getTime(void);
+bool readRandomData(uint8_t *aData, uint32_t aLength);
+bool randomHexStrCat(char *aString, int aByteLen);
+bool doesFileExist(const char *aPath);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif

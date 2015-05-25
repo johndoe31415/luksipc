@@ -28,18 +28,24 @@
 
 #define MINBLOCKSIZE			(1024 * 1024 * 10)
 
-struct parameters {
+struct conversionParameters {
 	int blocksize;
-	const char *device;
+	const char *rawDevice;				/* Partition that the actual LUKS is created on (e.g. /dev/sda9) */
+	const char *readDevice;				/* Partition that data is read from (for initial conversion idential to rawDevice, but for reLUKSification maybe /dev/mapper/oldluks) */
+	const char *writeDevice;			/* Full path of the file that is written (e.g. /dev/mapper/luksipc) */
 	const char *keyFile;
 	const char *luksFormatParams;
+	const char *writeDeviceHandle;		/* Handle of the device which is to be backed up */
+	
+	const char *backupFile;				/* File in which header backup is written before luksFormat */
 	bool batchMode;
-	bool resume;
+	bool safetyChecks;
+	const char *resumeFilename;
 	int logLevel;
 };
 
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
-void parseParameters(struct parameters *aParams, int argc, char **argv);
+void parseParameters(struct conversionParameters *aParams, int argc, char **argv);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif
