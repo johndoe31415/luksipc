@@ -1,16 +1,23 @@
 AUTHORS
 =======
-luksipc is written by Johannes Bauer <JohannesBauer@gmx.de>. Please report all
-bugs directly to this email address. If you do not wish to be named in the
-changelog or this README file, please say so immediately in the mail, I'll omit
-your name then. Inversely, if I forgot to include you in this list and you
-would like to appear, please drop me a note and I'll fix it.
+luksipc was written by Johannes Bauer <JohannesBauer@gmx.de>. Please report all
+bugs directly to his email address or file a issue at GitHub (URL is below). If
+you do not wish to be named in the changelog or this README file, please tell
+me and I'll omit your name. Inversely, if I forgot to include you in this list
+and you would like to appear, please drop me a note and I'll fix it.
 
 There are several contributors to the project:
 
   - Eric Murray (cryptsetup status issue)
   - Christian Pulvermacher (cryptsetup status issue)
   - John Morrissey (large header issue)
+
+The current version is maintained at GitHub at the moment:
+	https://github.com/johndoe31415/luksipc
+
+Please send issues and pull requests there if you would like to contribute. I
+do have a horrible latency sometimes but I'll try to do my best, promise.
+
 
 
 DISCLAIMER
