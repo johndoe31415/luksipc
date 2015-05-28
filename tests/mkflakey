@@ -1,0 +1,40 @@
+#!/usr/bin/python3
+import os
+import sys
+import subprocess
+import random
+
+if len(sys.argv) == 1:
+	print("%s [Blockdevice]" % (sys.argv[0]))
+	print()
+	print("Create a flakey device mapper alias for given block device as /dev/mapper/flakey.")
+	sys.exit(1)
+
+def getdevsize(devname):
+	f = open(devname, "rb")
+	f.seek(0, os.SEEK_END)
+	devsize = f.tell()
+	f.close()
+	return devsize
+
+devname = sys.argv[1]
+subprocess.call([ "dmsetup", "remove", "flakey" ], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+devsize = getdevsize(devname)
+devsize_sects = devsize // 512
+
+error_begin_sect = random.randint(0, devsize_sects - 1) // 4 * 4
+error_sect_length = random.randint(1, 10) * 4
+
+print("Error region: %d len %d" % (error_begin_sect, error_sect_length))
+
+after_err_begin = error_begin_sect + error_sect_length
+after_err_length = devsize_sects - after_err_begin
+
+tblfile = open("tmp_table.txt", "w")
+print("0 %d linear %s 0" % (error_begin_sect, devname), file = tblfile)
+print("%d %d error" % (error_begin_sect, error_sect_length), file = tblfile)
+print("%d %d linear %s %d" % (after_err_begin, after_err_length, devname, after_err_begin), file = tblfile)
+tblfile.close()
+subprocess.check_call([ "dmsetup", "create", "flakey", "tmp_table.txt" ], stdout = subprocess.PIPE, stderr = subprocess.PIPE)
+os.unlink("tmp_table.txt")
+

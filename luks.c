@@ -33,6 +33,7 @@
 #include "logging.h"
 #include "globals.h"
 #include "utils.h"
+#include "random.h"
 
 /* Checks is the given block device has already been formatted with LUKS. */
 bool isLuks(const char *aBlockDevice) {
@@ -42,8 +43,8 @@ bool isLuks(const char *aBlockDevice) {
 		aBlockDevice,
 		NULL
 	};
-	int returnCode = execGetReturnCode(arguments);
-	return returnCode == 0;
+	struct execResult_t execResult = execGetReturnCode(arguments);
+	return execResult.success && (execResult.returnCode == 0);
 }
 
 
@@ -58,9 +59,9 @@ bool isLuksMapperAvailable(const char *aMapperName) {
 	};
 
 	logmsg(LLVL_DEBUG, "Performing dm-crypt status lookup on mapper name '%s'\n", aMapperName);
-	int returnCode = execGetReturnCode(arguments);
-	bool mapperAvailable = (returnCode == 4);
-	logmsg(LLVL_DEBUG, "Device mapper name '%s' is %savailable (returncode %d).\n", aMapperName, mapperAvailable ? "" : "NOT ", returnCode);
+	struct execResult_t execResult = execGetReturnCode(arguments);
+	bool mapperAvailable = execResult.success && (execResult.returnCode == 4);
+	logmsg(LLVL_DEBUG, "Device mapper name '%s' is %savailable (execution %s, returncode %d).\n", aMapperName, mapperAvailable ? "" : "NOT ", execResult.success ? "successful" : "failed", execResult.returnCode);
 	return mapperAvailable;
 }
 
@@ -95,9 +96,9 @@ bool luksFormat(const char *aBlkDevice, const char *aKeyFile, const char *aOptio
 	}
 
 	logmsg(LLVL_DEBUG, "Performing luksFormat of block device %s using key file %s\n", aBlkDevice, aKeyFile);
-	int returnCode = execGetReturnCode(arguments);
-	if (returnCode != 0) {
-		logmsg(LLVL_ERROR, "luksFormat failed (return code %d), aborting.\n", returnCode);
+	struct execResult_t execResult = execGetReturnCode(arguments);
+	if ((!execResult.success) || (execResult.returnCode != 0)) {
+		logmsg(LLVL_ERROR, "luksFormat failed (execution %s, return code %d), aborting.\n", execResult.success ? "successful" : "failed", execResult.returnCode);
 		return false;
 	}
 
@@ -115,37 +116,13 @@ bool luksOpen(const char *aBlkDevice, const char *aKeyFile, const char *aHandle)
 		NULL
 	};
 	logmsg(LLVL_DEBUG, "Performing luksOpen of block device %s using key file %s and device mapper handle %s\n", aBlkDevice, aKeyFile, aHandle);
-	int returnCode = execGetReturnCode(arguments);
-	if (returnCode != 0) {
-		logmsg(LLVL_ERROR, "luksOpen failed (return code %d).\n", returnCode);
+	struct execResult_t execResult = execGetReturnCode(arguments);
+	if ((!execResult.success) || (execResult.returnCode != 0)) {
+		logmsg(LLVL_ERROR, "luksOpen failed (execution %s, return code %d).\n", execResult.success ? "successful" : "failed", execResult.returnCode);
 		return false;
 	}
 
 	return true;
-}
-
-bool luksClose(const char *aMapperHandle) {
-	const char *arguments[] = {
-		"dmsetup",
-		"remove",
-		aMapperHandle,
-		NULL
-	};
-
-	/* Device cannot be closed if there is internal caches. These are not
-	 * flushed even by sync(2). So we have to do the horrible: Retry until we
-	 * succeed :-( */ 
-	bool success = false;
-	for (int try = 0; try < 25; try++) {
-		int returnCode = execGetReturnCode(arguments);
-		success = (returnCode == 0);
-		if (success) {
-			break;
-		}
-		sleep(1);
-	}
-
-	return success && isLuksMapperAvailable(aMapperHandle);
 }
 
 bool dmCreateAlias(const char *aSrcDevice, const char *aMapperHandle) {
@@ -167,18 +144,18 @@ bool dmCreateAlias(const char *aSrcDevice, const char *aMapperHandle) {
 		NULL
 	};
 
-	int returnCode = execGetReturnCode(arguments);
-	if (returnCode != 0) {
-		logmsg(LLVL_ERROR, "dmsetup alias creation failed (returncode %d).\n", returnCode);
+	struct execResult_t execResult = execGetReturnCode(arguments);
+	if ((!execResult.success) || (execResult.returnCode != 0)) {
+		logmsg(LLVL_ERROR, "dmsetup alias creation failed (execution %s, returncode %d).\n", execResult.success ? "successful" : "failed", execResult.returnCode);
 		return false;
 	}
 
 	char aliasDeviceFilename[256];
 	snprintf(aliasDeviceFilename, sizeof(aliasDeviceFilename), "/dev/mapper/%s", aMapperHandle);
-	uint64_t aliasDevSize = getDiskSizeOfPath(aliasDeviceFilename);	
+	uint64_t aliasDevSize = getDiskSizeOfPath(aliasDeviceFilename);
 	if (devSize != aliasDevSize) {
 		logmsg(LLVL_ERROR, "Source device (%s) and its supposed alias device (%s) have different sizes (src = %lu and alias = %lu).\n", aSrcDevice, aliasDeviceFilename, devSize, aliasDevSize);
-		dmRemoveAlias(aMapperHandle);
+		dmRemove(aMapperHandle);
 		return false;
 	}
 
@@ -203,27 +180,46 @@ char *dmCreateDynamicAlias(const char *aSrcDevice, const char *aAliasPrefix) {
 		return NULL;
 	}
 	sprintf(aliasPathname, "/dev/mapper/%s", alias);
-	
+
 	bool aliasSuccessful = dmCreateAlias(aSrcDevice, alias);
 	if (!aliasSuccessful) {
 		free(aliasPathname);
 		return NULL;
 	}
 
-	return aliasPathname;	
+	return aliasPathname;
 }
 
-bool dmRemoveAlias(const char *aMapperHandle) {
+bool dmRemove(const char *aMapperHandle) {
 	const char *arguments[] = {
 		"dmsetup",
 		"remove",
 		aMapperHandle,
 		NULL
 	};
-	int returnCode = execGetReturnCode(arguments);
-	if (returnCode != 0) {
-		logmsg(LLVL_ERROR, "Cannot remove device mapper handle %s (return code %d)\n", aMapperHandle, returnCode);
+
+	/* Device cannot be closed if it is still open. udev will usually call
+	 * blkid on the device after it is closed after been written to. Therefore
+	 * it is possible that "dmsetup remove" fails immediately after closing the
+	 * device (because blkid will have an open handle). We simply wait a bit
+	 * and try again later if this happens. */
+	struct execResult_t execResult;
+	for (int try = 0; try < 10; try++) {
+		execResult = execGetReturnCode(arguments);
+		if (!execResult.success) {
+			return false;
+		}
+		if ((execResult.success) && (execResult.returnCode == 0)) {
+			break;
+		}
+		sleep(1);
 	}
-	return returnCode == 0;
+	
+	bool success = (execResult.success) && (execResult.returnCode == 0) && isLuksMapperAvailable(aMapperHandle);
+	if (!success) {
+		logmsg(LLVL_ERROR, "Cannot remove device mapper handle %s (execution %s, return code %d)\n", aMapperHandle, execResult.success ? "successful" : "failed", execResult.returnCode);
+	}
+
+	return success;
 }
 

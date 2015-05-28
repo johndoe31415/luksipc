@@ -1,0 +1,4 @@
+# This list contains all devices that may be used during testing (and which
+# will be overwritten in the process)
+#/dev/loop0
+#/dev/sdh1

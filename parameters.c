@@ -33,6 +33,7 @@
 #include "logging.h"
 #include "parameters.h"
 #include "globals.h"
+#include "exit.h"
 
 static void defaultParameters(struct conversionParameters *aParams) {
 	memset(aParams, 0, sizeof(struct conversionParameters));
@@ -42,9 +43,10 @@ static void defaultParameters(struct conversionParameters *aParams) {
 	aParams->keyFile = "/root/initial_keyfile.bin";
 	aParams->logLevel = LLVL_INFO;
 	aParams->backupFile = "header_backup.img";
+	aParams->resumeFilename = "resume.bin";
 }
 
-static void syntax(char **argv, const char *aMessage) {
+static void syntax(char **argv, const char *aMessage, enum terminationCode_t aExitCode) {
 	if (aMessage) {
 		fprintf(stderr, "Error: %s\n", aMessage);
 		fprintf(stderr, "\n");
@@ -53,8 +55,8 @@ static void syntax(char **argv, const char *aMessage) {
 	fprintf(stderr, "\n");
 	fprintf(stderr, "%s (-d, --device=RAWDEV) (--readdev=DEV) (-b, --blocksize=BYTES)\n", argv[0]);
 	fprintf(stderr, "    (-c, --backupfile=FILE) (-k, --keyfile=FILE) (-p, --luksparam=PARAMS)\n");
-	fprintf(stderr, "    (-l, --loglevel=LVL) (--resume=FILE) (--no-seatbelt) (--i-know-what-im-doing)\n");
-	fprintf(stderr, "    (-h, --help)\n");
+	fprintf(stderr, "    (-l, --loglevel=LVL) (--resume) (--resume-file=FILE) (--no-seatbelt)\n");
+	fprintf(stderr, "    (--i-know-what-im-doing) (-h, --help)\n");
 	fprintf(stderr, "\n");
 	fprintf(stderr, "  -d, --device=RAWDEV        Raw device that is about to be converted to LUKS. This is\n");
 	fprintf(stderr, "                             the device that luksFormat will be called on to create the\n");
@@ -87,10 +89,14 @@ static void syntax(char **argv, const char *aMessage) {
 	fprintf(stderr, "  -l, --loglevel=LVL         Integer value that specifies the level of logging verbosity\n");
 	fprintf(stderr, "                             from 0 to 4 (critical, error, warn, info, debug). Default\n");
 	fprintf(stderr, "                             loglevel is 3 (info).\n");
-	fprintf(stderr, "      --resume=FILE          Resume a interrupted conversion with the help of a resume\n");
-	fprintf(stderr, "                             file. This file is generated when luksipc aborts, is usually\n");
-	fprintf(stderr, "                             called resume.bin and is located in the directory from which\n");
-	fprintf(stderr, "                             you ran luksipc the first time.\n");
+	fprintf(stderr, "      --resume               Resume a interrupted conversion with the help of a resume\n");
+	fprintf(stderr, "                             file. This file is generated when luksipc aborts, is by\n");
+	fprintf(stderr, "                             default called resume.bin (this can be changed by --resume-\n");
+	fprintf(stderr, "                             file).\n");
+	fprintf(stderr, "      --resume-file=FILE     Change the file name from which the resume information is\n");
+	fprintf(stderr, "                             read (when resuming a previously aborted conversion) and to\n");
+	fprintf(stderr, "                             which resume information is written (in the case of an\n");
+	fprintf(stderr, "                             abort). By default this will be resume.bin.\n");
 	fprintf(stderr, "      --no-seatbelt          Disable several safetly checks which are in place to keep\n");
 	fprintf(stderr, "                             you from losing data. You really need to know what you're\n");
 	fprintf(stderr, "                             doing if you use this.\n");
@@ -103,12 +109,15 @@ static void syntax(char **argv, const char *aMessage) {
 	fprintf(stderr, "Examples:\n");
 	fprintf(stderr, "    %s -d /dev/sda9\n", argv[0]);
 	fprintf(stderr, "       Converts /dev/sda9 to a LUKS partition with default parameters.\n");
+	fprintf(stderr, "    %s -d /dev/sda9 --resume-file myresume.dat\n", argv[0]);
+	fprintf(stderr, "       Converts /dev/sda9 to a LUKS partition with default parameters and store resume\n");
+	fprintf(stderr, "       information in myresume.dat in case of an abort.\n");
 	fprintf(stderr, "    %s -d /dev/sda9 -k /root/secure_key/keyfile.bin --luksparams='-c,twofish-lrw-benbi,-s,320,-h,sha256'\n", argv[0]);
 	fprintf(stderr, "       Converts /dev/sda9 to a LUKS partition and stores the initially used keyfile in\n");
 	fprintf(stderr, "       /root/secure_key/keyfile.bin. Additionally some LUKS parameters are passed that\n");
 	fprintf(stderr, "       specify that the Twofish cipher should be used with a 320 bit keysize and\n");
 	fprintf(stderr, "       SHA-256 as a hash function.\n");
-	fprintf(stderr, "    %s -d /dev/sda9 --resume /root/resume.bin\n", argv[0]);
+	fprintf(stderr, "    %s -d /dev/sda9 --resume --resume-file /root/resume.bin\n", argv[0]);
 	fprintf(stderr, "       Resumes a crashed LUKS conversion of /dev/sda9 using the file /root/resume.bin\n");
 	fprintf(stderr, "       which was generated at the first (crashed) luksipc run.\n");
 	fprintf(stderr, "    %s -d /dev/sda9 --readdev /dev/mapper/oldluks\n", argv[0]);
@@ -119,37 +128,47 @@ static void syntax(char **argv, const char *aMessage) {
 	fprintf(stderr, "       under /dev/mapper/oldluks.\n");
 	fprintf(stderr, "\n");
 	fprintf(stderr, "luksipc version: " LUKSIPC_VERSION "\n");
-	exit(EXIT_FAILURE);
+#ifdef DEVELOPMENT
+	fprintf(stderr, "\n");
+	fprintf(stderr, "WARNING: You're using a development build of luksipc. This is not recommended\n");
+	fprintf(stderr, "unless you're actually doing software development of luksipc.\n");
+	fprintf(stderr, "\n");
+	fprintf(stderr, "Additional (undocumented) options for development release:\n");
+	fprintf(stderr, "    --development-slowdown\n");
+	fprintf(stderr, "    --development-ioerrors\n");
+#endif
+	terminate(aExitCode);
 }
 
 static void checkParameters(char **argv, const struct conversionParameters *aParams) {
 	char errorMessage[256];
 	if (!aParams->readDevice) {
-		syntax(argv, "No device to convert was given on the command line");
+		syntax(argv, "No device to convert was given on the command line", EC_CMDLINE_ARGUMENT_ERROR);
 	}
 	if ((aParams->luksFormatParams) && ((strlen(aParams->luksFormatParams) + 1) > MAX_ARGLENGTH)) {
 		snprintf(errorMessage, sizeof(errorMessage), "Length of LUKS format parameters exceeds maximum of %d.", MAX_ARGLENGTH);
-		syntax(argv, errorMessage);
-	}
-	if ((aParams->writeDeviceHandle) && (strlen(aParams->writeDeviceHandle) > MAX_HANDLE_LENGTH)) {
-		snprintf(errorMessage, sizeof(errorMessage), "Length of LUKS handle exceeds maximum of %d.", MAX_HANDLE_LENGTH);
-		syntax(argv, errorMessage);
+		syntax(argv, errorMessage, EC_CMDLINE_ARGUMENT_ERROR);
 	}
 	if (aParams->blocksize < MINBLOCKSIZE) {
 		snprintf(errorMessage, sizeof(errorMessage), "Blocksize needs to be at the very least %d bytes (size of LUKS header), user specified %d bytes.", MINBLOCKSIZE, aParams->blocksize);
-		syntax(argv, errorMessage);
+		syntax(argv, errorMessage, EC_CMDLINE_ARGUMENT_ERROR);
 	}
 	if ((aParams->logLevel < 0) || (aParams->logLevel > LLVL_DEBUG)) {
 		snprintf(errorMessage, sizeof(errorMessage), "Loglevel needs to be inbetween 0 and %d, user specified %d.", LLVL_DEBUG, aParams->logLevel);
-		syntax(argv, errorMessage);
+		syntax(argv, errorMessage, EC_CMDLINE_ARGUMENT_ERROR);
 	}
 }
 
-enum LongOnlyOpts {
+enum longOnlyOptions_t {
 	OPT_IKNOWWHATIMDOING = 0x1000,
 	OPT_RESUME,
+	OPT_RESUME_FILE,
 	OPT_READDEVICE,
-	OPT_NOSEATBELT
+	OPT_NOSEATBELT,
+#ifdef DEVELOPMENT
+	OPT_DEV_IOERRORS,
+	OPT_DEV_SLOWDOWN
+#endif
 };
 
 void parseParameters(struct conversionParameters *aParams, int argc, char **argv) {
@@ -161,10 +180,17 @@ void parseParameters(struct conversionParameters *aParams, int argc, char **argv
 		{ "keyfile", 1, NULL, 'k' },
 		{ "luksparams", 1, NULL, 'p' },
 		{ "loglevel", 1, NULL, 'l' },
-		{ "resume", 1, NULL, OPT_RESUME },
+		{ "resume", 0, NULL, OPT_RESUME },
+		{ "resume-file", 1, NULL, OPT_RESUME_FILE },
 		{ "no-seatbelt", 0, NULL, OPT_NOSEATBELT },
 		{ "i-know-what-im-doing", 0, NULL, OPT_IKNOWWHATIMDOING },
 		{ "i-know-what-im-doinx", 0, NULL, 'h' },							/* Do not allow abbreviation of --i-know-what-im-doing */
+#ifdef DEVELOPMENT
+		{ "development-slowdown", 0, NULL, OPT_DEV_SLOWDOWN },
+		{ "development-slowdowx", 0, NULL, 'h' },							/* Do not allow abbreviation of --development-slowdown */
+		{ "development-ioerrors", 0, NULL, OPT_DEV_IOERRORS },
+		{ "development-ioerrorx", 0, NULL, 'h' },							/* Do not allow abbreviation of --development-ioerrors */
+#endif
 		{ "help", 0, NULL, 'h' },
 		{ 0 }
 	};
@@ -176,19 +202,19 @@ void parseParameters(struct conversionParameters *aParams, int argc, char **argv
 			case 'd':
 				aParams->rawDevice = optarg;
 				break;
-			
+
 			case OPT_READDEVICE:
 				aParams->readDevice = optarg;
 				break;
-			
+
 			case 'b':
 				aParams->blocksize = atoi(optarg);
 				break;
-			
+
 			case 'c':
 				aParams->backupFile = optarg;
 				break;
-			
+
 			case 'k':
 				aParams->keyFile = optarg;
 				break;
@@ -202,16 +228,20 @@ void parseParameters(struct conversionParameters *aParams, int argc, char **argv
 				aParams->logLevel = strtol(optarg, &endPtr, 10);
 				if ((endPtr == NULL) || (*endPtr != 0)) {
 					fprintf(stderr, "Error: Cannot convert the value '%s' you passed as a log level (must be an integer).\n", optarg);
-					exit(EXIT_FAILURE);
+					terminate(EC_CMDLINE_ARGUMENT_ERROR);
 				}
 				if ((aParams->logLevel < 0) || (aParams->logLevel > 4)) {
 					fprintf(stderr, "Error: Log level must be between 0 and 4.\n");
-					exit(EXIT_FAILURE);
+					terminate(EC_CMDLINE_ARGUMENT_ERROR);
 				}
 				break;
 			}
-
+			
 			case OPT_RESUME:
+				aParams->resuming = true;
+				break;
+
+			case OPT_RESUME_FILE:
 				aParams->resumeFilename = optarg;
 				break;
 
@@ -222,17 +252,26 @@ void parseParameters(struct conversionParameters *aParams, int argc, char **argv
 			case OPT_IKNOWWHATIMDOING:
 				aParams->batchMode = true;
 				break;
+#ifdef DEVELOPMENT
+			case OPT_DEV_IOERRORS:
+				aParams->dev.ioErrors = true;
+				break;
+
+			case OPT_DEV_SLOWDOWN:
+				aParams->dev.slowDown = true;
+				break;
+#endif
 
 			case '?':
 				fprintf(stderr, "\n");
 
 			case 'h':
-				syntax(argv, NULL);
+				syntax(argv, NULL, EC_SUCCESS);
 				break;
 
 			default:
 				fprintf(stderr, "Error: Lazy programmer caused bug in getopt parsing (character 0x%x = '%c').\n", character, character);
-				exit(EXIT_FAILURE);
+				terminate(EC_CMDLINE_PARSING_ERROR);
 		}
 	}
 
@@ -243,29 +282,10 @@ void parseParameters(struct conversionParameters *aParams, int argc, char **argv
 	 * device = raw device) */
 	if (!aParams->readDevice) {
 		aParams->readDevice = aParams->rawDevice;
-	}
-
-	{
-		static char writeDevicePath[32 + MAX_HANDLE_LENGTH];
-		strcpy(writeDevicePath, "/dev/mapper/");
-		if ((aParams->writeDeviceHandle) && (strlen(aParams->writeDeviceHandle) <= MAX_HANDLE_LENGTH)) {
-			strcat(writeDevicePath, aParams->writeDeviceHandle);
-		} else {
-			/* If we do not yet have a write device handle, generate a
-			 * randomized one one on the fly, so that two different luksipc
-			 * instances on the same machine do not collide. */
-			strcat(writeDevicePath, "luksipc_");
-			if (!randomHexStrCat(writeDevicePath, 4)) {
-				fprintf(stderr, "Error: cannot generate randomized luksipc handle.\n");
-				exit(EXIT_FAILURE);
-			}
-		}
-		aParams->writeDevice = writeDevicePath;
-		aParams->writeDeviceHandle = writeDevicePath + 12;
+	} else {
+		aParams->reluksification = true;
 	}
 
 	checkParameters(argv, aParams);
-
-	setLogLevel(aParams->logLevel);
 }
 

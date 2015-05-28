@@ -1,0 +1,24 @@
+#!/bin/bash
+#
+#
+
+
+remove_all() {
+	ANY_SUCCESS="0"
+	for name in /dev/mapper/*; do
+		dmsetup remove "$name" >/dev/null 2>&1
+		if [ "$?" == "0" ]; then
+			ANY_SUCCESS="1"
+		fi
+	done
+	return $ANY_SUCCESS
+}
+
+while true; do
+	remove_all
+	success="$?"
+	if [ "$success" == "0" ]; then
+		break
+	fi
+done
+

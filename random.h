@@ -21,39 +21,17 @@
 	Johannes Bauer <JohannesBauer@gmx.de>
 */
 
-#ifndef __PARAMETERS_H__
-#define __PARAMETERS_H__
+#ifndef __RANDOM_H__
+#define __RANDOM_H__
 
+#include <stdint.h>
 #include <stdbool.h>
 
-#define MINBLOCKSIZE			(1024 * 1024 * 10)
-
-struct conversionParameters {
-	int blocksize;
-	const char *rawDevice;				/* Partition that the actual LUKS is created on (e.g. /dev/sda9) */
-	const char *readDevice;				/* Partition that data is read from (for initial conversion idential to rawDevice, but for reLUKSification maybe /dev/mapper/oldluks) */
-	const char *keyFile;
-	const char *luksFormatParams;
-	bool resuming;						/* Should the process resume using the given file? */
-	const char *resumeFilename;			/* Use this file for storing resume data */
-
-	const char *backupFile;				/* File in which header backup is written before luksFormat */
-	bool batchMode;
-	bool safetyChecks;
-	int logLevel;
-	bool reluksification;
-
-#ifdef DEVELOPMENT
-	struct {
-		bool slowDown;					/* Simulate slow devices */
-		bool ioErrors;					/* Simulate I/O errors */
-	} dev;
-#endif
-};
-
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
-void parseParameters(struct conversionParameters *aParams, int argc, char **argv);
+bool randomEvent(uint32_t aOneIn);
+bool readRandomData(void *aData, uint32_t aLength);
+bool randomHexStrCat(char *aString, int aByteLen);
+bool initPrng(void);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif
-

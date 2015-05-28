@@ -33,6 +33,7 @@
 #include "logging.h"
 #include "keyfile.h"
 #include "utils.h"
+#include "random.h"
 
 bool genKeyfile(const char *aFilename, bool aForce) {
 	/* Does the file already exist? */

@@ -27,6 +27,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 #include <string.h>
+#include <errno.h>
 
 #include "exec.h"
 #include "logging.h"
@@ -123,7 +124,7 @@ static void convertCommandLine(char *aBuffer, int aBufSize, const char **aArgume
 		return;
 	}
 	aBuffer[0] = 0;
-	
+
 	int remaining = aBufSize - 4;
 	int position = 0;
 	int i = 0;
@@ -145,15 +146,20 @@ static void convertCommandLine(char *aBuffer, int aBufSize, const char **aArgume
 	}
 }
 
-int execGetReturnCode(const char **aArguments) {
+struct execResult_t execGetReturnCode(const char **aArguments) {
+	struct execResult_t execResult;
 	char **argcopy = argCopy(aArguments);
 	pid_t pid;
 	int status;
 
+	memset(&execResult, 0, sizeof(execResult));
+	execResult.success = true;
+
 	pid = fork();
 	if (pid == -1) {
 		perror("fork");
-		exit(EXIT_FAILURE);
+		execResult.success = false;
+		return execResult;
 	}
 	if (pid > 0) {
 		char commandLineBuffer[256];
@@ -163,23 +169,29 @@ int execGetReturnCode(const char **aArguments) {
 	if (pid == 0) {
 		/* Child */
 		if (getLogLevel() < LLVL_DEBUG) {
-			/* Shut up the child */
+			/* Shut up the child if user did not request debug output */
 			close(1);
 			close(2);
 		}
 		execvp(aArguments[0], argcopy);
 		perror("execvp");
+		logmsg(LLVL_ERROR, "Execution of %s in forked child process failed at execvp: %s\n", aArguments[0], strerror(errno));
+
+		/* Exec failed, terminate chExec failed, terminate child process
+		 * (parent will catch this as the return code) */
 		exit(EXIT_FAILURE);
 	}
 
 	if (waitpid(pid, &status, 0) == (pid_t)-1) {
 		perror("waitpid");
-		exit(EXIT_FAILURE);
+		execResult.success = false;
+		return execResult;
 	}
 
 	freeArgCopy(argcopy);
-	int returnCode = WEXITSTATUS(status);
-	logmsg(LLVL_DEBUG, "Subprocess [PID %d]: %s returned %d\n", pid, aArguments[0], returnCode);
-	return returnCode;
+	execResult.returnCode = WEXITSTATUS(status);
+	logmsg(LLVL_DEBUG, "Subprocess [PID %d]: %s returned %d\n", pid, aArguments[0], execResult.returnCode);
+	return execResult;
 }
+
 

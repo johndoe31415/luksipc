@@ -26,12 +26,17 @@
 
 #include <stdbool.h>
 
+struct execResult_t {
+	bool success;
+	int returnCode;
+};
+
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
 int argCount(const char **aArgs);
 bool argAppend(const char **aArgs, const char *aNewArg, int *aArgCount, int aArraySize);
 bool argAppendParse(const char **aArgs, char *aNewArgs, int *aArgCount, int aArraySize);
 void argDump(const char **aArgs);
-int execGetReturnCode(const char **aArguments);
+struct execResult_t execGetReturnCode(const char **aArguments);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif

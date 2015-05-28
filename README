@@ -71,7 +71,7 @@ Filesystem UUID:          713cc62e-b2a2-406a-a82a-c4c1d01464e1
 Filesystem magic number:  0xEF53
 Filesystem revision #:    1 (dynamic)
 Filesystem features:      has_journal ext_attr resize_inode dir_index filetype extent flex_bg sparse_super large_file huge_file uninit_bg dir_nlink extra_isize
-Filesystem flags:         signed_directory_hash 
+Filesystem flags:         signed_directory_hash
 Default mount options:    user_xattr acl
 Filesystem state:         clean
 Errors behavior:          Continue
@@ -127,7 +127,7 @@ Please confirm you have completed the checklist:
     Keyfile: /root/initial_keyfile.bin
     LUKS format parameters: None given
 
-Are all these conditions satisfied, then answer uppercase yes: 
+Are all these conditions satisfied, then answer uppercase yes:
 ----------8<----------8<----------8<----------8<----------8<----------
 
 Please, read the whole message thourougly. There is no going back from this. If
@@ -164,9 +164,9 @@ want to use for the volume (or any other method of key, your choice). You can
 actually even do this while the copying process is running.
 
 ----------8<----------8<----------8<----------8<----------8<----------
-# cryptsetup luksAddKey /dev/loop0 --key-file=/root/initial_keyfile.bin 
-Enter new passphrase for key slot: 
-Verify passphrase: 
+# cryptsetup luksAddKey /dev/loop0 --key-file=/root/initial_keyfile.bin
+Enter new passphrase for key slot:
+Verify passphrase:
 ----------8<----------8<----------8<----------8<----------8<----------
 
 Let's check this worked:
@@ -181,22 +181,22 @@ Cipher mode:   	xts-plain64
 Hash spec:     	sha1
 Payload offset:	4096
 MK bits:       	256
-MK digest:     	b2 34 b8 7b 70 e8 78 17 a4 12 00 41 dc a4 bc 70 a3 50 02 22 
-MK salt:       	ee 25 b4 f0 11 94 25 d1 2b 97 42 6c a6 ff 3d 1d 
-               	e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9 
+MK digest:     	b2 34 b8 7b 70 e8 78 17 a4 12 00 41 dc a4 bc 70 a3 50 02 22
+MK salt:       	ee 25 b4 f0 11 94 25 d1 2b 97 42 6c a6 ff 3d 1d
+               	e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9
 MK iterations: 	50125
 UUID:          	3e21bbe0-3d70-4189-8f19-04fb7d7c5bb9
 
 Key Slot 0: ENABLED
 	Iterations:         	201892
-	Salt:               	9d b6 a1 f5 0f 91 ee 24 be 49 0e f7 f9 62 a2 06 
-	                      	aa 45 79 7f 1a 56 5c 8c a3 03 15 a0 d2 9e ca e5 
+	Salt:               	9d b6 a1 f5 0f 91 ee 24 be 49 0e f7 f9 62 a2 06
+	                      	aa 45 79 7f 1a 56 5c 8c a3 03 15 a0 d2 9e ca e5
 	Key material offset:	8
 	AF stripes:            	4000
 Key Slot 1: ENABLED
 	Iterations:         	198756
-	Salt:               	46 b4 21 fb e3 12 54 18 ff 8d 05 24 75 fc 3c 4b 
-	                      	3c 90 77 47 43 b6 0b 28 d9 b6 86 44 30 9e 20 d2 
+	Salt:               	46 b4 21 fb e3 12 54 18 ff 8d 05 24 75 fc 3c 4b
+	                      	3c 90 77 47 43 b6 0b 28 d9 b6 86 44 30 9e 20 d2
 	Key material offset:	264
 	AF stripes:            	4000
 Key Slot 2: DISABLED
@@ -216,7 +216,7 @@ passphrase).
 
 ----------8<----------8<----------8<----------8<----------8<----------
 # cryptsetup luksKillSlot /dev/loop0 0
-Enter any remaining passphrase: 
+Enter any remaining passphrase:
 ----------8<----------8<----------8<----------8<----------8<----------
 
 And check again:
@@ -231,17 +231,17 @@ Cipher mode:   	xts-plain64
 Hash spec:     	sha1
 Payload offset:	4096
 MK bits:       	256
-MK digest:     	b2 34 b8 7b 70 e8 78 17 a4 12 00 41 dc a4 bc 70 a3 50 02 22 
-MK salt:       	ee 25 b4 f0 11 94 25 d1 2b 97 42 6c a6 ff 3d 1d 
-               	e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9 
+MK digest:     	b2 34 b8 7b 70 e8 78 17 a4 12 00 41 dc a4 bc 70 a3 50 02 22
+MK salt:       	ee 25 b4 f0 11 94 25 d1 2b 97 42 6c a6 ff 3d 1d
+               	e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9
 MK iterations: 	50125
 UUID:          	3e21bbe0-3d70-4189-8f19-04fb7d7c5bb9
 
 Key Slot 0: DISABLED
 Key Slot 1: ENABLED
 	Iterations:         	198756
-	Salt:               	46 b4 21 fb e3 12 54 18 ff 8d 05 24 75 fc 3c 4b 
-	                      	3c 90 77 47 43 b6 0b 28 d9 b6 86 44 30 9e 20 d2 
+	Salt:               	46 b4 21 fb e3 12 54 18 ff 8d 05 24 75 fc 3c 4b
+	                      	3c 90 77 47 43 b6 0b 28 d9 b6 86 44 30 9e 20 d2
 	Key material offset:	264
 	AF stripes:            	4000
 Key Slot 2: DISABLED
@@ -260,9 +260,9 @@ mount the cryptographic file system and then call the resize2fs utility again:
 
 ----------8<----------8<----------8<----------8<----------8<----------
 # cryptsetup luksOpen /dev/loop0 newcryptofs
-Enter passphrase for /dev/loop0: 
+Enter passphrase for /dev/loop0:
 
-# resize2fs /dev/mapper/newcryptofs 
+# resize2fs /dev/mapper/newcryptofs
 resize2fs 1.42.9 (4-Feb-2014)
 Resizing the filesystem on /dev/mapper/newcryptofs to 255488 (4k) blocks.
 The filesystem on /dev/mapper/newcryptofs is now 255488 blocks long.
@@ -313,16 +313,16 @@ Cipher mode:   	xts-plain64
 Hash spec:     	sha1
 Payload offset:	4096
 MK bits:       	256
-MK digest:     	b1 44 6a 73 e3 06 27 27 a2 fe c2 59 e5 3a 39 2e 15 d7 d7 e0 
-MK salt:       	09 6d 6a 24 66 28 43 f7 f3 55 a9 9d 0a 40 77 58 
-               	e0 1f 7c 30 b9 63 96 eb 99 34 52 4f 72 ba 57 ac 
+MK digest:     	b1 44 6a 73 e3 06 27 27 a2 fe c2 59 e5 3a 39 2e 15 d7 d7 e0
+MK salt:       	09 6d 6a 24 66 28 43 f7 f3 55 a9 9d 0a 40 77 58
+               	e0 1f 7c 30 b9 63 96 eb 99 34 52 4f 72 ba 57 ac
 MK iterations: 	49750
 UUID:          	6495d24d-34ac-41f5-a594-c5058cc31ed3
 
 Key Slot 0: ENABLED
 	Iterations:         	206119
-	Salt:               	99 c8 48 50 c3 a6 83 0d f9 39 a4 4d 0a 35 b0 ab 
-	                      	13 83 ee fd 9f 91 8d 92 a6 cf 42 50 9b 89 a6 be 
+	Salt:               	99 c8 48 50 c3 a6 83 0d f9 39 a4 4d 0a 35 b0 ab
+	                      	13 83 ee fd 9f 91 8d 92 a6 cf 42 50 9b 89 a6 be
 	Key material offset:	8
 	AF stripes:            	4000
 Key Slot 1: DISABLED
@@ -617,7 +617,7 @@ And open our successfully converted device:
 But did it really work?
 
 ----------8<----------8<----------8<----------8<----------8<----------
-# md5sum /dev/mapper/newluks 
+# md5sum /dev/mapper/newluks
 41dc86251cba7992719bbc85de5628ab  /dev/mapper/newluks
 ----------8<----------8<----------8<----------8<----------8<----------
 
@@ -711,7 +711,7 @@ Are all these conditions satisfied, then answer uppercase yes: YES
 Then luksOpen it:
 
 ----------8<----------8<----------8<----------8<----------8<----------
-# cryptsetup luksOpen /dev/sda1 myluksdev -d /root/initial_keyfile.bin 
+# cryptsetup luksOpen /dev/sda1 myluksdev -d /root/initial_keyfile.bin
 ----------8<----------8<----------8<----------8<----------8<----------
 
 And check the hash:
@@ -749,16 +749,16 @@ Cipher mode:   	xts-plain64
 Hash spec:     	sha1
 Payload offset:	4096
 MK bits:       	256
-MK digest:     	dd 08 3d 43 ae 50 64 7c d9 c6 20 cb de dd 7a 62 69 10 63 fe 
-MK salt:       	f1 95 eb 18 2d 90 61 e9 c8 df 4b 4d 44 ab 62 87 
-               	5a f5 39 5a c4 f5 3b 7a 09 8c f1 75 33 a5 f3 25 
+MK digest:     	dd 08 3d 43 ae 50 64 7c d9 c6 20 cb de dd 7a 62 69 10 63 fe
+MK salt:       	f1 95 eb 18 2d 90 61 e9 c8 df 4b 4d 44 ab 62 87
+               	5a f5 39 5a c4 f5 3b 7a 09 8c f1 75 33 a5 f3 25
 MK iterations: 	50375
 UUID:          	127277bf-b07b-4209-bf55-37cb1c10c83b
 
 Key Slot 0: ENABLED
 	Iterations:         	201892
-	Salt:               	fc d9 3a 73 b4 73 ee 98 6c 35 34 a0 c7 7d 8a 71 
-	                      	5b 75 b7 6c 75 af 65 20 eb 90 7c 69 34 10 1e a6 
+	Salt:               	fc d9 3a 73 b4 73 ee 98 6c 35 34 a0 c7 7d 8a 71
+	                      	5b 75 b7 6c 75 af 65 20 eb 90 7c 69 34 10 1e a6
 	Key material offset:	8
 	AF stripes:            	4000
 Key Slot 1: DISABLED
@@ -850,16 +850,16 @@ Cipher mode:   	lrw-benbi
 Hash spec:     	sha256
 Payload offset:	4096
 MK bits:       	320
-MK digest:     	10 b9 35 7b c8 23 d7 c3 2a b9 3e e6 95 74 cf 7f ef 75 1b 32 
-MK salt:       	3f 58 e6 1e 29 e1 c7 a2 f1 14 9e 1f c7 09 fa 23 
-               	93 7c 9c 59 20 67 d7 a7 7e 7d fe a0 12 9f 0f 25 
+MK digest:     	10 b9 35 7b c8 23 d7 c3 2a b9 3e e6 95 74 cf 7f ef 75 1b 32
+MK salt:       	3f 58 e6 1e 29 e1 c7 a2 f1 14 9e 1f c7 09 fa 23
+               	93 7c 9c 59 20 67 d7 a7 7e 7d fe a0 12 9f 0f 25
 MK iterations: 	29000
 UUID:          	1dd5e426-9e37-4d1e-a6f9-17aa4179eb1e
 
 Key Slot 0: ENABLED
 	Iterations:         	117215
-	Salt:               	9d 58 5c 30 2b dc 35 33 19 bf 78 ab 3e aa 6e 8a 
-	                      	fa 6c 9b ee 45 f7 db 9e f1 ab 0c fb cb 3c eb 51 
+	Salt:               	9d 58 5c 30 2b dc 35 33 19 bf 78 ab 3e aa 6e 8a
+	                      	fa 6c 9b ee 45 f7 db 9e f1 ab 0c fb cb 3c eb 51
 	Key material offset:	8
 	AF stripes:            	4000
 Key Slot 1: DISABLED

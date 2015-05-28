@@ -1,0 +1,52 @@
+#!/usr/bin/python3
+import traceback
+from SimpleTests import SimpleLUKSIPCTest, AbortedLUKSIPCTest, IOErrorLUKSIPCTest
+from ReLUKSTests import SimpleReLUKSIPCTest1, SimpleReLUKSIPCTest2, AbortedReLUKSIPCTest, IOErrorReLUKSIPCTest
+from CornercaseTests import LargeHeaderLUKSIPCTest
+from TestEngine import TestEngine
+
+test_classes = [
+#	SimpleLUKSIPCTest,
+#	AbortedLUKSIPCTest,
+#	IOErrorLUKSIPCTest,
+#	SimpleReLUKSIPCTest1,
+#	SimpleReLUKSIPCTest2,
+#	AbortedReLUKSIPCTest,
+#	IOErrorReLUKSIPCTest,
+	LargeHeaderLUKSIPCTest,
+]
+
+assumptions = {
+	"default_luks_hdr_size":	2048 * 1024,
+	"default_backup_hdr_size":	128 * 1024 * 1024,
+}
+
+#device = "/dev/sdh1"
+device = "/dev/loop0"
+#additional_params = [ "--development-slowdown" ]
+additional_params = [ ]
+
+engine = TestEngine(destroy_data_dev = device, luksipc_binary = "../luksipc", logdir = "logs/", additional_params = additional_params)
+
+pass_cnt = 0
+fail_cnt = 0
+for test_class in test_classes:
+	test_name = test_class.__name__
+	engine.new_testcase(test_name)
+	test_passed = True
+	try:
+		engine.cleanup_files()
+		engine.scrub_device_hdr()
+
+		test_instance = test_class(testengine = engine, assumptions = assumptions)
+		test_instance.run()
+	except Exception as e:
+		test_passed = False
+		traceback.print_exc()
+	if test_passed:
+		pass_cnt += 1
+		engine.finished_testcase(test_name, "PASSED")
+	else:
+		fail_cnt += 1
+		engine.finished_testcase(test_name, "FAILED")
+engine._log("Finished testcases: %d PASS, %d FAIL" % (pass_cnt, fail_cnt))

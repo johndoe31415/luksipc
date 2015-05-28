@@ -34,10 +34,12 @@ struct chunk {
 };
 
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
-void allocChunk(struct chunk *aChunk, uint32_t aSize);
+bool allocChunk(struct chunk *aChunk, uint32_t aSize);
 void freeChunk(struct chunk *aChunk);
 ssize_t chunkReadAt(struct chunk *aChunk, int aFd, uint64_t aOffset, uint32_t aSize);
 ssize_t chunkWriteAt(const struct chunk *aChunk, int aFd, uint64_t aOffset);
+ssize_t unreliableChunkReadAt(struct chunk *aChunk, int aFd, uint64_t aOffset, uint32_t aSize);
+ssize_t unreliableChunkWriteAt(struct chunk *aChunk, int aFd, uint64_t aOffset);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif

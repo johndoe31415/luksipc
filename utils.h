@@ -32,9 +32,7 @@ bool safestrcpy(char *aDest, const char *aSrc, size_t aDestArraySize);
 uint64_t getDiskSizeOfFd(int aFd);
 uint64_t getDiskSizeOfPath(const char *aPath);
 double getTime(void);
-bool readRandomData(uint8_t *aData, uint32_t aLength);
-bool randomHexStrCat(char *aString, int aByteLen);
-bool doesFileExist(const char *aPath);
+bool doesFileExist(const char *aFilename);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif

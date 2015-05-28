@@ -27,8 +27,9 @@
 #include <stdbool.h>
 
 /*************** AUTO GENERATED SECTION FOLLOWS ***************/
-bool sigQuit(void);
-void initSigHdlrs(void);
+bool receivedSigQuit(void);
+void issueSigQuit(void);
+bool initSignalHandlers(void);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif

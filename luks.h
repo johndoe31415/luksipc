@@ -31,10 +31,9 @@ bool isLuks(const char *aBlockDevice);
 bool isLuksMapperAvailable(const char *aMapperName);
 bool luksFormat(const char *aBlkDevice, const char *aKeyFile, const char *aOptionalParams);
 bool luksOpen(const char *aBlkDevice, const char *aKeyFile, const char *aHandle);
-bool luksClose(const char *aMapperHandle);
 bool dmCreateAlias(const char *aSrcDevice, const char *aMapperHandle);
 char *dmCreateDynamicAlias(const char *aSrcDevice, const char *aAliasPrefix);
-bool dmRemoveAlias(const char *aMapperHandle);
+bool dmRemove(const char *aMapperHandle);
 /***************  AUTO GENERATED SECTION ENDS   ***************/
 
 #endif

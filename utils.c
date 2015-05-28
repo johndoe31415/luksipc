@@ -80,43 +80,6 @@ double getTime(void) {
 	return (double)tv.tv_sec + (1e-6 * tv.tv_usec);
 }
 
-bool readRandomData(uint8_t *aData, uint32_t aLength) {
-	const char *randomDevice = "/dev/urandom";
-	FILE *f = fopen(randomDevice, "rb");
-	if (!f) {
-		logmsg(LLVL_ERROR, "Error opening %s for reading entropy: %s\n", randomDevice, strerror(errno));
-		return false;
-	}
-	
-	if (fread(aData, aLength, 1, f) != 1) {
-		logmsg(LLVL_ERROR, "Short read from %s for reading entropy: %s\n", randomDevice, strerror(errno));
-		fclose(f);
-		return false;
-	}
-	
-	fclose(f);
-	return true;
-}
-
-bool randomHexStrCat(char *aString, int aByteLen) {
-	/* Generate hex data */
-	uint8_t rnd[aByteLen];
-	if (!readRandomData(rnd, aByteLen)) {
-		logmsg(LLVL_ERROR, "Cannot generate randomized hex tag.\n");
-		return false;
-	}
-
-	/* Walk string until the end */
-	aString = aString + strlen(aString);
-
-	/* Then append hex data there */
-	for (int i = 0; i < aByteLen; i++) {
-		sprintf(aString, "%02x", rnd[i]);
-		aString += 2;
-	}
-	return true;
-}
-
 bool doesFileExist(const char *aFilename) {
 	struct stat statBuf;
 	int statResult = stat(aFilename, &statBuf);

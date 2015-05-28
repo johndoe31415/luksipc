@@ -1,3 +1,14 @@
+Summary of changes of v0.04 (2015-05-28)
+========================================
+	* Greatly improved handling of disk I/O errors (graceful shutdown in more
+	situation instead of simply bailing out)
+	* Separated resume file specification and actual request for resuming an
+	aborted luksipc process (--resume vs. --resume-file)
+	* Unified exit code handling
+	* Possibilities to do fault injection in order to efficiently develop and
+	test code to increase robustness
+	* Included whole test framework in release
+
 Summary of changes of v0.03 (2015-05-25)
 ========================================
 	* Allow reLUKSification of devices (i.e. converting LUKS to LUKS)

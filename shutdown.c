@@ -31,7 +31,7 @@
 #include "logging.h"
 #include "shutdown.h"
 
-static bool quit = false;
+static volatile bool quit = false;
 
 static void signalInterrupt(int aSignal) {
 	(void)aSignal;
@@ -39,11 +39,15 @@ static void signalInterrupt(int aSignal) {
 	logmsg(LLVL_CRITICAL, "Shutdown requested by user interrupt, please be patient...\n");
 }
 
-bool sigQuit(void) {
+bool receivedSigQuit(void) {
 	return quit;
 }
 
-void initSigHdlrs(void) {
+void issueSigQuit(void) {
+	quit = true;
+}
+
+bool initSignalHandlers(void) {
 	struct sigaction action;
 	memset(&action, 0, sizeof(struct sigaction));
 	action.sa_handler = signalInterrupt;
@@ -52,16 +56,19 @@ void initSigHdlrs(void) {
 
 	if (sigaction(SIGINT, &action, NULL) == -1) {
 		fprintf(stderr, "Could not install SIGINT handler: %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
+		return false;
 	}
 
 	if (sigaction(SIGTERM, &action, NULL) == -1) {
 		fprintf(stderr, "Could not install SIGTERM handler: %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
+		return false;
 	}
 
 	if (sigaction(SIGHUP, &action, NULL) == -1) {
 		fprintf(stderr, "Could not install SIGHUP handler: %s\n", strerror(errno));
-		exit(EXIT_FAILURE);
+		return false;
 	}
+
+	return true;
 }
+
