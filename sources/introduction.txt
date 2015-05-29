@@ -20,7 +20,7 @@ The current version is maintained at GitHub at the moment:
     https://github.com/johndoe31415/luksipc
 
 The project documentation can be found at:
-    https://todo
+    https://johndoe31415.github.io/luksipc
 
 The projects main page is hosted at:
     http://johannes-bauer.com/linux/luksipc/
