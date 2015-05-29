@@ -1,0 +1,370 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Conversion problems &mdash; luksipc 0.04 documentation</title>
+  
+
+  
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+    <link rel="top" title="luksipc 0.04 documentation" href="index.html"/>
+        <link rel="next" title="Testing" href="testing.html"/>
+        <link rel="prev" title="Usage" href="usage.html"/> 
+
+  
+  <script src="_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-nav-search">
+        
+
+        
+          <a href="index.html" class="icon icon-home"> luksipc
+        
+
+        
+        </a>
+
+        
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+        
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+        
+          
+          
+              <p class="caption"><span class="caption-text">luksipc Documentation</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#authors">Authors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#disclaimer">Disclaimer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="introduction.html#compiling">Compiling</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#checklist">Checklist</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#preparation">Preparation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#plain-to-luks-conversion">Plain to LUKS conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="usage.html#luks-to-luks-conversion">LUKS to LUKS conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="">Conversion problems</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#problems-during-plain-to-luks-conversion">Problems during plain to LUKS conversion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#problems-during-luks-to-luks-conversion">Problems during LUKS to LUKS conversion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
+</ul>
+
+          
+        
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="index.html">luksipc</a>
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html">Docs</a> &raquo;</li>
+      
+    <li>Conversion problems</li>
+      <li class="wy-breadcrumbs-aside">
+        
+          
+            <a href="_sources/problems.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document">
+            
+  <div class="section" id="conversion-problems">
+<h1>Conversion problems<a class="headerlink" href="#conversion-problems" title="Permalink to this headline">¶</a></h1>
+<p>If anything goes wrong, you will find advice in this section. Again the two
+distinct cases will be in different subsections. Errors with plain to LUKS
+conversion will be discussed first and errors with LUKS to LUKS conversion
+(reLUKSificiation) in a different subsection.</p>
+<div class="section" id="problems-during-plain-to-luks-conversion">
+<h2>Problems during plain to LUKS conversion<a class="headerlink" href="#problems-during-plain-to-luks-conversion" title="Permalink to this headline">¶</a></h2>
+<p>You may find yourself here because a luksipc process has crashed mid-conversion
+(accidental Ctrl-C or reboot) and you&#8217;re panicing. Breathe. luksipc is designed
+so that it is robust against these issues.</p>
+<p>Basically, to be able to resume a luksipc process you need to have two things:</p>
+<ol class="arabic simple">
+<li>The data of the last overwritten block (there&#8217;s always one &#8220;shadow&#8221; block
+that needs to be kept in memory, because usually the destination partition is
+smaller than the source partition because of the LUKS header)</li>
+<li>The exact location of where the interruption occured.</li>
+</ol>
+<p>luksipc stores exactly this (incredibly critical) information in a &#8220;resume
+file&#8221; should the resume process be interrupted. It is usually called
+&#8220;resume.bin&#8221;. For example, say I interrupt the LUKS conversion of a disk, this
+will be shown:</p>
+<div class="highlight-python"><div class="highlight"><pre># luksipc -d /dev/sdf1
+[...]
+[I]:  0:00:  32.1%       110 MiB / 343 MiB     6.4 MiB/s   Left:     233 MiB  0:00 h:m
+^C[C]: Shutdown requested by user interrupt, please be patient...
+[I]: Gracefully shutting down.
+[I]: Synchronizing disk...
+[I]: Synchronizing of disk finished.
+</pre></div>
+</div>
+<p>If you go into more detail (log level increase) here&#8217;s what you&#8217;ll see:</p>
+<div class="highlight-python"><div class="highlight"><pre># luksipc -d /dev/sdf1 -l4
+[...]
+[I]:  0:00:  32.1%       110 MiB / 343 MiB     6.2 MiB/s   Left:     233 MiB  0:00 h:m
+^C[C]: Shutdown requested by user interrupt, please be patient...
+[I]: Gracefully shutting down.
+[D]: Wrote resume file: read pointer offset 136314880 write pointer offset 115343360, 10485760 bytes of data in active buffer.
+[D]: Closing read/write file descriptors 4 and 5.
+[I]: Synchronizing disk...
+[I]: Synchronizing of disk finished.
+[D]: Subprocess [PID 17857]: Will execute &#39;cryptsetup luksClose luksipc_f569b0bb&#39;
+[D]: Subprocess [PID 17857]: cryptsetup returned 0
+[D]: Subprocess [PID 17860]: Will execute &#39;dmsetup remove /dev/mapper/alias_luksipc_raw_277f5e96&#39;
+[D]: Subprocess [PID 17860]: dmsetup returned 0
+</pre></div>
+</div>
+<p>You can see the exact location of the interruption: The read pointer was at
+offset 136314880 (130 MiB), the write pointer was at offset 115343360 (110 MiB)
+and there are currently 10 MiB of data in the shadow buffer. Everything was
+saved to a resume file. Here&#8217;s an illustration of what it looks like. Every
+block is 10 MiB in size:</p>
+<div class="highlight-python"><div class="highlight"><pre>   100    110    120    130    140
+    |      |      |      |      |
+    v      v      v      v      v
+----+------+------+------+------+----
+ ...|      | BUF1 | BUF2 |      |...
+----+------+------+------+------+----
+           ^             ^
+           |             |
+           W             R
+</pre></div>
+</div>
+<p>At this point in time, luksipc has exactly two blocks in memory, BUF1 and BUF2.
+This is why the read pointer is ahead two block sizes of the write pointer. Now
+in the next step (if no interruption had occured) the BUF1 buffer would be
+written to the LUKS device offset 110 MiB. This would overwrite some of the
+plain data in BUF2, too (because the LUKS header means that there&#8217;s an offset
+between read- and write disk!). Therefore both have to be kept in memory.</p>
+<p>But since the system was interrupted, it is fully sufficient to only save BUF1
+to disk together with the write pointer location.</p>
+<p>With the help of this resume file, you can continue the conversion process:</p>
+<div class="highlight-python"><div class="highlight"><pre># luksipc -d /dev/sdf1 --resume resume.bin
+[...]
+[I]: Starting copying of data, read offset 125829120, write offset 115343360
+[I]:  0:00:  64.1%       220 MiB / 343 MiB     6.6 MiB/s   Left:     123 MiB  0:00 h:m
+[I]:  0:00:  93.3%       320 MiB / 343 MiB     9.2 MiB/s   Left:      23 MiB  0:00 h:m
+[...]
+</pre></div>
+</div>
+<p>Now we see that the process was resumed with the write pointer at the 110 MiB
+mark and the read pointer at the 120 MiB mark. The next step would now be for
+luksipc to read in BUF2 and we&#8217;re exatly in the situation in which the abort
+occured. Then from there on everything works like usual.</p>
+<p>One thing you have to be very careful about is making copies of the resume
+file. You have to be <strong>very</strong> careful about this. Let&#8217;s say you copied the
+resume file to some other location and accidently applied it twice. For
+example, you run luksipc a first time and abort it. The resume file is written,
+you copy it to resume2.bin. You resume the process (luksipc run 2) and let it
+finish. Then you resume the process again with resume2.bin. What will happen is
+that all data that was written in the resume run is encrypted <strong>twice</strong> and
+will be unintelligible.  This can obviously be recovered, but it will require
+very careful twiddling and lots of work. Just don&#8217;t do it.</p>
+<p>To prevent this sort of thing, luksipc truncates the resume file when resuming
+only after everything else has worked (and I/O operation starts). This prevents
+you from accidently applying a resume file twice to an interrupted conversion
+process.</p>
+</div>
+<div class="section" id="problems-during-luks-to-luks-conversion">
+<h2>Problems during LUKS to LUKS conversion<a class="headerlink" href="#problems-during-luks-to-luks-conversion" title="Permalink to this headline">¶</a></h2>
+<p>When a reLUKSification process aborts unexpectedly (but gracefully), a resume
+file is written just as it would have been during LUKSification. So resuming
+just like above is easily possible.  But suppose the case is a tad bit more
+complicated: Let&#8217;s say that someone accidently issued a reboot command during
+reLUKSification. The reboot command causes a SIGTERM to be issued to the
+luksipc process.  luksipc catches the signal, writes the resume.bin file and
+shuts down gracefully. Then the system reboots.</p>
+<p>For reLUKSification to work you need to have access to the plain (unlocked)
+source container. Here&#8217;s the big &#8220;but&#8221;: In order to unlock the original
+container, you need to use cryptsetup luksOpen. But the LUKS header has been
+overwritten by the destination (final) LUKS header already. Therefore you can&#8217;t
+unlock the source data anymore.</p>
+<p>At least you couldn&#8217;t if this situation wouldn&#8217;t have been anticipated by
+luksipc. Lucky for you, it has been. When first firing up luksipc, a backup of
+the raw device header (typically 128 MiB in size) is done by luksipc in a file
+usually called &#8220;header_backup.img&#8221;. You can use this header together with the
+raw parition to open the partition using the old key. When you have opened the
+device with the old key, we can just resume the process as we normally would.</p>
+<p>First, this is the reLUKSificiation process that aborts. We assume our
+container is unlocked at /dev/mapper/oldluks. Let&#8217;s check the MD5 of the
+container first (to verify everything ran smoothly):</p>
+<div class="highlight-python"><div class="highlight"><pre># md5sum /dev/mapper/oldluks
+41dc86251cba7992719bbc85de5628ab  /dev/mapper/oldluks
+</pre></div>
+</div>
+<p>Alright, let&#8217;s start the luksipc process (which will be interrupted):</p>
+<div class="highlight-python"><div class="highlight"><pre># luksipc -d /dev/loop0 --readdev /dev/mapper/oldluks
+[...]
+[I]:  0:00:  10.8%       110 MiB / 1022 MiB     0.0 MiB/s   Left:     912 MiB  0:00 h:m
+^C[C]: Shutdown requested by user interrupt, please be patient...
+[I]: Gracefully shutting down.
+[...]
+</pre></div>
+</div>
+<p>Now let&#8217;s say we&#8217;ve closed /dev/mapper/oldluks (e.g. by a system reboot). We
+need to find a way to reopen it with the old header and old key in order to
+successfully resume the proces. For this, we do:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># cryptsetup luksOpen --header=header_backup.img /dev/loop0 oldluks</span>
+</pre></div>
+</div>
+<p>And then, finally, we&#8217;re able to resume luksipc:</p>
+<div class="highlight-python"><div class="highlight"><pre># luksipc -d /dev/loop0 --readdev /dev/mapper/oldluks --resume resume.bin
+[...]
+[I]: Starting copying of data, read offset 220200960, write offset 209715200
+[I]:  0:00:  30.3%       310 MiB / 1022 MiB     0.0 MiB/s   Left:     712 MiB  0:00 h:m
+[I]:  0:00:  40.1%       410 MiB / 1022 MiB   147.9 MiB/s   Left:     612 MiB  0:00 h:m
+</pre></div>
+</div>
+<p>Now after the process is run, let&#8217;s do some cleanups:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># dmsetup remove oldluks</span>
+<span class="c"># dmsetup remove hybrid</span>
+<span class="c"># losetup -d /dev/loop3</span>
+</pre></div>
+</div>
+<p>And open our successfully converted device:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># cryptsetup luksOpen /dev/loop0 newluks -d /root/initial_keyfile.bin</span>
+</pre></div>
+</div>
+<p>But did it really work? We can check:</p>
+<div class="highlight-python"><div class="highlight"><pre># md5sum /dev/mapper/newluks
+41dc86251cba7992719bbc85de5628ab  /dev/mapper/newluks
+</pre></div>
+</div>
+<p>Yes, it sure did :-)</p>
+<p>Be aware that this is an absolute emergency recovery proedure that you&#8217;d only
+use if everything else fails (i.e. the original source LUKS device was
+accidently closed).  Any mistake whatsoever (e.g. wrong offsets) will cause you
+to completely pulp your disk. So be very very careful with this and double
+check everything.</p>
+</div>
+</div>
+
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="testing.html" class="btn btn-neutral float-right" title="Testing" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="usage.html" class="btn btn-neutral" title="Usage" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, Johannes Bauer.
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'./',
+            VERSION:'0.04',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true
+        };
+    </script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
