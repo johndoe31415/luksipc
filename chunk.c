@@ -48,8 +48,8 @@ void freeChunk(struct chunk *aChunk) {
 	memset(aChunk, 0, sizeof(struct chunk));
 }
 
-static bool checkedSeek(int aFd, off64_t aOffset, const char *aCaller) {
-	off64_t curOffset = lseek64(aFd, aOffset, SEEK_SET);
+static bool checkedSeek(int aFd, off_t aOffset, const char *aCaller) {
+	off_t curOffset = lseek(aFd, aOffset, SEEK_SET);
 	if (curOffset != aOffset) {
 		logmsg(LLVL_WARN, "%s: tried seek to 0x%lx, went to 0x%lx (%s)\n", aCaller, aOffset, curOffset, strerror(errno));
 		return false;

@@ -2,7 +2,7 @@
 
 EXECUTABLE := luksipc
 CC := gcc
-CFLAGS := -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -std=c11 -O2 -D_LARGEFILE64_SOURCE -D_XOPEN_SOURCE=500
+CFLAGS := -Wall -Wextra -Wshadow -Wpointer-arith -Wcast-qual -Wstrict-prototypes -Wmissing-prototypes -std=c11 -O2 -D_FILE_OFFSET_BITS=64 -D_XOPEN_SOURCE=500
 #CFLAGS += -DDEVELOPMENT -g
 
 LDFLAGS :=
