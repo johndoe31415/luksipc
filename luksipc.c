@@ -256,7 +256,7 @@ static enum copyResult_t issueGracefulShutdown(struct conversionParameters const
 		logmsg(LLVL_WARN, "There were errors writing the resume file %s.\n", aParameters->resumeFilename);
 		return COPYRESULT_ERROR_WRITING_RESUME_FILE;
 	} else {
-		logmsg(LLVL_INFO, "Sucessfully written resume file %s.\n", aParameters->resumeFilename);
+		logmsg(LLVL_INFO, "Successfully written resume file %s.\n", aParameters->resumeFilename);
 		return COPYRESULT_SUCCESS_RESUMABLE;
 	}
 }
