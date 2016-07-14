@@ -40,7 +40,7 @@ class LUKSIPCTest(object):
 		devsize_post = devsize_pre + expected_sizediff
 
 		seed = random.randint(0, 0xffffffff)
-		plain_data_hash = self._engine.patternize_rawdev(exclude_bytes, seed)
+		plain_data_hash = self._engine.patternize_rawdev(expected_sizediff, seed)
 		backup_header_hash = self._engine.hash_rawdev(total_size = self["default_backup_hdr_size"])
 		return self._PreTestParameters(seed = seed, plain_data_hash = plain_data_hash, backup_header_hash = backup_header_hash, source = "plain", expected_sizediff = expected_sizediff, devsize_pre = devsize_pre, devsize_post = devsize_post)
 	
