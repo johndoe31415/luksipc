@@ -27,6 +27,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <errno.h>
+#include <inttypes.h>
 
 #include "exec.h"
 #include "luks.h"
@@ -128,12 +129,12 @@ bool luksOpen(const char *aBlkDevice, const char *aKeyFile, const char *aHandle)
 bool dmCreateAlias(const char *aSrcDevice, const char *aMapperHandle) {
 	uint64_t devSize = getDiskSizeOfPath(aSrcDevice);
 	if (devSize % 512) {
-		logmsg(LLVL_ERROR, "Device size of %s (%lu bytes) is not divisible by even 512 bytes sector size.\n", aSrcDevice, devSize);
+		logmsg(LLVL_ERROR, "Device size of %s (%" PRIu64 " bytes) is not divisible by even 512 bytes sector size.\n", aSrcDevice, devSize);
 		return false;
 	}
 
 	char mapperTable[256];
-	snprintf(mapperTable, sizeof(mapperTable), "0 %lu linear %s 0", devSize / 512, aSrcDevice);
+	snprintf(mapperTable, sizeof(mapperTable), "0 %" PRIu64 " linear %s 0", devSize / 512, aSrcDevice);
 
 	const char *arguments[] = {
 		"dmsetup",
@@ -154,7 +155,7 @@ bool dmCreateAlias(const char *aSrcDevice, const char *aMapperHandle) {
 	snprintf(aliasDeviceFilename, sizeof(aliasDeviceFilename), "/dev/mapper/%s", aMapperHandle);
 	uint64_t aliasDevSize = getDiskSizeOfPath(aliasDeviceFilename);
 	if (devSize != aliasDevSize) {
-		logmsg(LLVL_ERROR, "Source device (%s) and its supposed alias device (%s) have different sizes (src = %lu and alias = %lu).\n", aSrcDevice, aliasDeviceFilename, devSize, aliasDevSize);
+		logmsg(LLVL_ERROR, "Source device (%s) and its supposed alias device (%s) have different sizes (src = %" PRIu64 " and alias = %" PRIu64 ").\n", aSrcDevice, aliasDeviceFilename, devSize, aliasDevSize);
 		dmRemove(aMapperHandle);
 		return false;
 	}

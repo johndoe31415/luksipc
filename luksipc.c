@@ -32,6 +32,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <stdarg.h>
+#include <inttypes.h>
 
 #include "luksipc.h"
 #include "shutdown.h"
@@ -113,7 +114,7 @@ static bool writeResumeFile(struct conversionProcess *aConvProcess) {
 	success = checkedWrite(aConvProcess->resumeFd, &aConvProcess->dataBuffer[aConvProcess->usedBufferIndex].used, sizeof(uint32_t)) && success;
 	success = checkedWrite(aConvProcess->resumeFd, aConvProcess->dataBuffer[aConvProcess->usedBufferIndex].data, aConvProcess->dataBuffer[aConvProcess->usedBufferIndex].size) && success;
 	fsync(aConvProcess->resumeFd);
-	logmsg(LLVL_DEBUG, "Wrote resume file: read pointer offset %lu write pointer offset %lu, %lu bytes of data in active buffer.\n", aConvProcess->inOffset, aConvProcess->outOffset, aConvProcess->dataBuffer[aConvProcess->usedBufferIndex].used);
+	logmsg(LLVL_DEBUG, "Wrote resume file: read pointer offset %" PRIu64 " write pointer offset %" PRIu64 ", %" PRIu64 " bytes of data in active buffer.\n", aConvProcess->inOffset, aConvProcess->outOffset, aConvProcess->dataBuffer[aConvProcess->usedBufferIndex].used);
 	return success;
 }
 
@@ -151,18 +152,18 @@ static bool readResumeFile(struct conversionParameters const *aParameters, struc
 
 	if (origReadDevSize != aConvProcess->readDevSize) {
 		if (aParameters->safetyChecks) {
-			logmsg(LLVL_ERROR, "Resume file used read device of size %lu bytes, but currently read device size is %lu bytes. Refusing to continue in spite of mismatch.\n", origReadDevSize, aConvProcess->readDevSize);
+			logmsg(LLVL_ERROR, "Resume file used read device of size %" PRIu64 " bytes, but currently read device size is %" PRIu64 " bytes. Refusing to continue in spite of mismatch.\n", origReadDevSize, aConvProcess->readDevSize);
 			return false;
 		} else {
-			logmsg(LLVL_WARN, "Resume file used read device of size %lu bytes, but currently read device size is %lu bytes. Continuing only because safety checks are disabled.\n", origReadDevSize, aConvProcess->readDevSize);
+			logmsg(LLVL_WARN, "Resume file used read device of size %" PRIu64 " bytes, but currently read device size is %" PRIu64 " bytes. Continuing only because safety checks are disabled.\n", origReadDevSize, aConvProcess->readDevSize);
 		}
 	}
 	if (origWriteDevSize != aConvProcess->writeDevSize) {
 		if (aParameters->safetyChecks) {
-			logmsg(LLVL_ERROR, "Resume file used write device of size %lu bytes, but currently write device size is %lu bytes. Refusing to continue in spite of mismatch.\n", origWriteDevSize, aConvProcess->writeDevSize);
+			logmsg(LLVL_ERROR, "Resume file used write device of size %" PRIu64 " bytes, but currently write device size is %" PRIu64 " bytes. Refusing to continue in spite of mismatch.\n", origWriteDevSize, aConvProcess->writeDevSize);
 			return false;
 		} else {
-			logmsg(LLVL_WARN, "Resume file used write device of size %lu bytes, but currently write device size is %lu bytes. Continuing only because safety checks are disabled.\n", origWriteDevSize, aConvProcess->writeDevSize);
+			logmsg(LLVL_WARN, "Resume file used write device of size %" PRIu64 " bytes, but currently write device size is %" PRIu64 " bytes. Continuing only because safety checks are disabled.\n", origWriteDevSize, aConvProcess->writeDevSize);
 		}
 	}
 	if (origReluksification != aConvProcess->reluksification) {
@@ -174,7 +175,7 @@ static bool readResumeFile(struct conversionParameters const *aParameters, struc
 		}
 	}
 
-	logmsg(LLVL_DEBUG, "Read write pointer offset %lu from resume file.\n", aConvProcess->outOffset);
+	logmsg(LLVL_DEBUG, "Read write pointer offset %" PRIu64 " from resume file.\n", aConvProcess->outOffset);
 
 	aConvProcess->usedBufferIndex = 0;
 	success = checkedRead(aConvProcess->resumeFd, &aConvProcess->dataBuffer[0].used, sizeof(uint32_t)) && success;
@@ -218,7 +219,7 @@ static void showProgress(struct conversionProcess *aConvProcess) {
 
 			logmsg(LLVL_INFO, "%2d:%02d: "
 							"%5.1f%%   "
-							"%7lu MiB / %lu MiB   "
+							"%7lu MiB / %" PRIu64 " MiB   "
 							"%5.1f MiB/s   "
 							"Left: "
 							"%7lu MiB "
@@ -262,7 +263,7 @@ static enum copyResult_t issueGracefulShutdown(struct conversionParameters const
 }
 
 static enum copyResult_t startDataCopy(struct conversionParameters const *aParameters, struct conversionProcess *aConvProcess) {
-	logmsg(LLVL_INFO, "Starting copying of data, read offset %lu, write offset %lu\n", aConvProcess->inOffset, aConvProcess->outOffset);
+	logmsg(LLVL_INFO, "Starting copying of data, read offset %" PRIu64 ", write offset %" PRIu64 "\n", aConvProcess->inOffset, aConvProcess->outOffset);
 	while (true) {
 		ssize_t bytesTransferred;
 		int unUsedBufferIndex = (1 - aConvProcess->usedBufferIndex);
@@ -413,7 +414,7 @@ static uint64_t absDiff(uint64_t aValue1, uint64_t aValue2) {
 static bool plausibilizeReadWriteDeviceSizes(struct conversionParameters const *aParameters, struct conversionProcess *aConvProcess) {
 	uint64_t absSizeDiff = absDiff(aConvProcess->readDevSize, aConvProcess->writeDevSize);
 	if (absSizeDiff > 0x10000000) {
-		logmsg(LLVL_WARN, "Absolute size difference if implausibly large (%lu), something is very wrong.", absSizeDiff);
+		logmsg(LLVL_WARN, "Absolute size difference if implausibly large (%" PRIu64 "), something is very wrong.", absSizeDiff);
 		return false;
 	}
 
@@ -538,7 +539,7 @@ static void convert(struct conversionParameters const *parameters) {
 	if (!openDevice(parameters->readDevice, &convProcess.readDevFd, O_RDWR, &convProcess.readDevSize)) {
 		terminate(EC_CANNOT_OPEN_READ_DEVICE);
 	}
-	logmsg(LLVL_INFO, "Size of reading device %s is %lu bytes (%lu MiB + %lu bytes)\n", parameters->readDevice, convProcess.readDevSize, convProcess.readDevSize / (1024 * 1024), convProcess.readDevSize % (1024 * 1024));
+	logmsg(LLVL_INFO, "Size of reading device %s is %" PRIu64 " bytes (%" PRIu64 " MiB + %" PRIu64 " bytes)\n", parameters->readDevice, convProcess.readDevSize, convProcess.readDevSize / (1024 * 1024), convProcess.readDevSize % (1024 * 1024));
 
 	/* Do a backup of the physical disk first if we're just starting out our
 	 * conversion */
@@ -552,7 +553,7 @@ static void convert(struct conversionParameters const *parameters) {
 	 * obviously be possible to handle, but we won't. If your hard disk is so
 	 * small, then recreate it. */
 	if (convProcess.readDevSize < (uint32_t)parameters->blocksize) {
-		logmsg(LLVL_ERROR, "Error: Volume size of %s (%lu bytes) is smaller than chunksize (%u). Weird and unsupported corner case.\n", parameters->readDevice, convProcess.readDevSize, parameters->blocksize);
+		logmsg(LLVL_ERROR, "Error: Volume size of %s (%" PRIu64 " bytes) is smaller than chunksize (%u). Weird and unsupported corner case.\n", parameters->readDevice, convProcess.readDevSize, parameters->blocksize);
 		terminate(EC_UNSUPPORTED_SMALL_DISK_CORNER_CASE);
 	}
 
@@ -600,7 +601,7 @@ static void convert(struct conversionParameters const *parameters) {
 		}
 		terminate(EC_FAILED_TO_OPEN_UNLOCKED_CRYPTO_DEVICE);
 	}
-	logmsg(LLVL_INFO, "Size of luksOpened writing device is %lu bytes (%lu MiB + %lu bytes)\n", convProcess.writeDevSize, convProcess.writeDevSize / (1024 * 1024), convProcess.writeDevSize % (1024 * 1024));
+	logmsg(LLVL_INFO, "Size of luksOpened writing device is %" PRIu64 " bytes (%" PRIu64 " MiB + %" PRIu64 " bytes)\n", convProcess.writeDevSize, convProcess.writeDevSize / (1024 * 1024), convProcess.writeDevSize % (1024 * 1024));
 
 	/* Check that the sizes of reading and writing device are in a sane
 	 * relationship to each other (i.e. writing device is maybe slightly
@@ -792,7 +793,7 @@ static void askUserConfirmation(struct conversionParameters const *parameters) {
 		}
 
 		fprintf(stderr, "\n");
-		fprintf(stderr, "    %s: %lu MiB = %.1f GiB\n", parameters->rawDevice, devSize / 1024 / 1024, (double)(devSize / 1024 / 1024) / 1024);
+		fprintf(stderr, "    %s: %" PRIu64 " MiB = %.1f GiB\n", parameters->rawDevice, devSize / 1024 / 1024, (double)(devSize / 1024 / 1024) / 1024);
 		fprintf(stderr, "    Chunk size: %u bytes = %.1f MiB\n", parameters->blocksize, (double)parameters->blocksize / 1024 / 1024);
 		fprintf(stderr, "    Keyfile: %s\n", parameters->keyFile);
 		fprintf(stderr, "    LUKS format parameters: %s\n", parameters->luksFormatParams ? parameters->luksFormatParams : "None given");
