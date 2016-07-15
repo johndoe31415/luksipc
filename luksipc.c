@@ -219,10 +219,10 @@ static void showProgress(struct conversionProcess *aConvProcess) {
 
 			logmsg(LLVL_INFO, "%2d:%02d: "
 							"%5.1f%%   "
-							"%7lu MiB / %" PRIu64 " MiB   "
+							"%7" PRIu64 " MiB / %" PRIu64 " MiB   "
 							"%5.1f MiB/s   "
 							"Left: "
-							"%7lu MiB "
+							"%7" PRIu64 " MiB "
 							"%2d:%02d h:m"
 							"\n",
 								runtimeSecondsInteger / 3600, runtimeSecondsInteger % 3600 / 60,
