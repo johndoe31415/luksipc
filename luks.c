@@ -28,6 +28,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <inttypes.h>
+#include <libgen.h>
 
 #include "exec.h"
 #include "luks.h"
@@ -52,10 +53,13 @@ bool isLuks(const char *aBlockDevice) {
 /* Returns if the given device mapper name is available (i.e. not active at the
  * moment) */
 bool isLuksMapperAvailable(const char *aMapperName) {
+        char *bname;
+        bname = basename(aMapperName);
+
 	const char *arguments[] = {
 		"cryptsetup",
 		"status",
-		aMapperName,
+		bname,
 		NULL
 	};
 
