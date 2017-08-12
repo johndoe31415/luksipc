@@ -46,3 +46,15 @@ recent Linux distribution with GNU make and gcc installed. Just type::
 
 That's it. At runtime, it needs access to the cryptsetup and dmsetup tools in
 the PATH.
+
+
+luksipc vs. cryptsetup-reencrypt
+--------------------------------
+luksipc has nothing to do with cryptsetup-reencrypt. It was simply created
+because at the time that luksipc was written, cryptsetup-reencrypt hadn't been
+written just yet. On modern systems, cryptsetup-reencrypt is already shipped
+with the LUKS tools and it's also the supported tool by LUKS upstream.
+Therefore, to be frank, it seems like the better choice to use nowadays. I've
+never used cryptsetup-reencrypt myself so far, but will probably try it out on
+the next best occasion (then I can also update this README with a more
+insightful comment instead of just clueless jibber jabber).
