@@ -45,7 +45,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'luksipc'
-copyright = '2015, Johannes Bauer'
+copyright = '2011-2017, Johannes Bauer'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

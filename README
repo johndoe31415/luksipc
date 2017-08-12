@@ -1,12 +1,16 @@
+Introduction
+************
+
+
 Authors
 =======
 
 luksipc was written by Johannes Bauer <JohannesBauer@gmx.de>. Please
 report all bugs directly to his email address or file a issue at
 GitHub (URL is below). If you do not wish to be named in the ChangeLog
-or this README file, please tell me and I'll omit your name.
+or this README file, please tell me and I’ll omit your name.
 Inversely, if I forgot to include you in this list and you would like
-to appear, please drop me a note and I'll fix it.
+to appear, please drop me a note and I’ll fix it.
 
 There are several contributors to the project:
 
@@ -26,7 +30,7 @@ The projects main page is hosted at:
    http://johannes-bauer.com/linux/luksipc/
 
 Please send issues and pull requests to GitHub if you would like to
-contribute. I do have a horrible latency sometimes but I'll try to do
+contribute. I do have a horrible latency sometimes but I’ll try to do
 my best, promise.
 
 
@@ -34,7 +38,7 @@ Disclaimer
 ==========
 
 If you use luksipc and it bricks your disk and destroys all your data
-then that's your fault, not mine. luksips comes without any warranty
+then that’s your fault, not mine. luksips comes without any warranty
 (neither expressed nor implied). Please have a backup for really,
 really important data.
 
@@ -48,9 +52,22 @@ Just type:
 
    $ make
 
-That's it. At runtime, it needs access to the cryptsetup and dmsetup
+That’s it. At runtime, it needs access to the cryptsetup and dmsetup
 tools in the PATH.
 
+
+luksipc vs. cryptsetup-reencrypt
+================================
+
+luksipc has nothing to do with cryptsetup-reencrypt. It was simply
+created because at the time that luksipc was written, cryptsetup-
+reencrypt hadn’t been written just yet. On modern systems, cryptsetup-
+reencrypt is already shipped with the LUKS tools and it’s also the
+supported tool by LUKS upstream. Therefore, to be frank, it seems like
+the better choice to use nowadays. I’ve never used cryptsetup-
+reencrypt myself so far, but will probably try it out on the next best
+occasion (then I can also update this README with a more insightful
+comment instead of just clueless jibber jabber).
 Usage
 *****
 
@@ -89,14 +106,14 @@ conversion has been performed).
 Warning: Do not forget to shrink the file system before conversion
 
 luksipc has no means of detecting wheter or not you have performed
-this step and will not warn you if you haven't (it has no knowledge of
+this step and will not warn you if you haven’t (it has no knowledge of
 the underlying file system). This might lead to very weird file system
 errors in the case that your volume ever wants to use the whole space
 and it might even render your volume completely unmountable (depending
 on the check the file system driver performs on the block device
 before allowing mounting).
 
-For example, let's say you have a device at /dev/loop0 that has an
+For example, let’s say you have a device at /dev/loop0 that has an
 ext4 file system. You want to LUKSify it. We first resize our volume.
 For this we find out how large the volume is currently:
 
@@ -134,7 +151,7 @@ file system with decreased size. So we resize the file system:
    Resizing the filesystem on /dev/loop0 to 230400 (4k) blocks.
    The filesystem on /dev/loop0 is now 230400 blocks long.
 
-That was successful. Perfect. Now (if you haven't already), umount the
+That was successful. Perfect. Now (if you haven’t already), umount the
 volume.
 
 Warning: Do not forget to unmount the file system before conversion
@@ -170,8 +187,8 @@ only used for bootstrapping. We start the conversion:
    Are all these conditions satisfied, then answer uppercase yes:
 
 Please, read the whole message thourougly. There is no going back from
-this. If and only if you're 100% sure that all preconditions are
-satisfied, answer "YES" and press return:
+this. If and only if you’re 100% sure that all preconditions are
+satisfied, answer “YES” and press return:
 
    Are all these conditions satisfied, then answer uppercase yes: YES
    [I]: Created raw device alias: /dev/loop0 -> /dev/mapper/alias_luksipc_raw_89ee2dc8
@@ -196,7 +213,7 @@ satisfied, answer "YES" and press return:
    [I]: Synchronizing disk...
    [I]: Synchronizing of disk finished.
 
-The volume was successfully converted! Now let's first add a
+The volume was successfully converted! Now let’s first add a
 passphrase that we want to use for the volume (or any other method of
 key, your choice). You can actually even do this while the copying
 process is running:
@@ -205,7 +222,7 @@ process is running:
    Enter new passphrase for key slot:
    Verify passphrase:
 
-Let's check this worked:
+Let’s check this worked:
 
    # cryptsetup luksDump /dev/loop0
    LUKS header information for /dev/loop0
@@ -242,9 +259,9 @@ Let's check this worked:
    Key Slot 7: DISABLED
 
 You can see the initial keyfile (slot 0) and the passphrase we just
-added (slot 1). Let's scrub the initial keyslot so the initial keyfile
-becomes useless. We do this by scrubbing slot 0. Don't worry, you
-cannot choose the wrong slot here; cryptsetup won't permit you to
+added (slot 1). Let’s scrub the initial keyslot so the initial keyfile
+becomes useless. We do this by scrubbing slot 0. Don’t worry, you
+cannot choose the wrong slot here; cryptsetup won’t permit you to
 remove the wrong slot since you must prove that you still have at
 least access to one remaining slot (by entering your passphrase):
 
@@ -305,15 +322,15 @@ LUKS to LUKS conversion
 =======================
 
 There are situations in which you might want to re-encrypt your LUKS
-device. For example, let's say you have a cryptographic volume and
+device. For example, let’s say you have a cryptographic volume and
 multiple users have access to it, each with their own keyslot. Now
 suppose you forfeit the rights of one person to the volume.
 Technically you would do this by killing the appropriate key slot of
 the key that was assigned to the user. This means the user can from
 then on not unlock the volume using the LUKS keyheader.
 
-But suppose the user you want whose access you want to revoke had --
-while still in possession of a valid key -- access to the file system
+But suppose the user you want whose access you want to revoke had –
+while still in possession of a valid key – access to the file system
 container itself. Then with that LUKS header he can still (even when
 the slot was killed) derive the underlying cryptographic key that
 secures the data. The only way to remedy this is to reencrypt the
@@ -331,11 +348,11 @@ use.
 
 In any case, there are numerous cases why you want to turn a LUKS
 volume into another LUKS volume. This process is called
-"reLUKSification" within luksipc and it is something that is supported
+“reLUKSification” within luksipc and it is something that is supported
 from 0.03 onwards.
 
-Let's say you have a partition called /dev/sdh2 which you want to
-reLUKSify. First let's see what the used encryption parameters are:
+Let’s say you have a partition called /dev/sdh2 which you want to
+reLUKSify. First let’s see what the used encryption parameters are:
 
    # cryptsetup luksDump /dev/sdh2
    LUKS header information for /dev/sdh2
@@ -366,12 +383,12 @@ reLUKSify. First let's see what the used encryption parameters are:
    Key Slot 6: DISABLED
    Key Slot 7: DISABLED
 
-We'll now open the device with our old key (a passphrase):
+We’ll now open the device with our old key (a passphrase):
 
    # cryptsetup luksOpen /dev/sdh2 oldluks
 
 Just for demonstration purposes, we can calculate the MD5SUM over the
-whole block device (you won't need to do that, it's just a demo):
+whole block device (you won’t need to do that, it’s just a demo):
 
    # md5sum /dev/mapper/oldluks
    48d9763be76ddb4fb990367f8d6b8c22  /dev/mapper/oldluks
@@ -396,7 +413,7 @@ device which you want to convert you will also now have to specify the
 block device name of the unlocked device. The raw device is the one
 that luksFormat and luksOpen will be called on and the read device is
 the device from which data will be read during the copy procedure.
-Here's how the call to luksipc looks like. We assume that we want to
+Here’s how the call to luksipc looks like. We assume that we want to
 change the underlying hash function to SHA256:
 
    # luksipc --device /dev/sdh2 --readdev /dev/mapper/oldluks --luksparams='-h,sha256'
@@ -440,11 +457,11 @@ change the underlying hash function to SHA256:
 
 After the process has finished, the old LUKS device
 /dev/mapper/oldluks will still be open. Be very careful not to do
-anything with that device, however! It's safe to close it:
+anything with that device, however! It’s safe to close it:
 
    # cryptsetup luksClose oldluks
 
-Then, let's open the device with the new key:
+Then, let’s open the device with the new key:
 
    # cryptsetup luksOpen /dev/sdh2 newluks -d /root/initial_keyfile.bin
 
@@ -454,7 +471,6 @@ And check that the conversion worked:
    48d9763be76ddb4fb990367f8d6b8c22  /dev/mapper/newluks
 
 Which it did :-)
-
 Conversion problems
 *******************
 
@@ -468,22 +484,22 @@ Problems during plain to LUKS conversion
 ========================================
 
 You may find yourself here because a luksipc process has crashed mid-
-conversion (accidental Ctrl-C or reboot) and you're panicing. Breathe.
+conversion (accidental Ctrl-C or reboot) and you’re panicing. Breathe.
 luksipc is designed so that it is robust against these issues.
 
 Basically, to be able to resume a luksipc process you need to have two
 things:
 
-1. The data of the last overwritten block (there's always one
-   "shadow" block that needs to be kept in memory, because usually the
+1. The data of the last overwritten block (there’s always one
+   “shadow” block that needs to be kept in memory, because usually the
    destination partition is smaller than the source partition because
    of the LUKS header)
 
 2. The exact location of where the interruption occured.
 
 luksipc stores exactly this (incredibly critical) information in a
-"resume file" should the resume process be interrupted. It is usually
-called "resume.bin". For example, say I interrupt the LUKS conversion
+“resume file” should the resume process be interrupted. It is usually
+called “resume.bin”. For example, say I interrupt the LUKS conversion
 of a disk, this will be shown:
 
    # luksipc -d /dev/sdf1
@@ -494,7 +510,7 @@ of a disk, this will be shown:
    [I]: Synchronizing disk...
    [I]: Synchronizing of disk finished.
 
-If you go into more detail (log level increase) here's what you'll
+If you go into more detail (log level increase) here’s what you’ll
 see:
 
    # luksipc -d /dev/sdf1 -l4
@@ -514,7 +530,7 @@ see:
 You can see the exact location of the interruption: The read pointer
 was at offset 136314880 (130 MiB), the write pointer was at offset
 115343360 (110 MiB) and there are currently 10 MiB of data in the
-shadow buffer. Everything was saved to a resume file. Here's an
+shadow buffer. Everything was saved to a resume file. Here’s an
 illustration of what it looks like. Every block is 10 MiB in size:
 
       100    110    120    130    140
@@ -532,7 +548,7 @@ and BUF2. This is why the read pointer is ahead two block sizes of the
 write pointer. Now in the next step (if no interruption had occured)
 the BUF1 buffer would be written to the LUKS device offset 110 MiB.
 This would overwrite some of the plain data in BUF2, too (because the
-LUKS header means that there's an offset between read- and write
+LUKS header means that there’s an offset between read- and write
 disk!). Therefore both have to be kept in memory.
 
 But since the system was interrupted, it is fully sufficient to only
@@ -550,12 +566,12 @@ process:
 
 Now we see that the process was resumed with the write pointer at the
 110 MiB mark and the read pointer at the 120 MiB mark. The next step
-would now be for luksipc to read in BUF2 and we're exatly in the
+would now be for luksipc to read in BUF2 and we’re exatly in the
 situation in which the abort occured. Then from there on everything
 works like usual.
 
 One thing you have to be very careful about is making copies of the
-resume file. You have to be **very** careful about this. Let's say you
+resume file. You have to be **very** careful about this. Let’s say you
 copied the resume file to some other location and accidently applied
 it twice. For example, you run luksipc a first time and abort it. The
 resume file is written, you copy it to resume2.bin. You resume the
@@ -563,7 +579,7 @@ process (luksipc run 2) and let it finish. Then you resume the process
 again with resume2.bin. What will happen is that all data that was
 written in the resume run is encrypted **twice** and will be
 unintelligible.  This can obviously be recovered, but it will require
-very careful twiddling and lots of work. Just don't do it.
+very careful twiddling and lots of work. Just don’t do it.
 
 To prevent this sort of thing, luksipc truncates the resume file when
 resuming only after everything else has worked (and I/O operation
@@ -577,34 +593,34 @@ Problems during LUKS to LUKS conversion
 When a reLUKSification process aborts unexpectedly (but gracefully), a
 resume file is written just as it would have been during
 LUKSification. So resuming just like above is easily possible.  But
-suppose the case is a tad bit more complicated: Let's say that someone
+suppose the case is a tad bit more complicated: Let’s say that someone
 accidently issued a reboot command during reLUKSification. The reboot
 command causes a SIGTERM to be issued to the luksipc process.  luksipc
 catches the signal, writes the resume.bin file and shuts down
 gracefully. Then the system reboots.
 
 For reLUKSification to work you need to have access to the plain
-(unlocked) source container. Here's the big "but": In order to unlock
+(unlocked) source container. Here’s the big “but”: In order to unlock
 the original container, you need to use cryptsetup luksOpen. But the
 LUKS header has been overwritten by the destination (final) LUKS
-header already. Therefore you can't unlock the source data anymore.
+header already. Therefore you can’t unlock the source data anymore.
 
-At least you couldn't if this situation wouldn't have been anticipated
+At least you couldn’t if this situation wouldn’t have been anticipated
 by luksipc. Lucky for you, it has been. When first firing up luksipc,
 a backup of the raw device header (typically 128 MiB in size) is done
-by luksipc in a file usually called "header_backup.img". You can use
+by luksipc in a file usually called “header_backup.img”. You can use
 this header together with the raw parition to open the partition using
 the old key. When you have opened the device with the old key, we can
 just resume the process as we normally would.
 
 First, this is the reLUKSificiation process that aborts. We assume our
-container is unlocked at /dev/mapper/oldluks. Let's check the MD5 of
+container is unlocked at /dev/mapper/oldluks. Let’s check the MD5 of
 the container first (to verify everything ran smoothly):
 
    # md5sum /dev/mapper/oldluks
    41dc86251cba7992719bbc85de5628ab  /dev/mapper/oldluks
 
-Alright, let's start the luksipc process (which will be interrupted):
+Alright, let’s start the luksipc process (which will be interrupted):
 
    # luksipc -d /dev/loop0 --readdev /dev/mapper/oldluks
    [...]
@@ -613,13 +629,13 @@ Alright, let's start the luksipc process (which will be interrupted):
    [I]: Gracefully shutting down.
    [...]
 
-Now let's say we've closed /dev/mapper/oldluks (e.g. by a system
+Now let’s say we’ve closed /dev/mapper/oldluks (e.g. by a system
 reboot). We need to find a way to reopen it with the old header and
 old key in order to successfully resume the proces. For this, we do:
 
    # cryptsetup luksOpen --header=header_backup.img /dev/loop0 oldluks
 
-And then, finally, we're able to resume luksipc:
+And then, finally, we’re able to resume luksipc:
 
    # luksipc -d /dev/loop0 --readdev /dev/mapper/oldluks --resume resume.bin
    [...]
@@ -627,7 +643,7 @@ And then, finally, we're able to resume luksipc:
    [I]:  0:00:  30.3%       310 MiB / 1022 MiB     0.0 MiB/s   Left:     712 MiB  0:00 h:m
    [I]:  0:00:  40.1%       410 MiB / 1022 MiB   147.9 MiB/s   Left:     612 MiB  0:00 h:m
 
-Now after the process is run, let's do some cleanups:
+Now after the process is run, let’s do some cleanups:
 
    # dmsetup remove oldluks
    # dmsetup remove hybrid
@@ -645,17 +661,16 @@ But did it really work? We can check:
 Yes, it sure did :-)
 
 Be aware that this is an absolute emergency recovery proedure that
-you'd only use if everything else fails (i.e. the original source LUKS
+you’d only use if everything else fails (i.e. the original source LUKS
 device was accidently closed).  Any mistake whatsoever (e.g. wrong
 offsets) will cause you to completely pulp your disk. So be very very
 careful with this and double check everything.
-
 Testing
 *******
 
-It's always a good idea to perform some tests before you give some
+It’s always a good idea to perform some tests before you give some
 unknown tool by some unknown author a shot to handle your precious
-data. Here's a hint how you could do this. I've setup some garbage
+data. Here’s a hint how you could do this. I’ve setup some garbage
 partition on a drive which is exactly 1234 MiB in size (1293942784
 bytes). That partition is filled completely with zeros:
 
@@ -665,7 +680,7 @@ bytes). That partition is filled completely with zeros:
    1234+0 records out
    1293942784 bytes (1,3 GB) copied, 30,6571 s, 42,2 MB/s
 
-Let's check that the pattern matches:
+Let’s check that the pattern matches:
 
    # md5sum /dev/sda1
    e83b40511b7b154b1816ef4c03d6be7d  /dev/sda1
@@ -678,7 +693,7 @@ Let's check that the pattern matches:
 
 Alright, so the partition is **really** filled with 1234 MiB of zeros.
 
-Let's LUKSify it:
+Let’s LUKSify it:
 
    # luksipc -d /dev/sda1
    WARNING! luksipc will perform the following actions:
@@ -741,8 +756,8 @@ to be expected! The reason for this is that the device is now shorter
    1291845632 bytes (1,3 GB) copied, 2,6588 s, 486 MB/s
    e2226de7d184a3c9bd4c1e3d8a56b1b2  -
 
-Now let's check the current key and reLUKSify it with a different key
-and algorithm! First, let's check out the "before" values:
+Now let’s check the current key and reLUKSify it with a different key
+and algorithm! First, let’s check out the “before” values:
 
    # dmsetup table myluksdev --showkeys
    0 2523136 crypt aes-xts-plain64 d164b3fd2b7d482fc6e0a2d0e58f51c5dafe4560507322cb29af4bd8f552ba4f 0 8:1 4096
@@ -823,7 +838,7 @@ Then reLUKSify:
    [I]: Synchronizing disk...
    [I]: Synchronizing of disk finished.
 
-Now, let's detach the mapping of the old LUKS container first (this
+Now, let’s detach the mapping of the old LUKS container first (this
 container now contains complete garbage):
 
    # cryptsetup luksClose myluksdev
@@ -873,7 +888,7 @@ And the used key internally:
    0 2523136 crypt twofish-lrw-benbi d6b007ce62de58b62331f800edf5864da390eb274b908506b368035e7a0f8ea1c3583c2b939928c3 0 8:1 4096
 
 As you can see, completely different keys, completely different
-algorithm -- but still identical data. It worked :-)
+algorithm – but still identical data. It worked :-)
 
 Of course you can do this test with arbitrary data (not just constant
 zeros). I was just too lazy to write a PRNG that outputs easily

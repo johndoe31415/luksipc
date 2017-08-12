@@ -1,0 +1,8 @@
+#!/bin/bash
+#
+#
+
+make html
+make text
+
+cat build/text/introduction.txt build/text/usage.txt build/text/problems.txt build/text/testing.txt >../README
