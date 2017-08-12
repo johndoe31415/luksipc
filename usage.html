@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -24,38 +26,52 @@
 
   
   
-    <link rel="stylesheet" href="static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   
 
   
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="luksipc 0.04 documentation" href="index.html"/>
         <link rel="next" title="Conversion problems" href="problems.html"/>
         <link rel="prev" title="Introduction" href="introduction.html"/> 
 
   
-  <script src="static/js/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-        
-          <a href="index.html" class="icon icon-home"> luksipc
-        
+          
+            <a href="index.html" class="icon icon-home"> luksipc
+          
 
-        
-        </a>
+          
+          </a>
 
-        
+          
+            
+            
+              <div class="version">
+                0.04
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -64,70 +80,90 @@
   </form>
 </div>
 
-        
-      </div>
+          
+        </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-          
+            
+            
+              
+            
+            
               <p class="caption"><span class="caption-text">luksipc Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#authors">Authors</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#disclaimer">Disclaimer</a></li>
-<li class="toctree-l2"><a class="reference internal" href="introduction.html#compiling">Compiling</a></li>
-</ul>
-</li>
-<li class="toctree-l1 current"><a class="current reference internal" href="">Usage</a><ul>
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#checklist">Checklist</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#preparation">Preparation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#plain-to-luks-conversion">Plain to LUKS conversion</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#luks-to-luks-conversion">LUKS to LUKS conversion</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="problems.html">Conversion problems</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="problems.html#problems-during-plain-to-luks-conversion">Problems during plain to LUKS conversion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="problems.html#problems-during-luks-to-luks-conversion">Problems during LUKS to LUKS conversion</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="problems.html">Conversion problems</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">luksipc</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">luksipc</a>
+        
       </nav>
 
 
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Usage</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Usage</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="sources/usage.txt" rel="nofollow"> View page source</a>
+            
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="usage">
 <h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
@@ -161,35 +197,35 @@ conversion has been performed).</p>
 <p class="last">Do not forget to shrink the file system before conversion</p>
 </div>
 <p>luksipc has no means of detecting wheter or not you have performed this step
-and will not warn you if you haven&#8217;t (it has no knowledge of the underlying
+and will not warn you if you haven’t (it has no knowledge of the underlying
 file system). This might lead to very weird file system errors in the case that
 your volume ever wants to use the whole space and it might even render your
 volume completely unmountable (depending on the check the file system driver
 performs on the block device before allowing mounting).</p>
-<p>For example, let&#8217;s say you have a device at /dev/loop0 that has an ext4 file
+<p>For example, let’s say you have a device at /dev/loop0 that has an ext4 file
 system. You want to LUKSify it. We first resize our volume. For this we find
 out how large the volume is currently:</p>
-<div class="highlight-python"><div class="highlight"><pre># tune2fs -l /dev/loop0
-tune2fs 1.42.9 (4-Feb-2014)
-Filesystem volume name:   &lt;none&gt;
-Last mounted on:          &lt;not available&gt;
-Filesystem UUID:          713cc62e-b2a2-406a-a82a-c4c1d01464e1
-Filesystem magic number:  0xEF53
-Filesystem revision #:    1 (dynamic)
-Filesystem features:      has_journal ext_attr resize_inode dir_index filetype extent flex_bg sparse_super large_file huge_file uninit_bg dir_nlink extra_isize
-Filesystem flags:         signed_directory_hash
-Default mount options:    user_xattr acl
-Filesystem state:         clean
-Errors behavior:          Continue
-Filesystem OS type:       Linux
-Inode count:              64000
-Block count:              256000
-Reserved block count:     12800
-Free blocks:              247562
-Free inodes:              63989
-First block:              0
-Block size:               4096
-[...]
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># tune2fs -l /dev/loop0</span>
+<span class="n">tune2fs</span> <span class="mf">1.42</span><span class="o">.</span><span class="mi">9</span> <span class="p">(</span><span class="mi">4</span><span class="o">-</span><span class="n">Feb</span><span class="o">-</span><span class="mi">2014</span><span class="p">)</span>
+<span class="n">Filesystem</span> <span class="n">volume</span> <span class="n">name</span><span class="p">:</span>   <span class="o">&lt;</span><span class="n">none</span><span class="o">&gt;</span>
+<span class="n">Last</span> <span class="n">mounted</span> <span class="n">on</span><span class="p">:</span>          <span class="o">&lt;</span><span class="ow">not</span> <span class="n">available</span><span class="o">&gt;</span>
+<span class="n">Filesystem</span> <span class="n">UUID</span><span class="p">:</span>          <span class="mi">713</span><span class="n">cc62e</span><span class="o">-</span><span class="n">b2a2</span><span class="o">-</span><span class="mi">406</span><span class="n">a</span><span class="o">-</span><span class="n">a82a</span><span class="o">-</span><span class="n">c4c1d01464e1</span>
+<span class="n">Filesystem</span> <span class="n">magic</span> <span class="n">number</span><span class="p">:</span>  <span class="mh">0xEF53</span>
+<span class="n">Filesystem</span> <span class="n">revision</span> <span class="c1">#:    1 (dynamic)</span>
+<span class="n">Filesystem</span> <span class="n">features</span><span class="p">:</span>      <span class="n">has_journal</span> <span class="n">ext_attr</span> <span class="n">resize_inode</span> <span class="n">dir_index</span> <span class="n">filetype</span> <span class="n">extent</span> <span class="n">flex_bg</span> <span class="n">sparse_super</span> <span class="n">large_file</span> <span class="n">huge_file</span> <span class="n">uninit_bg</span> <span class="n">dir_nlink</span> <span class="n">extra_isize</span>
+<span class="n">Filesystem</span> <span class="n">flags</span><span class="p">:</span>         <span class="n">signed_directory_hash</span>
+<span class="n">Default</span> <span class="n">mount</span> <span class="n">options</span><span class="p">:</span>    <span class="n">user_xattr</span> <span class="n">acl</span>
+<span class="n">Filesystem</span> <span class="n">state</span><span class="p">:</span>         <span class="n">clean</span>
+<span class="n">Errors</span> <span class="n">behavior</span><span class="p">:</span>          <span class="n">Continue</span>
+<span class="n">Filesystem</span> <span class="n">OS</span> <span class="nb">type</span><span class="p">:</span>       <span class="n">Linux</span>
+<span class="n">Inode</span> <span class="n">count</span><span class="p">:</span>              <span class="mi">64000</span>
+<span class="n">Block</span> <span class="n">count</span><span class="p">:</span>              <span class="mi">256000</span>
+<span class="n">Reserved</span> <span class="n">block</span> <span class="n">count</span><span class="p">:</span>     <span class="mi">12800</span>
+<span class="n">Free</span> <span class="n">blocks</span><span class="p">:</span>              <span class="mi">247562</span>
+<span class="n">Free</span> <span class="n">inodes</span><span class="p">:</span>              <span class="mi">63989</span>
+<span class="n">First</span> <span class="n">block</span><span class="p">:</span>              <span class="mi">0</span>
+<span class="n">Block</span> <span class="n">size</span><span class="p">:</span>               <span class="mi">4096</span>
+<span class="p">[</span><span class="o">...</span><span class="p">]</span>
 </pre></div>
 </div>
 <p>So we now know that our device is 256000 blocks of 4096 bytes each, so exactly
@@ -198,13 +234,13 @@ decrease the file system size to 900 MiB. 900 MiB = 900 * 1024 * 1024 bytes =
 943718400 bytes. With a file system block size of 4096 bytes we arrive at
 943718400 / 4096 = 230400 blocks for the file system with decreased size. So we
 resize the file system:</p>
-<div class="highlight-python"><div class="highlight"><pre># resize2fs /dev/loop0 230400
-resize2fs 1.42.9 (4-Feb-2014)
-Resizing the filesystem on /dev/loop0 to 230400 (4k) blocks.
-The filesystem on /dev/loop0 is now 230400 blocks long.
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># resize2fs /dev/loop0 230400</span>
+<span class="n">resize2fs</span> <span class="mf">1.42</span><span class="o">.</span><span class="mi">9</span> <span class="p">(</span><span class="mi">4</span><span class="o">-</span><span class="n">Feb</span><span class="o">-</span><span class="mi">2014</span><span class="p">)</span>
+<span class="n">Resizing</span> <span class="n">the</span> <span class="n">filesystem</span> <span class="n">on</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span> <span class="n">to</span> <span class="mi">230400</span> <span class="p">(</span><span class="mi">4</span><span class="n">k</span><span class="p">)</span> <span class="n">blocks</span><span class="o">.</span>
+<span class="n">The</span> <span class="n">filesystem</span> <span class="n">on</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span> <span class="ow">is</span> <span class="n">now</span> <span class="mi">230400</span> <span class="n">blocks</span> <span class="n">long</span><span class="o">.</span>
 </pre></div>
 </div>
-<p>That was successful. Perfect. Now (if you haven&#8217;t already), umount the volume.</p>
+<p>That was successful. Perfect. Now (if you haven’t already), umount the volume.</p>
 <div class="admonition warning">
 <p class="first admonition-title">Warning</p>
 <p class="last">Do not forget to unmount the file system before conversion</p>
@@ -212,13 +248,13 @@ The filesystem on /dev/loop0 is now 230400 blocks long.
 </div>
 <div class="section" id="plain-to-luks-conversion">
 <h2>Plain to LUKS conversion<a class="headerlink" href="#plain-to-luks-conversion" title="Permalink to this headline">¶</a></h2>
-<p>After having done the preparation as described in the <a class="reference internal" href="#preparation"><span>Preparation</span></a>
+<p>After having done the preparation as described in the <a class="reference internal" href="#preparation"><span class="std std-ref">Preparation</span></a>
 subsection, we can proceed to LUKSify the device. By default the initial
 randomized key is read from /dev/urandom and written to
 /root/initial_keyfile.bin. This is okay for us, we will remove the appropriate
 keyslot for this random key anyways in the future.  It is only used for
 bootstrapping. We start the conversion:</p>
-<div class="highlight-python"><div class="highlight"><pre># ./luksipc -d /dev/loop0
+<div class="highlight-default"><div class="highlight"><pre><span></span># ./luksipc -d /dev/loop0
 WARNING! luksipc will perform the following actions:
    =&gt; Normal LUKSification of plain device /dev/loop0
    -&gt; luksFormat will be performed on /dev/loop0
@@ -239,128 +275,128 @@ Are all these conditions satisfied, then answer uppercase yes:
 </pre></div>
 </div>
 <p>Please, read the whole message thourougly. There is no going back from this. If
-and only if you&#8217;re 100% sure that all preconditions are satisfied, answer
-&#8220;YES&#8221; and press return:</p>
-<div class="highlight-python"><div class="highlight"><pre>Are all these conditions satisfied, then answer uppercase yes: YES
-[I]: Created raw device alias: /dev/loop0 -&gt; /dev/mapper/alias_luksipc_raw_89ee2dc8
-[I]: Size of reading device /dev/loop0 is 1073741824 bytes (1024 MiB + 0 bytes)
-[I]: Backing up physical disk /dev/loop0 header to backup file header_backup.img
-[I]: Performing luksFormat of /dev/loop0
-[I]: Performing luksOpen of /dev/loop0 (opening as mapper name luksipc_7a6bfc08)
-[I]: Size of luksOpened writing device is 1071644672 bytes (1022 MiB + 0 bytes)
-[I]: Write disk smaller than read disk by 2097152 bytes (2048 kB + 0 bytes, occupied by LUKS header)
-[I]: Starting copying of data, read offset 10485760, write offset 0
-[I]:  0:00:  10.8%       110 MiB / 1022 MiB     0.0 MiB/s   Left:     912 MiB  0:00 h:m
-[I]:  0:00:  20.5%       210 MiB / 1022 MiB     0.0 MiB/s   Left:     812 MiB  0:00 h:m
-[I]:  0:00:  30.3%       310 MiB / 1022 MiB     0.0 MiB/s   Left:     712 MiB  0:00 h:m
-[I]:  0:00:  40.1%       410 MiB / 1022 MiB     0.0 MiB/s   Left:     612 MiB  0:00 h:m
-[I]:  0:00:  49.9%       510 MiB / 1022 MiB   412.0 MiB/s   Left:     512 MiB  0:00 h:m
-[I]:  0:00:  59.7%       610 MiB / 1022 MiB   402.4 MiB/s   Left:     412 MiB  0:00 h:m
-[I]:  0:00:  69.5%       710 MiB / 1022 MiB   401.5 MiB/s   Left:     312 MiB  0:00 h:m
-[I]:  0:00:  79.3%       810 MiB / 1022 MiB   360.4 MiB/s   Left:     212 MiB  0:00 h:m
-[I]:  0:00:  89.0%       910 MiB / 1022 MiB   350.0 MiB/s   Left:     112 MiB  0:00 h:m
-[I]:  0:00:  98.8%      1010 MiB / 1022 MiB   344.8 MiB/s   Left:      12 MiB  0:00 h:m
-[I]: Disk copy completed successfully.
-[I]: Synchronizing disk...
-[I]: Synchronizing of disk finished.
+and only if you’re 100% sure that all preconditions are satisfied, answer
+“YES” and press return:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">Are</span> <span class="nb">all</span> <span class="n">these</span> <span class="n">conditions</span> <span class="n">satisfied</span><span class="p">,</span> <span class="n">then</span> <span class="n">answer</span> <span class="n">uppercase</span> <span class="n">yes</span><span class="p">:</span> <span class="n">YES</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Created</span> <span class="n">raw</span> <span class="n">device</span> <span class="n">alias</span><span class="p">:</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span> <span class="o">-&gt;</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">alias_luksipc_raw_89ee2dc8</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Size</span> <span class="n">of</span> <span class="n">reading</span> <span class="n">device</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span> <span class="ow">is</span> <span class="mi">1073741824</span> <span class="nb">bytes</span> <span class="p">(</span><span class="mi">1024</span> <span class="n">MiB</span> <span class="o">+</span> <span class="mi">0</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Backing</span> <span class="n">up</span> <span class="n">physical</span> <span class="n">disk</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span> <span class="n">header</span> <span class="n">to</span> <span class="n">backup</span> <span class="n">file</span> <span class="n">header_backup</span><span class="o">.</span><span class="n">img</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Performing</span> <span class="n">luksFormat</span> <span class="n">of</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Performing</span> <span class="n">luksOpen</span> <span class="n">of</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span> <span class="p">(</span><span class="n">opening</span> <span class="k">as</span> <span class="n">mapper</span> <span class="n">name</span> <span class="n">luksipc_7a6bfc08</span><span class="p">)</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Size</span> <span class="n">of</span> <span class="n">luksOpened</span> <span class="n">writing</span> <span class="n">device</span> <span class="ow">is</span> <span class="mi">1071644672</span> <span class="nb">bytes</span> <span class="p">(</span><span class="mi">1022</span> <span class="n">MiB</span> <span class="o">+</span> <span class="mi">0</span> <span class="nb">bytes</span><span class="p">)</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Write</span> <span class="n">disk</span> <span class="n">smaller</span> <span class="n">than</span> <span class="n">read</span> <span class="n">disk</span> <span class="n">by</span> <span class="mi">2097152</span> <span class="nb">bytes</span> <span class="p">(</span><span class="mi">2048</span> <span class="n">kB</span> <span class="o">+</span> <span class="mi">0</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">occupied</span> <span class="n">by</span> <span class="n">LUKS</span> <span class="n">header</span><span class="p">)</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Starting</span> <span class="n">copying</span> <span class="n">of</span> <span class="n">data</span><span class="p">,</span> <span class="n">read</span> <span class="n">offset</span> <span class="mi">10485760</span><span class="p">,</span> <span class="n">write</span> <span class="n">offset</span> <span class="mi">0</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">10.8</span><span class="o">%</span>       <span class="mi">110</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>     <span class="mf">0.0</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">912</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">20.5</span><span class="o">%</span>       <span class="mi">210</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>     <span class="mf">0.0</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">812</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">30.3</span><span class="o">%</span>       <span class="mi">310</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>     <span class="mf">0.0</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">712</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">40.1</span><span class="o">%</span>       <span class="mi">410</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>     <span class="mf">0.0</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">612</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">49.9</span><span class="o">%</span>       <span class="mi">510</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>   <span class="mf">412.0</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">512</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">59.7</span><span class="o">%</span>       <span class="mi">610</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>   <span class="mf">402.4</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">412</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">69.5</span><span class="o">%</span>       <span class="mi">710</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>   <span class="mf">401.5</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">312</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">79.3</span><span class="o">%</span>       <span class="mi">810</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>   <span class="mf">360.4</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">212</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">89.0</span><span class="o">%</span>       <span class="mi">910</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>   <span class="mf">350.0</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">112</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">98.8</span><span class="o">%</span>      <span class="mi">1010</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>   <span class="mf">344.8</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>      <span class="mi">12</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Disk</span> <span class="n">copy</span> <span class="n">completed</span> <span class="n">successfully</span><span class="o">.</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Synchronizing</span> <span class="n">disk</span><span class="o">...</span>
+<span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Synchronizing</span> <span class="n">of</span> <span class="n">disk</span> <span class="n">finished</span><span class="o">.</span>
 </pre></div>
 </div>
-<p>The volume was successfully converted! Now let&#8217;s first add a passphrase that we
+<p>The volume was successfully converted! Now let’s first add a passphrase that we
 want to use for the volume (or any other method of key, your choice). You can
 actually even do this while the copying process is running:</p>
-<div class="highlight-python"><div class="highlight"><pre># cryptsetup luksAddKey /dev/loop0 --key-file=/root/initial_keyfile.bin
-Enter new passphrase for key slot:
-Verify passphrase:
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksAddKey /dev/loop0 --key-file=/root/initial_keyfile.bin</span>
+<span class="n">Enter</span> <span class="n">new</span> <span class="n">passphrase</span> <span class="k">for</span> <span class="n">key</span> <span class="n">slot</span><span class="p">:</span>
+<span class="n">Verify</span> <span class="n">passphrase</span><span class="p">:</span>
 </pre></div>
 </div>
-<p>Let&#8217;s check this worked:</p>
-<div class="highlight-python"><div class="highlight"><pre># cryptsetup luksDump /dev/loop0
-LUKS header information for /dev/loop0
+<p>Let’s check this worked:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksDump /dev/loop0</span>
+<span class="n">LUKS</span> <span class="n">header</span> <span class="n">information</span> <span class="k">for</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span>
 
-Version:        1
-Cipher name:    aes
-Cipher mode:    xts-plain64
-Hash spec:      sha1
-Payload offset: 4096
-MK bits:        256
-MK digest:      b2 34 b8 7b 70 e8 78 17 a4 12 00 41 dc a4 bc 70 a3 50 02 22
-MK salt:        ee 25 b4 f0 11 94 25 d1 2b 97 42 6c a6 ff 3d 1d
-                e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9
-MK iterations:  50125
-UUID:           3e21bbe0-3d70-4189-8f19-04fb7d7c5bb9
+<span class="n">Version</span><span class="p">:</span>        <span class="mi">1</span>
+<span class="n">Cipher</span> <span class="n">name</span><span class="p">:</span>    <span class="n">aes</span>
+<span class="n">Cipher</span> <span class="n">mode</span><span class="p">:</span>    <span class="n">xts</span><span class="o">-</span><span class="n">plain64</span>
+<span class="n">Hash</span> <span class="n">spec</span><span class="p">:</span>      <span class="n">sha1</span>
+<span class="n">Payload</span> <span class="n">offset</span><span class="p">:</span> <span class="mi">4096</span>
+<span class="n">MK</span> <span class="n">bits</span><span class="p">:</span>        <span class="mi">256</span>
+<span class="n">MK</span> <span class="n">digest</span><span class="p">:</span>      <span class="n">b2</span> <span class="mi">34</span> <span class="n">b8</span> <span class="mi">7</span><span class="n">b</span> <span class="mi">70</span> <span class="n">e8</span> <span class="mi">78</span> <span class="mi">17</span> <span class="n">a4</span> <span class="mi">12</span> <span class="mi">00</span> <span class="mi">41</span> <span class="n">dc</span> <span class="n">a4</span> <span class="n">bc</span> <span class="mi">70</span> <span class="n">a3</span> <span class="mi">50</span> <span class="mi">02</span> <span class="mi">22</span>
+<span class="n">MK</span> <span class="n">salt</span><span class="p">:</span>        <span class="n">ee</span> <span class="mi">25</span> <span class="n">b4</span> <span class="n">f0</span> <span class="mi">11</span> <span class="mi">94</span> <span class="mi">25</span> <span class="n">d1</span> <span class="mi">2</span><span class="n">b</span> <span class="mi">97</span> <span class="mi">42</span> <span class="mi">6</span><span class="n">c</span> <span class="n">a6</span> <span class="n">ff</span> <span class="mi">3</span><span class="n">d</span> <span class="mi">1</span><span class="n">d</span>
+                <span class="n">e7</span> <span class="mi">6</span><span class="n">d</span> <span class="mi">1</span><span class="n">e</span> <span class="mi">15</span> <span class="n">dd</span> <span class="n">a0</span> <span class="mi">07</span> <span class="mi">17</span> <span class="mi">25</span> <span class="mi">82</span> <span class="n">d1</span> <span class="n">f9</span> <span class="mi">14</span> <span class="mi">6</span><span class="n">c</span> <span class="n">ab</span> <span class="n">e9</span>
+<span class="n">MK</span> <span class="n">iterations</span><span class="p">:</span>  <span class="mi">50125</span>
+<span class="n">UUID</span><span class="p">:</span>           <span class="mf">3e21</span><span class="n">bbe0</span><span class="o">-</span><span class="mi">3</span><span class="n">d70</span><span class="o">-</span><span class="mi">4189</span><span class="o">-</span><span class="mi">8</span><span class="n">f19</span><span class="o">-</span><span class="mi">04</span><span class="n">fb7d7c5bb9</span>
 
-Key Slot 0: ENABLED
-    Iterations:             201892
-    Salt:                   9d b6 a1 f5 0f 91 ee 24 be 49 0e f7 f9 62 a2 06
-                            aa 45 79 7f 1a 56 5c 8c a3 03 15 a0 d2 9e ca e5
-    Key material offset:    8
-    AF stripes:             4000
-Key Slot 1: ENABLED
-    Iterations:             198756
-    Salt:                   46 b4 21 fb e3 12 54 18 ff 8d 05 24 75 fc 3c 4b
-                            3c 90 77 47 43 b6 0b 28 d9 b6 86 44 30 9e 20 d2
-    Key material offset:    264
-    AF stripes:             4000
-Key Slot 2: DISABLED
-Key Slot 3: DISABLED
-Key Slot 4: DISABLED
-Key Slot 5: DISABLED
-Key Slot 6: DISABLED
-Key Slot 7: DISABLED
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">0</span><span class="p">:</span> <span class="n">ENABLED</span>
+    <span class="n">Iterations</span><span class="p">:</span>             <span class="mi">201892</span>
+    <span class="n">Salt</span><span class="p">:</span>                   <span class="mi">9</span><span class="n">d</span> <span class="n">b6</span> <span class="n">a1</span> <span class="n">f5</span> <span class="mi">0</span><span class="n">f</span> <span class="mi">91</span> <span class="n">ee</span> <span class="mi">24</span> <span class="n">be</span> <span class="mi">49</span> <span class="mi">0</span><span class="n">e</span> <span class="n">f7</span> <span class="n">f9</span> <span class="mi">62</span> <span class="n">a2</span> <span class="mi">06</span>
+                            <span class="n">aa</span> <span class="mi">45</span> <span class="mi">79</span> <span class="mi">7</span><span class="n">f</span> <span class="mi">1</span><span class="n">a</span> <span class="mi">56</span> <span class="mi">5</span><span class="n">c</span> <span class="mi">8</span><span class="n">c</span> <span class="n">a3</span> <span class="mi">03</span> <span class="mi">15</span> <span class="n">a0</span> <span class="n">d2</span> <span class="mi">9</span><span class="n">e</span> <span class="n">ca</span> <span class="n">e5</span>
+    <span class="n">Key</span> <span class="n">material</span> <span class="n">offset</span><span class="p">:</span>    <span class="mi">8</span>
+    <span class="n">AF</span> <span class="n">stripes</span><span class="p">:</span>             <span class="mi">4000</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ENABLED</span>
+    <span class="n">Iterations</span><span class="p">:</span>             <span class="mi">198756</span>
+    <span class="n">Salt</span><span class="p">:</span>                   <span class="mi">46</span> <span class="n">b4</span> <span class="mi">21</span> <span class="n">fb</span> <span class="n">e3</span> <span class="mi">12</span> <span class="mi">54</span> <span class="mi">18</span> <span class="n">ff</span> <span class="mi">8</span><span class="n">d</span> <span class="mi">05</span> <span class="mi">24</span> <span class="mi">75</span> <span class="n">fc</span> <span class="mi">3</span><span class="n">c</span> <span class="mi">4</span><span class="n">b</span>
+                            <span class="mi">3</span><span class="n">c</span> <span class="mi">90</span> <span class="mi">77</span> <span class="mi">47</span> <span class="mi">43</span> <span class="n">b6</span> <span class="mi">0</span><span class="n">b</span> <span class="mi">28</span> <span class="n">d9</span> <span class="n">b6</span> <span class="mi">86</span> <span class="mi">44</span> <span class="mi">30</span> <span class="mi">9</span><span class="n">e</span> <span class="mi">20</span> <span class="n">d2</span>
+    <span class="n">Key</span> <span class="n">material</span> <span class="n">offset</span><span class="p">:</span>    <span class="mi">264</span>
+    <span class="n">AF</span> <span class="n">stripes</span><span class="p">:</span>             <span class="mi">4000</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">2</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">3</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">4</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">5</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">6</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">7</span><span class="p">:</span> <span class="n">DISABLED</span>
 </pre></div>
 </div>
 <p>You can see the initial keyfile (slot 0) and the passphrase we just added (slot
-1). Let&#8217;s scrub the initial keyslot so the initial keyfile becomes useless. We
-do this by scrubbing slot 0. Don&#8217;t worry, you cannot choose the wrong slot
-here; cryptsetup won&#8217;t permit you to remove the wrong slot since you must prove
+1). Let’s scrub the initial keyslot so the initial keyfile becomes useless. We
+do this by scrubbing slot 0. Don’t worry, you cannot choose the wrong slot
+here; cryptsetup won’t permit you to remove the wrong slot since you must prove
 that you still have at least access to one remaining slot (by entering your
 passphrase):</p>
-<div class="highlight-python"><div class="highlight"><pre># cryptsetup luksKillSlot /dev/loop0 0
-Enter any remaining passphrase:
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksKillSlot /dev/loop0 0</span>
+<span class="n">Enter</span> <span class="nb">any</span> <span class="n">remaining</span> <span class="n">passphrase</span><span class="p">:</span>
 </pre></div>
 </div>
 <p>And check again:</p>
-<div class="highlight-python"><div class="highlight"><pre># cryptsetup luksDump /dev/loop0
-LUKS header information for /dev/loop0
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksDump /dev/loop0</span>
+<span class="n">LUKS</span> <span class="n">header</span> <span class="n">information</span> <span class="k">for</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span>
 
-Version:        1
-Cipher name:    aes
-Cipher mode:    xts-plain64
-Hash spec:      sha1
-Payload offset: 4096
-MK bits:        256
-MK digest:      b2 34 b8 7b 70 e8 78 17 a4 12 00 41 dc a4 bc 70 a3 50 02 22
-MK salt:        ee 25 b4 f0 11 94 25 d1 2b 97 42 6c a6 ff 3d 1d
-                e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9
-MK iterations:  50125
-UUID:           3e21bbe0-3d70-4189-8f19-04fb7d7c5bb9
+<span class="n">Version</span><span class="p">:</span>        <span class="mi">1</span>
+<span class="n">Cipher</span> <span class="n">name</span><span class="p">:</span>    <span class="n">aes</span>
+<span class="n">Cipher</span> <span class="n">mode</span><span class="p">:</span>    <span class="n">xts</span><span class="o">-</span><span class="n">plain64</span>
+<span class="n">Hash</span> <span class="n">spec</span><span class="p">:</span>      <span class="n">sha1</span>
+<span class="n">Payload</span> <span class="n">offset</span><span class="p">:</span> <span class="mi">4096</span>
+<span class="n">MK</span> <span class="n">bits</span><span class="p">:</span>        <span class="mi">256</span>
+<span class="n">MK</span> <span class="n">digest</span><span class="p">:</span>      <span class="n">b2</span> <span class="mi">34</span> <span class="n">b8</span> <span class="mi">7</span><span class="n">b</span> <span class="mi">70</span> <span class="n">e8</span> <span class="mi">78</span> <span class="mi">17</span> <span class="n">a4</span> <span class="mi">12</span> <span class="mi">00</span> <span class="mi">41</span> <span class="n">dc</span> <span class="n">a4</span> <span class="n">bc</span> <span class="mi">70</span> <span class="n">a3</span> <span class="mi">50</span> <span class="mi">02</span> <span class="mi">22</span>
+<span class="n">MK</span> <span class="n">salt</span><span class="p">:</span>        <span class="n">ee</span> <span class="mi">25</span> <span class="n">b4</span> <span class="n">f0</span> <span class="mi">11</span> <span class="mi">94</span> <span class="mi">25</span> <span class="n">d1</span> <span class="mi">2</span><span class="n">b</span> <span class="mi">97</span> <span class="mi">42</span> <span class="mi">6</span><span class="n">c</span> <span class="n">a6</span> <span class="n">ff</span> <span class="mi">3</span><span class="n">d</span> <span class="mi">1</span><span class="n">d</span>
+                <span class="n">e7</span> <span class="mi">6</span><span class="n">d</span> <span class="mi">1</span><span class="n">e</span> <span class="mi">15</span> <span class="n">dd</span> <span class="n">a0</span> <span class="mi">07</span> <span class="mi">17</span> <span class="mi">25</span> <span class="mi">82</span> <span class="n">d1</span> <span class="n">f9</span> <span class="mi">14</span> <span class="mi">6</span><span class="n">c</span> <span class="n">ab</span> <span class="n">e9</span>
+<span class="n">MK</span> <span class="n">iterations</span><span class="p">:</span>  <span class="mi">50125</span>
+<span class="n">UUID</span><span class="p">:</span>           <span class="mf">3e21</span><span class="n">bbe0</span><span class="o">-</span><span class="mi">3</span><span class="n">d70</span><span class="o">-</span><span class="mi">4189</span><span class="o">-</span><span class="mi">8</span><span class="n">f19</span><span class="o">-</span><span class="mi">04</span><span class="n">fb7d7c5bb9</span>
 
-Key Slot 0: DISABLED
-Key Slot 1: ENABLED
-    Iterations:             198756
-    Salt:                   46 b4 21 fb e3 12 54 18 ff 8d 05 24 75 fc 3c 4b
-                            3c 90 77 47 43 b6 0b 28 d9 b6 86 44 30 9e 20 d2
-    Key material offset:    264
-    AF stripes:             4000
-Key Slot 2: DISABLED
-Key Slot 3: DISABLED
-Key Slot 4: DISABLED
-Key Slot 5: DISABLED
-Key Slot 6: DISABLED
-Key Slot 7: DISABLED
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">0</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">1</span><span class="p">:</span> <span class="n">ENABLED</span>
+    <span class="n">Iterations</span><span class="p">:</span>             <span class="mi">198756</span>
+    <span class="n">Salt</span><span class="p">:</span>                   <span class="mi">46</span> <span class="n">b4</span> <span class="mi">21</span> <span class="n">fb</span> <span class="n">e3</span> <span class="mi">12</span> <span class="mi">54</span> <span class="mi">18</span> <span class="n">ff</span> <span class="mi">8</span><span class="n">d</span> <span class="mi">05</span> <span class="mi">24</span> <span class="mi">75</span> <span class="n">fc</span> <span class="mi">3</span><span class="n">c</span> <span class="mi">4</span><span class="n">b</span>
+                            <span class="mi">3</span><span class="n">c</span> <span class="mi">90</span> <span class="mi">77</span> <span class="mi">47</span> <span class="mi">43</span> <span class="n">b6</span> <span class="mi">0</span><span class="n">b</span> <span class="mi">28</span> <span class="n">d9</span> <span class="n">b6</span> <span class="mi">86</span> <span class="mi">44</span> <span class="mi">30</span> <span class="mi">9</span><span class="n">e</span> <span class="mi">20</span> <span class="n">d2</span>
+    <span class="n">Key</span> <span class="n">material</span> <span class="n">offset</span><span class="p">:</span>    <span class="mi">264</span>
+    <span class="n">AF</span> <span class="n">stripes</span><span class="p">:</span>             <span class="mi">4000</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">2</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">3</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">4</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">5</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">6</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">7</span><span class="p">:</span> <span class="n">DISABLED</span>
 </pre></div>
 </div>
 <p>Perfect, only our slot 1 (passphrase) is left now, you can safely discard the
 initial_keyfile.bin now.</p>
 <p>Last step, resize the filesystem to its original size. For this we must first
 mount the cryptographic file system and then call the resize2fs utility again:</p>
-<div class="highlight-python"><div class="highlight"><pre># cryptsetup luksOpen /dev/loop0 newcryptofs
-Enter passphrase for /dev/loop0:
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/loop0 newcryptofs</span>
+<span class="n">Enter</span> <span class="n">passphrase</span> <span class="k">for</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">loop0</span><span class="p">:</span>
 
-# resize2fs /dev/mapper/newcryptofs
-resize2fs 1.42.9 (4-Feb-2014)
-Resizing the filesystem on /dev/mapper/newcryptofs to 255488 (4k) blocks.
-The filesystem on /dev/mapper/newcryptofs is now 255488 blocks long.
+<span class="c1"># resize2fs /dev/mapper/newcryptofs</span>
+<span class="n">resize2fs</span> <span class="mf">1.42</span><span class="o">.</span><span class="mi">9</span> <span class="p">(</span><span class="mi">4</span><span class="o">-</span><span class="n">Feb</span><span class="o">-</span><span class="mi">2014</span><span class="p">)</span>
+<span class="n">Resizing</span> <span class="n">the</span> <span class="n">filesystem</span> <span class="n">on</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">newcryptofs</span> <span class="n">to</span> <span class="mi">255488</span> <span class="p">(</span><span class="mi">4</span><span class="n">k</span><span class="p">)</span> <span class="n">blocks</span><span class="o">.</span>
+<span class="n">The</span> <span class="n">filesystem</span> <span class="n">on</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">newcryptofs</span> <span class="ow">is</span> <span class="n">now</span> <span class="mi">255488</span> <span class="n">blocks</span> <span class="n">long</span><span class="o">.</span>
 </pre></div>
 </div>
 <p>You can see that the filesystem now occupies all available space (998 MiB).</p>
@@ -368,13 +404,13 @@ The filesystem on /dev/mapper/newcryptofs is now 255488 blocks long.
 <div class="section" id="luks-to-luks-conversion">
 <h2>LUKS to LUKS conversion<a class="headerlink" href="#luks-to-luks-conversion" title="Permalink to this headline">¶</a></h2>
 <p>There are situations in which you might want to re-encrypt your LUKS device.
-For example, let&#8217;s say you have a cryptographic volume and multiple users have
+For example, let’s say you have a cryptographic volume and multiple users have
 access to it, each with their own keyslot. Now suppose you forfeit the rights
 of one person to the volume. Technically you would do this by killing the
 appropriate key slot of the key that was assigned to the user. This means the
 user can from then on not unlock the volume using the LUKS keyheader.</p>
-<p>But suppose the user you want whose access you want to revoke had &#8211; while
-still in possession of a valid key &#8211; access to the file system container
+<p>But suppose the user you want whose access you want to revoke had – while
+still in possession of a valid key – access to the file system container
 itself. Then with that LUKS header he can still (even when the slot was killed)
 derive the underlying cryptographic key that secures the data. The only way to
 remedy this is to reencrypt the whole volume with a different bulk-encryption
@@ -387,48 +423,48 @@ Or maybe the alignment that was adequate a couple of years back is not adquate
 anymore for you. For example, older cryptsetup instances used 1028 kiB headers,
 which is an odd size. Or maybe LUKS gained new features that you want to use.</p>
 <p>In any case, there are numerous cases why you want to turn a LUKS volume into
-another LUKS volume. This process is called &#8220;reLUKSification&#8221; within luksipc
+another LUKS volume. This process is called “reLUKSification” within luksipc
 and it is something that is supported from 0.03 onwards.</p>
-<p>Let&#8217;s say you have a partition called /dev/sdh2 which you want to reLUKSify.
-First let&#8217;s see what the used encryption parameters are:</p>
-<div class="highlight-python"><div class="highlight"><pre># cryptsetup luksDump /dev/sdh2
-LUKS header information for /dev/sdh2
+<p>Let’s say you have a partition called /dev/sdh2 which you want to reLUKSify.
+First let’s see what the used encryption parameters are:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksDump /dev/sdh2</span>
+<span class="n">LUKS</span> <span class="n">header</span> <span class="n">information</span> <span class="k">for</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sdh2</span>
 
-Version:        1
-Cipher name:    aes
-Cipher mode:    xts-plain64
-Hash spec:      sha1
-Payload offset: 4096
-MK bits:        256
-MK digest:      b1 44 6a 73 e3 06 27 27 a2 fe c2 59 e5 3a 39 2e 15 d7 d7 e0
-MK salt:        09 6d 6a 24 66 28 43 f7 f3 55 a9 9d 0a 40 77 58
-                e0 1f 7c 30 b9 63 96 eb 99 34 52 4f 72 ba 57 ac
-MK iterations:  49750
-UUID:           6495d24d-34ac-41f5-a594-c5058cc31ed3
+<span class="n">Version</span><span class="p">:</span>        <span class="mi">1</span>
+<span class="n">Cipher</span> <span class="n">name</span><span class="p">:</span>    <span class="n">aes</span>
+<span class="n">Cipher</span> <span class="n">mode</span><span class="p">:</span>    <span class="n">xts</span><span class="o">-</span><span class="n">plain64</span>
+<span class="n">Hash</span> <span class="n">spec</span><span class="p">:</span>      <span class="n">sha1</span>
+<span class="n">Payload</span> <span class="n">offset</span><span class="p">:</span> <span class="mi">4096</span>
+<span class="n">MK</span> <span class="n">bits</span><span class="p">:</span>        <span class="mi">256</span>
+<span class="n">MK</span> <span class="n">digest</span><span class="p">:</span>      <span class="n">b1</span> <span class="mi">44</span> <span class="mi">6</span><span class="n">a</span> <span class="mi">73</span> <span class="n">e3</span> <span class="mi">06</span> <span class="mi">27</span> <span class="mi">27</span> <span class="n">a2</span> <span class="n">fe</span> <span class="n">c2</span> <span class="mi">59</span> <span class="n">e5</span> <span class="mi">3</span><span class="n">a</span> <span class="mi">39</span> <span class="mi">2</span><span class="n">e</span> <span class="mi">15</span> <span class="n">d7</span> <span class="n">d7</span> <span class="n">e0</span>
+<span class="n">MK</span> <span class="n">salt</span><span class="p">:</span>        <span class="mi">09</span> <span class="mi">6</span><span class="n">d</span> <span class="mi">6</span><span class="n">a</span> <span class="mi">24</span> <span class="mi">66</span> <span class="mi">28</span> <span class="mi">43</span> <span class="n">f7</span> <span class="n">f3</span> <span class="mi">55</span> <span class="n">a9</span> <span class="mi">9</span><span class="n">d</span> <span class="mi">0</span><span class="n">a</span> <span class="mi">40</span> <span class="mi">77</span> <span class="mi">58</span>
+                <span class="n">e0</span> <span class="mi">1</span><span class="n">f</span> <span class="mi">7</span><span class="n">c</span> <span class="mi">30</span> <span class="n">b9</span> <span class="mi">63</span> <span class="mi">96</span> <span class="n">eb</span> <span class="mi">99</span> <span class="mi">34</span> <span class="mi">52</span> <span class="mi">4</span><span class="n">f</span> <span class="mi">72</span> <span class="n">ba</span> <span class="mi">57</span> <span class="n">ac</span>
+<span class="n">MK</span> <span class="n">iterations</span><span class="p">:</span>  <span class="mi">49750</span>
+<span class="n">UUID</span><span class="p">:</span>           <span class="mi">6495</span><span class="n">d24d</span><span class="o">-</span><span class="mi">34</span><span class="n">ac</span><span class="o">-</span><span class="mi">41</span><span class="n">f5</span><span class="o">-</span><span class="n">a594</span><span class="o">-</span><span class="n">c5058cc31ed3</span>
 
-Key Slot 0: ENABLED
-    Iterations:             206119
-    Salt:                   99 c8 48 50 c3 a6 83 0d f9 39 a4 4d 0a 35 b0 ab
-                            13 83 ee fd 9f 91 8d 92 a6 cf 42 50 9b 89 a6 be
-    Key material offset:    8
-    AF stripes:             4000
-Key Slot 1: DISABLED
-Key Slot 2: DISABLED
-Key Slot 3: DISABLED
-Key Slot 4: DISABLED
-Key Slot 5: DISABLED
-Key Slot 6: DISABLED
-Key Slot 7: DISABLED
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">0</span><span class="p">:</span> <span class="n">ENABLED</span>
+    <span class="n">Iterations</span><span class="p">:</span>             <span class="mi">206119</span>
+    <span class="n">Salt</span><span class="p">:</span>                   <span class="mi">99</span> <span class="n">c8</span> <span class="mi">48</span> <span class="mi">50</span> <span class="n">c3</span> <span class="n">a6</span> <span class="mi">83</span> <span class="mi">0</span><span class="n">d</span> <span class="n">f9</span> <span class="mi">39</span> <span class="n">a4</span> <span class="mi">4</span><span class="n">d</span> <span class="mi">0</span><span class="n">a</span> <span class="mi">35</span> <span class="n">b0</span> <span class="n">ab</span>
+                            <span class="mi">13</span> <span class="mi">83</span> <span class="n">ee</span> <span class="n">fd</span> <span class="mi">9</span><span class="n">f</span> <span class="mi">91</span> <span class="mi">8</span><span class="n">d</span> <span class="mi">92</span> <span class="n">a6</span> <span class="n">cf</span> <span class="mi">42</span> <span class="mi">50</span> <span class="mi">9</span><span class="n">b</span> <span class="mi">89</span> <span class="n">a6</span> <span class="n">be</span>
+    <span class="n">Key</span> <span class="n">material</span> <span class="n">offset</span><span class="p">:</span>    <span class="mi">8</span>
+    <span class="n">AF</span> <span class="n">stripes</span><span class="p">:</span>             <span class="mi">4000</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">1</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">2</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">3</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">4</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">5</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">6</span><span class="p">:</span> <span class="n">DISABLED</span>
+<span class="n">Key</span> <span class="n">Slot</span> <span class="mi">7</span><span class="p">:</span> <span class="n">DISABLED</span>
 </pre></div>
 </div>
-<p>We&#8217;ll now open the device with our old key (a passphrase):</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># cryptsetup luksOpen /dev/sdh2 oldluks</span>
+<p>We’ll now open the device with our old key (a passphrase):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/sdh2 oldluks</span>
 </pre></div>
 </div>
 <p>Just for demonstration purposes, we can calculate the MD5SUM over the whole
-block device (you won&#8217;t need to do that, it&#8217;s just a demo):</p>
-<div class="highlight-python"><div class="highlight"><pre># md5sum /dev/mapper/oldluks
-48d9763be76ddb4fb990367f8d6b8c22  /dev/mapper/oldluks
+block device (you won’t need to do that, it’s just a demo):</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/mapper/oldluks</span>
+<span class="mi">48</span><span class="n">d9763be76ddb4fb990367f8d6b8c22</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">oldluks</span>
 </pre></div>
 </div>
 <p>For reLUKSification to work, you need to supply the path to the unlocked device
@@ -440,16 +476,16 @@ larger than the old header as now, which will lead to truncation of data at the
 very end of the partition. This will be the case, for example, if you reLUKSify
 volumes that have a 1028 kiB LUKS header and recreate with a recent version
 which writes 2048 kiB LUKS headers. You need to take all measures to decrease
-the size of the contained file system, as shown in <a class="reference internal" href="#preparation"><span>Preparation</span></a>.  These
+the size of the contained file system, as shown in <a class="reference internal" href="#preparation"><span class="std std-ref">Preparation</span></a>.  These
 steps will not be repeated here, but you <strong>must</strong> perform them nevertheless if
 you want to avoid losing data.</p>
 <p>After the disk is unlocked, you call luksipc. In addition to the raw device
 which you want to convert you will also now have to specify the block device
 name of the unlocked device. The raw device is the one that luksFormat and
 luksOpen will be called on and the read device is the device from which data
-will be read during the copy procedure. Here&#8217;s how the call to luksipc looks
+will be read during the copy procedure. Here’s how the call to luksipc looks
 like. We assume that we want to change the underlying hash function to SHA256:</p>
-<div class="highlight-python"><div class="highlight"><pre># luksipc --device /dev/sdh2 --readdev /dev/mapper/oldluks --luksparams=&#39;-h,sha256&#39;
+<div class="highlight-default"><div class="highlight"><pre><span></span># luksipc --device /dev/sdh2 --readdev /dev/mapper/oldluks --luksparams=&#39;-h,sha256&#39;
 WARNING! luksipc will perform the following actions:
    =&gt; reLUKSification of LUKS device /dev/sdh2
    -&gt; Which has been unlocked at /dev/mapper/oldluks
@@ -491,17 +527,17 @@ Are all these conditions satisfied, then answer uppercase yes: YES
 </div>
 <p>After the process has finished, the old LUKS device /dev/mapper/oldluks will
 still be open. Be very careful not to do anything with that device, however!
-It&#8217;s safe to close it:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># cryptsetup luksClose oldluks</span>
+It’s safe to close it:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksClose oldluks</span>
 </pre></div>
 </div>
-<p>Then, let&#8217;s open the device with the new key:</p>
-<div class="highlight-python"><div class="highlight"><pre><span class="c"># cryptsetup luksOpen /dev/sdh2 newluks -d /root/initial_keyfile.bin</span>
+<p>Then, let’s open the device with the new key:</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/sdh2 newluks -d /root/initial_keyfile.bin</span>
 </pre></div>
 </div>
 <p>And check that the conversion worked:</p>
-<div class="highlight-python"><div class="highlight"><pre># md5sum /dev/mapper/newluks
-48d9763be76ddb4fb990367f8d6b8c22  /dev/mapper/newluks
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/mapper/newluks</span>
+<span class="mi">48</span><span class="n">d9763be76ddb4fb990367f8d6b8c22</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">newluks</span>
 </pre></div>
 </div>
 <p>Which it did :-)</p>
@@ -509,15 +545,19 @@ It&#8217;s safe to close it:</p>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="problems.html" class="btn btn-neutral float-right" title="Conversion problems" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="problems.html" class="btn btn-neutral float-right" title="Conversion problems" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="introduction.html" class="btn btn-neutral" title="Introduction" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="introduction.html" class="btn btn-neutral" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -526,10 +566,11 @@ It&#8217;s safe to close it:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Johannes Bauer.
+        &copy; Copyright 2011-2017, Johannes Bauer.
+
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -550,18 +591,19 @@ It&#8217;s safe to close it:</p>
             VERSION:'0.04',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-      <script type="text/javascript" src="static/jquery.js"></script>
-      <script type="text/javascript" src="static/underscore.js"></script>
-      <script type="text/javascript" src="static/doctools.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
 
   
 
   
   
-    <script type="text/javascript" src="static/js/theme.js"></script>
+    <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
   

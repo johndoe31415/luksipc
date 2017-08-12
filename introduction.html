@@ -13,6 +13,8 @@
 
   
   
+  
+  
 
   
 
@@ -24,38 +26,52 @@
 
   
   
-    <link rel="stylesheet" href="static/css/theme.css" type="text/css" />
+    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   
 
   
 
   
+        <link rel="index" title="Index"
+              href="genindex.html"/>
+        <link rel="search" title="Search" href="search.html"/>
     <link rel="top" title="luksipc 0.04 documentation" href="index.html"/>
         <link rel="next" title="Usage" href="usage.html"/>
         <link rel="prev" title="luksipc Documentation" href="index.html"/> 
 
   
-  <script src="static/js/modernizr.min.js"></script>
+  <script src="_static/js/modernizr.min.js"></script>
 
 </head>
 
 <body class="wy-body-for-nav" role="document">
 
+   
   <div class="wy-grid-for-nav">
 
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-nav-search">
-        
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
 
-        
-          <a href="index.html" class="icon icon-home"> luksipc
-        
+          
+            <a href="index.html" class="icon icon-home"> luksipc
+          
 
-        
-        </a>
+          
+          </a>
 
-        
+          
+            
+            
+              <div class="version">
+                0.04
+              </div>
+            
+          
+
+          
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" />
@@ -64,70 +80,90 @@
   </form>
 </div>
 
-        
-      </div>
+          
+        </div>
 
-      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
           
-          
+            
+            
+              
+            
+            
               <p class="caption"><span class="caption-text">luksipc Documentation</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="">Introduction</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Introduction</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#authors">Authors</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#disclaimer">Disclaimer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#compiling">Compiling</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#luksipc-vs-cryptsetup-reencrypt">luksipc vs. cryptsetup-reencrypt</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#checklist">Checklist</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#preparation">Preparation</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#plain-to-luks-conversion">Plain to LUKS conversion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="usage.html#luks-to-luks-conversion">LUKS to LUKS conversion</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="problems.html">Conversion problems</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="problems.html#problems-during-plain-to-luks-conversion">Problems during plain to LUKS conversion</a></li>
-<li class="toctree-l2"><a class="reference internal" href="problems.html#problems-during-luks-to-luks-conversion">Problems during LUKS to LUKS conversion</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="problems.html">Conversion problems</a></li>
 <li class="toctree-l1"><a class="reference internal" href="testing.html">Testing</a></li>
 </ul>
 
+            
           
-        
+        </div>
       </div>
-      &nbsp;
     </nav>
 
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
       <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
-        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-        <a href="index.html">luksipc</a>
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">luksipc</a>
+        
       </nav>
 
 
       
       <div class="wy-nav-content">
         <div class="rst-content">
-          <div role="navigation" aria-label="breadcrumbs navigation">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
   <ul class="wy-breadcrumbs">
-    <li><a href="index.html">Docs</a> &raquo;</li>
-      
-    <li>Introduction</li>
+    
+      <li><a href="index.html">Docs</a> &raquo;</li>
+        
+      <li>Introduction</li>
+    
+    
       <li class="wy-breadcrumbs-aside">
         
-          
-            <a href="sources/introduction.txt" rel="nofollow"> View page source</a>
+            
+            <a href="_sources/introduction.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
+    
   </ul>
+
+  
   <hr/>
 </div>
-          <div role="main" class="document">
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
             
   <div class="section" id="introduction">
 <h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
@@ -136,8 +172,8 @@
 <p>luksipc was written by Johannes Bauer &lt;<a class="reference external" href="mailto:JohannesBauer&#37;&#52;&#48;gmx&#46;de">JohannesBauer<span>&#64;</span>gmx<span>&#46;</span>de</a>&gt;. Please report all
 bugs directly to his email address or file a issue at GitHub (URL is below). If
 you do not wish to be named in the ChangeLog or this README file, please tell
-me and I&#8217;ll omit your name. Inversely, if I forgot to include you in this list
-and you would like to appear, please drop me a note and I&#8217;ll fix it.</p>
+me and I’ll omit your name. Inversely, if I forgot to include you in this list
+and you would like to appear, please drop me a note and I’ll fix it.</p>
 <p>There are several contributors to the project:</p>
 <blockquote>
 <div><ul class="simple">
@@ -155,36 +191,51 @@ and you would like to appear, please drop me a note and I&#8217;ll fix it.</p>
 <dd><a class="reference external" href="http://johannes-bauer.com/linux/luksipc/">http://johannes-bauer.com/linux/luksipc/</a></dd>
 </dl>
 <p>Please send issues and pull requests to GitHub if you would like to contribute.
-I do have a horrible latency sometimes but I&#8217;ll try to do my best, promise.</p>
+I do have a horrible latency sometimes but I’ll try to do my best, promise.</p>
 </div>
 <div class="section" id="disclaimer">
 <h2>Disclaimer<a class="headerlink" href="#disclaimer" title="Permalink to this headline">¶</a></h2>
 <p>If you use luksipc and it bricks your disk and destroys all your data then
-that&#8217;s your fault, not mine. luksips comes without any warranty (neither
+that’s your fault, not mine. luksips comes without any warranty (neither
 expressed nor implied). Please have a backup for really, really important data.</p>
 </div>
 <div class="section" id="compiling">
 <h2>Compiling<a class="headerlink" href="#compiling" title="Permalink to this headline">¶</a></h2>
 <p>luksipc has no external dependencies, it should compile just fine if you have a
 recent Linux distribution with GNU make and gcc installed. Just type:</p>
-<div class="highlight-python"><div class="highlight"><pre>$ make
+<div class="highlight-default"><div class="highlight"><pre><span></span>$ make
 </pre></div>
 </div>
-<p>That&#8217;s it. At runtime, it needs access to the cryptsetup and dmsetup tools in
+<p>That’s it. At runtime, it needs access to the cryptsetup and dmsetup tools in
 the PATH.</p>
 </div>
+<div class="section" id="luksipc-vs-cryptsetup-reencrypt">
+<h2>luksipc vs. cryptsetup-reencrypt<a class="headerlink" href="#luksipc-vs-cryptsetup-reencrypt" title="Permalink to this headline">¶</a></h2>
+<p>luksipc has nothing to do with cryptsetup-reencrypt. It was simply created
+because at the time that luksipc was written, cryptsetup-reencrypt hadn’t been
+written just yet. On modern systems, cryptsetup-reencrypt is already shipped
+with the LUKS tools and it’s also the supported tool by LUKS upstream.
+Therefore, to be frank, it seems like the better choice to use nowadays. I’ve
+never used cryptsetup-reencrypt myself so far, but will probably try it out on
+the next best occasion (then I can also update this README with a more
+insightful comment instead of just clueless jibber jabber).</p>
+</div>
 </div>
 
 
+           </div>
+           <div class="articleComments">
+            
+           </div>
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="usage.html" class="btn btn-neutral float-right" title="Usage" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="luksipc Documentation" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="luksipc Documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -193,10 +244,11 @@ the PATH.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2015, Johannes Bauer.
+        &copy; Copyright 2011-2017, Johannes Bauer.
+
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -217,18 +269,19 @@ the PATH.</p>
             VERSION:'0.04',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
         };
     </script>
-      <script type="text/javascript" src="static/jquery.js"></script>
-      <script type="text/javascript" src="static/underscore.js"></script>
-      <script type="text/javascript" src="static/doctools.js"></script>
+      <script type="text/javascript" src="_static/jquery.js"></script>
+      <script type="text/javascript" src="_static/underscore.js"></script>
+      <script type="text/javascript" src="_static/doctools.js"></script>
 
   
 
   
   
-    <script type="text/javascript" src="static/js/theme.js"></script>
+    <script type="text/javascript" src="_static/js/theme.js"></script>
   
 
   
