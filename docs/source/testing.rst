@@ -16,7 +16,7 @@ Let's check that the pattern matches::
 
     # md5sum /dev/sda1
     e83b40511b7b154b1816ef4c03d6be7d  /dev/sda1
-
+    
     # dd if=/dev/zero bs=1M count=1234 | md5sum
     1234+0 records in
     1234+0 records out
@@ -31,19 +31,19 @@ Let's LUKSify it::
     WARNING! luksipc will perform the following actions:
        => Normal LUKSification of plain device /dev/sda1
        -> luksFormat will be performed on /dev/sda1
-
+    
     Please confirm you have completed the checklist:
         [1] You have resized the contained filesystem(s) appropriately
         [2] You have unmounted any contained filesystem(s)
         [3] You will ensure secure storage of the keyfile that will be generated at /root/initial_keyfile.bin
         [4] Power conditions are satisfied (i.e. your laptop is not running off battery)
         [5] You have a backup of all important data on /dev/sda1
-
+    
         /dev/sda1: 1234 MiB = 1.2 GiB
         Chunk size: 10485760 bytes = 10.0 MiB
         Keyfile: /root/initial_keyfile.bin
         LUKS format parameters: None given
-
+    
     Are all these conditions satisfied, then answer uppercase yes: YES
     [I]: Generated raw device alias: /dev/sda1 -> /dev/mapper/alias_luksipc_raw_944e8f9034a6344f
     [I]: Size of reading device /dev/sda1 is 1293942784 bytes (1234 MiB + 0 bytes)
@@ -93,10 +93,10 @@ algorithm! First, let's check out the "before" values::
 
     # dmsetup table myluksdev --showkeys
     0 2523136 crypt aes-xts-plain64 d164b3fd2b7d482fc6e0a2d0e58f51c5dafe4560507322cb29af4bd8f552ba4f 0 8:1 4096
-
+    
     # cryptsetup luksDump /dev/sda1
     LUKS header information for /dev/sda1
-
+    
     Version:        1
     Cipher name:    aes
     Cipher mode:    xts-plain64
@@ -108,7 +108,7 @@ algorithm! First, let's check out the "before" values::
                     5a f5 39 5a c4 f5 3b 7a 09 8c f1 75 33 a5 f3 25
     MK iterations:  50375
     UUID:           127277bf-b07b-4209-bf55-37cb1c10c83b
-
+    
     Key Slot 0: ENABLED
         Iterations:             201892
         Salt:                   fc d9 3a 73 b4 73 ee 98 6c 35 34 a0 c7 7d 8a 71
@@ -126,25 +126,25 @@ algorithm! First, let's check out the "before" values::
 Then reLUKSify::
 
     # my /root/initial_keyfile.bin /root/initial_keyfile_old.bin
-
+    
     # luksipc -d /dev/sda1 --readdev /dev/mapper/myluksdev --luksparams='-c,twofish-lrw-benbi,-s,320,-h,sha256'
     WARNING! luksipc will perform the following actions:
        => reLUKSification of LUKS device /dev/sda1
        -> Which has been unlocked at /dev/mapper/myluksdev
        -> luksFormat will be performed on /dev/sda1
-
+    
     Please confirm you have completed the checklist:
         [1] You have resized the contained filesystem(s) appropriately
         [2] You have unmounted any contained filesystem(s)
         [3] You will ensure secure storage of the keyfile that will be generated at /root/initial_keyfile.bin
         [4] Power conditions are satisfied (i.e. your laptop is not running off battery)
         [5] You have a backup of all important data on /dev/sda1
-
+    
         /dev/sda1: 1234 MiB = 1.2 GiB
         Chunk size: 10485760 bytes = 10.0 MiB
         Keyfile: /root/initial_keyfile.bin
         LUKS format parameters: -c,twofish-lrw-benbi,-s,320,-h,sha256
-
+    
     Are all these conditions satisfied, then answer uppercase yes: YES
     [I]: Generated raw device alias: /dev/sda1 -> /dev/mapper/alias_luksipc_raw_c84651981fc98f36
     [I]: Size of reading device /dev/mapper/myluksdev is 1291845632 bytes (1232 MiB + 0 bytes)
@@ -187,7 +187,7 @@ Check that the content is still the same::
 It sure is. Now look at the luksDump output::
 
     LUKS header information for /dev/sda1
-
+    
     Version:        1
     Cipher name:    twofish
     Cipher mode:    lrw-benbi
@@ -199,7 +199,7 @@ It sure is. Now look at the luksDump output::
                     93 7c 9c 59 20 67 d7 a7 7e 7d fe a0 12 9f 0f 25
     MK iterations:  29000
     UUID:           1dd5e426-9e37-4d1e-a6f9-17aa4179eb1e
-
+    
     Key Slot 0: ENABLED
         Iterations:             117215
         Salt:                   9d 58 5c 30 2b dc 35 33 19 bf 78 ab 3e aa 6e 8a
@@ -226,5 +226,3 @@ Of course you can do this test with arbitrary data (not just constant zeros). I
 was just too lazy to write a PRNG that outputs easily reproducible results.
 Feel free to play around with it and please report any and all bugs if you find
 some.
-
-

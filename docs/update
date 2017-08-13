@@ -3,24 +3,21 @@ import re
 import subprocess
 
 subprocess.check_call([ "make", "html" ])
-subprocess.check_call([ "make", "text" ])
-
-txt_sources = [
-	"introduction.txt",
-	"usage.txt",
-	"problems.txt",
-	"testing.txt",
+rst_sources = [
+	"introduction",
+	"usage",
+	"problems",
+	"testing",
 ]
 
 readme = [ ]
-for source in txt_sources:
-	source = "build/text/" + source
+for source in rst_sources:
+	source = "source/" + source + ".rst"
 	with open(source) as f:
 		readme.append(f.read())
 readme = "\n".join(readme)
-#print(readme)
 
-h12_regex = re.compile("^(?P<title>.*)\n(?P<htype>[*=]+)$", flags = re.MULTILINE)
+h12_regex = re.compile("^(?P<title>.*)\n(?P<htype>[*=-]+)$", flags = re.MULTILINE)
 def replace_h12(match):
 	args = match.groupdict()
 	if args["htype"][0] == "*":
@@ -28,6 +25,19 @@ def replace_h12(match):
 	else:
 		return "## %s" % (args["title"])
 readme = h12_regex.sub(replace_h12, readme)
+
+
+code_regex = re.compile("(\n    [^\n]*)+", flags = re.MULTILINE)
+def replace_code(match):
+	text = match.group(0)
+	lines = text.split("\n")[1:]
+	lines = [ line[4:] for line in lines ]
+	return "\n```\n" + "\n".join(lines) + "\n```\n"
+readme = code_regex.sub(replace_code, readme)
+
+readme = re.sub(r"::\s*\n", ":\n", readme)
+readme = re.sub(r"\n\.\. warning:\n", "\n*WARNING*\n", readme)
+readme = re.sub(r"\n\.\. .+:\n", "", readme)
 
 with open("../README.md", "w") as f:
 	f.write(readme)

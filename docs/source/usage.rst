@@ -30,7 +30,7 @@ too much you have no drawbacks (and you can easily increase after the
 conversion has been performed).
 
 .. warning:: 
-    Do not forget to shrink the file system before conversion
+  Do not forget to shrink the file system before conversion
 
 luksipc has no means of detecting wheter or not you have performed this step
 and will not warn you if you haven't (it has no knowledge of the underlying
@@ -80,7 +80,7 @@ resize the file system::
 That was successful. Perfect. Now (if you haven't already), umount the volume.
 
 .. warning:: 
-    Do not forget to unmount the file system before conversion
+  Do not forget to unmount the file system before conversion
 
 
 Plain to LUKS conversion
@@ -96,19 +96,19 @@ bootstrapping. We start the conversion::
     WARNING! luksipc will perform the following actions:
        => Normal LUKSification of plain device /dev/loop0
        -> luksFormat will be performed on /dev/loop0
-
+    
     Please confirm you have completed the checklist:
         [1] You have resized the contained filesystem(s) appropriately
         [2] You have unmounted any contained filesystem(s)
         [3] You will ensure secure storage of the keyfile that will be generated at /root/initial_keyfile.bin
         [4] Power conditions are satisfied (i.e. your laptop is not running off battery)
         [5] You have a backup of all important data on /dev/loop0
-
+    
         /dev/loop0: 1024 MiB = 1.0 GiB
         Chunk size: 10485760 bytes = 10.0 MiB
         Keyfile: /root/initial_keyfile.bin
         LUKS format parameters: None given
-
+    
     Are all these conditions satisfied, then answer uppercase yes:
 
 Please, read the whole message thourougly. There is no going back from this. If
@@ -150,7 +150,7 @@ Let's check this worked::
 
     # cryptsetup luksDump /dev/loop0
     LUKS header information for /dev/loop0
-
+    
     Version:        1
     Cipher name:    aes
     Cipher mode:    xts-plain64
@@ -162,7 +162,7 @@ Let's check this worked::
                     e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9
     MK iterations:  50125
     UUID:           3e21bbe0-3d70-4189-8f19-04fb7d7c5bb9
-
+    
     Key Slot 0: ENABLED
         Iterations:             201892
         Salt:                   9d b6 a1 f5 0f 91 ee 24 be 49 0e f7 f9 62 a2 06
@@ -196,7 +196,7 @@ And check again::
 
     # cryptsetup luksDump /dev/loop0
     LUKS header information for /dev/loop0
-
+    
     Version:        1
     Cipher name:    aes
     Cipher mode:    xts-plain64
@@ -208,7 +208,7 @@ And check again::
                     e7 6d 1e 15 dd a0 07 17 25 82 d1 f9 14 6c ab e9
     MK iterations:  50125
     UUID:           3e21bbe0-3d70-4189-8f19-04fb7d7c5bb9
-
+    
     Key Slot 0: DISABLED
     Key Slot 1: ENABLED
         Iterations:             198756
@@ -231,7 +231,7 @@ mount the cryptographic file system and then call the resize2fs utility again::
 
     # cryptsetup luksOpen /dev/loop0 newcryptofs
     Enter passphrase for /dev/loop0:
-
+    
     # resize2fs /dev/mapper/newcryptofs
     resize2fs 1.42.9 (4-Feb-2014)
     Resizing the filesystem on /dev/mapper/newcryptofs to 255488 (4k) blocks.
@@ -274,7 +274,7 @@ First let's see what the used encryption parameters are::
 
     # cryptsetup luksDump /dev/sdh2
     LUKS header information for /dev/sdh2
-
+    
     Version:        1
     Cipher name:    aes
     Cipher mode:    xts-plain64
@@ -286,7 +286,7 @@ First let's see what the used encryption parameters are::
                     e0 1f 7c 30 b9 63 96 eb 99 34 52 4f 72 ba 57 ac
     MK iterations:  49750
     UUID:           6495d24d-34ac-41f5-a594-c5058cc31ed3
-
+    
     Key Slot 0: ENABLED
         Iterations:             206119
         Salt:                   99 c8 48 50 c3 a6 83 0d f9 39 a4 4d 0a 35 b0 ab
@@ -337,19 +337,19 @@ like. We assume that we want to change the underlying hash function to SHA256::
        => reLUKSification of LUKS device /dev/sdh2
        -> Which has been unlocked at /dev/mapper/oldluks
        -> luksFormat will be performed on /dev/sdh2
-
+    
     Please confirm you have completed the checklist:
         [1] You have resized the contained filesystem(s) appropriately
         [2] You have unmounted any contained filesystem(s)
         [3] You will ensure secure storage of the keyfile that will be generated at /root/initial_keyfile.bin
         [4] Power conditions are satisfied (i.e. your laptop is not running off battery)
         [5] You have a backup of all important data on /dev/sdh2
-
+    
         /dev/sdh2: 2512 MiB = 2.5 GiB
         Chunk size: 10485760 bytes = 10.0 MiB
         Keyfile: /root/initial_keyfile.bin
         LUKS format parameters: -h,sha256
-
+    
     Are all these conditions satisfied, then answer uppercase yes: YES
     [I]: Created raw device alias: /dev/sdh2 -> /dev/mapper/alias_luksipc_raw_60377226
     [I]: Size of reading device /dev/mapper/oldluks is 2631925760 bytes (2510 MiB + 0 bytes)
