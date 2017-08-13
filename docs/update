@@ -1,8 +1,33 @@
-#!/bin/bash
-#
-#
+#!/usr/bin/python3
+import re
+import subprocess
 
-make html
-make text
+subprocess.check_call([ "make", "html" ])
+subprocess.check_call([ "make", "text" ])
 
-cat build/text/introduction.txt build/text/usage.txt build/text/problems.txt build/text/testing.txt >../README
+txt_sources = [
+	"introduction.txt",
+	"usage.txt",
+	"problems.txt",
+	"testing.txt",
+]
+
+readme = [ ]
+for source in txt_sources:
+	source = "build/text/" + source
+	with open(source) as f:
+		readme.append(f.read())
+readme = "\n".join(readme)
+#print(readme)
+
+h12_regex = re.compile("^(?P<title>.*)\n(?P<htype>[*=]+)$", flags = re.MULTILINE)
+def replace_h12(match):
+	args = match.groupdict()
+	if args["htype"][0] == "*":
+		return "# %s" % (args["title"])
+	else:
+		return "## %s" % (args["title"])
+readme = h12_regex.sub(replace_h12, readme)
+
+with open("../README.md", "w") as f:
+	f.write(readme)
