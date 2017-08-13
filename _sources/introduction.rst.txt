@@ -1,7 +1,6 @@
 Introduction
 ============
 
-
 Authors
 -------
 luksipc was written by Johannes Bauer <JohannesBauer@gmx.de>. Please report all
@@ -16,18 +15,14 @@ There are several contributors to the project:
   - Christian Pulvermacher (cryptsetup status issue)
   - John Morrissey (large header issue)
 
-The current version is maintained at GitHub at the moment:
-    https://github.com/johndoe31415/luksipc
+The current version is maintained at GitHub at the moment: https://github.com/johndoe31415/luksipc
 
-The project documentation can be found at:
-    https://johndoe31415.github.io/luksipc
+The project documentation can be found at: https://johndoe31415.github.io/luksipc
 
-The projects main page is hosted at:
-    http://johannes-bauer.com/linux/luksipc/
+The projects main page is hosted at: https://johannes-bauer.com/linux/luksipc/
 
 Please send issues and pull requests to GitHub if you would like to contribute.
 I do have a horrible latency sometimes but I'll try to do my best, promise.
-
 
 
 Disclaimer

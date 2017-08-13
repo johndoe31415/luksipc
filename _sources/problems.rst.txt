@@ -6,7 +6,6 @@ conversion will be discussed first and errors with LUKS to LUKS conversion
 (reLUKSificiation) in a different subsection.
 
 
-
 Problems during plain to LUKS conversion
 ----------------------------------------
 You may find yourself here because a luksipc process has crashed mid-conversion
@@ -181,4 +180,3 @@ use if everything else fails (i.e. the original source LUKS device was
 accidently closed).  Any mistake whatsoever (e.g. wrong offsets) will cause you
 to completely pulp your disk. So be very very careful with this and double
 check everything.
-
