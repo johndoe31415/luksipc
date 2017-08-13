@@ -17,7 +17,7 @@ The current version is maintained at GitHub at the moment: https://github.com/jo
 
 The project documentation can be found at: https://johndoe31415.github.io/luksipc
 
-The projects main page is hosted at: http://johannes-bauer.com/linux/luksipc/
+The projects main page is hosted at: https://johannes-bauer.com/linux/luksipc/
 
 Please send issues and pull requests to GitHub if you would like to contribute.
 I do have a horrible latency sometimes but I'll try to do my best, promise.
