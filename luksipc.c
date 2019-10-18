@@ -608,7 +608,7 @@ static void convert(struct conversionParameters const *parameters) {
 	 * smaller than reading device, but no significant size differences occur).
 	 * */
 	if (!plausibilizeReadWriteDeviceSizes(parameters, &convProcess)) {
-		logmsg(LLVL_ERROR, "Implausible values encountered in regards to disk sizes (R = %ul, W = %ul), aborting.\n", convProcess.readDevSize, convProcess.writeDevSize);
+		logmsg(LLVL_ERROR, "Implausible values encountered in regards to disk sizes (readDevSize = %u, writeDevSize = %u), aborting. We're trying to recover the header, but it is incomplete and you should restore from the backup file. DO NOT TRY TO MOUNT THE VOLUME AT THIS POINT IN TIME.\n", convProcess.readDevSize, convProcess.writeDevSize);
 		if (!parameters->resuming) {
 			/* Open failed, but we already formatted the disk. Try to unpulp
 			 * only if we already messed with the disk! We probably have
