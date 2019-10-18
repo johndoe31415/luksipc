@@ -37,7 +37,7 @@
 
 static void defaultParameters(struct conversionParameters *aParams) {
 	memset(aParams, 0, sizeof(struct conversionParameters));
-	aParams->blocksize = 10 * 1024 * 1024;
+	aParams->blocksize = 48 * 1024 * 1024;
 	aParams->safetyChecks = true;
 	aParams->batchMode = false;
 	aParams->keyFile = "/root/initial_keyfile.bin";
@@ -66,7 +66,7 @@ static void syntax(char **argv, const char *aMessage, enum terminationCode_t aEx
 	fprintf(stderr, "                             already LUKS (or another container) and you want to\n");
 	fprintf(stderr, "                             reLUKSify it.\n");
 	fprintf(stderr, "  -b, --blocksize=BYTES      Specify block size for copying in bytes. Default (and\n");
-	fprintf(stderr, "                             minimum) size is 10 MiB (10485760 bytes). This value is\n");
+	fprintf(stderr, "                             minimum) size is 48 MiB (50331648 bytes). This value is\n");
 	fprintf(stderr, "                             rounded up to closest 4096-byte value automatically. It must\n");
 	fprintf(stderr, "                             be at least size of LUKS header (usually 2048 kiB, but may\n");
 	fprintf(stderr, "                             vary).\n");
@@ -236,7 +236,7 @@ void parseParameters(struct conversionParameters *aParams, int argc, char **argv
 				}
 				break;
 			}
-			
+
 			case OPT_RESUME:
 				aParams->resuming = true;
 				break;
