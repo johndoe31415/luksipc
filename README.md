@@ -62,7 +62,7 @@ volume. Both will need the same preparation steps before performing them.
 If you skip over everything else, **please** at least make sure you do these
 steps before starting a conversion:
 
-  - Resized file system size, shrunk size by at least 10 MiB
+  - Resized file system size, shrunk size by at least 128 MiB
   - Unmounted file system
   - Laptop is connected to A/C power (if applicable)
 
@@ -71,11 +71,11 @@ steps before starting a conversion:
 ## Preparation
 The first thing you need to do is resize your file system to accomodate for the
 fact that the device is going to be a tiny bit smaller in the end (due to the
-LUKS header). The LUKS header size is usually 2048 kiB (it was 1028 kiB for
-previous versions of cryptsetup), but you can safely decrease the file system
-size by more (like 100 MiB) to be on the safe side.  If you decrease the size
-too much you have no drawbacks (and you can easily increase after the
-conversion has been performed).
+LUKS header). The LUKS header size is usually 16 MiB (it was 1028 kiB for
+previous versions of cryptsetup, then 2 MiB for a while), but you can safely
+decrease the file system size by more (like 128 MiB) to be on the safe side.
+If you decrease the size too much you have no drawbacks (and you can easily
+increase after the conversion has been performed).
 
 *WARNING*
   Do not forget to shrink the file system before conversion
