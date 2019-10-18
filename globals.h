@@ -24,8 +24,6 @@
 #ifndef __GLOBALS_H__
 #define __GLOBALS_H__
 
-#define LUKSIPC_VERSION					"0.04+"
-
 #define MAX_HANDLE_LENGTH				32
 
 #define MAX_ARG_CNT						32

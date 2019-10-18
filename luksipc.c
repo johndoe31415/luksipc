@@ -797,6 +797,7 @@ static void askUserConfirmation(struct conversionParameters const *parameters) {
 		fprintf(stderr, "    Chunk size: %u bytes = %.1f MiB\n", parameters->blocksize, (double)parameters->blocksize / 1024 / 1024);
 		fprintf(stderr, "    Keyfile: %s\n", parameters->keyFile);
 		fprintf(stderr, "    LUKS format parameters: %s\n", parameters->luksFormatParams ? parameters->luksFormatParams : "None given");
+		fprintf(stderr, "    luksipc version: " BUILD_REVISION "\n");
 #ifdef DEVELOPMENT
 		if (parameters->dev.ioErrors) {
 			fprintf(stderr, "    Simulating device I/O errors\n");

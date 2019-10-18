@@ -127,7 +127,7 @@ static void syntax(char **argv, const char *aMessage, enum terminationCode_t aEx
 	fprintf(stderr, "       encryption key. In this example the old container is unlocked and accessible\n");
 	fprintf(stderr, "       under /dev/mapper/oldluks.\n");
 	fprintf(stderr, "\n");
-	fprintf(stderr, "luksipc version: " LUKSIPC_VERSION "\n");
+	fprintf(stderr, "luksipc version: " BUILD_REVISION "\n");
 #ifdef DEVELOPMENT
 	fprintf(stderr, "\n");
 	fprintf(stderr, "WARNING: You're using a development build of luksipc. This is not recommended\n");
