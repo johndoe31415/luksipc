@@ -1,3 +1,13 @@
+Summary of changes of v0.0x (2019-10-xx)
+========================================
+	* Updated default values to handle the new default of 16 MiB headers
+	* Fixed an issue with uint64_t values in printf and used inttypes.h
+	definitions
+	* Fixed a minor display issue in the error message (%ul instead of %lu)
+	* Tests adapted for new circumstances (512 MiB backup files, 16 MiB
+	header size)
+	* Version number now based on git commit during build time
+
 Summary of changes of v0.04 (2015-05-28)
 ========================================
 	* Greatly improved handling of disk I/O errors (graceful shutdown in more
