@@ -1,3 +1,4 @@
 *.o
 luksipc
 docs/build
+.*.swp
