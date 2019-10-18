@@ -6,19 +6,19 @@ from CornercaseTests import LargeHeaderLUKSIPCTest
 from TestEngine import TestEngine
 
 test_classes = [
-#	SimpleLUKSIPCTest,
-#	AbortedLUKSIPCTest,
-#	IOErrorLUKSIPCTest,
-#	SimpleReLUKSIPCTest1,
-#	SimpleReLUKSIPCTest2,
-#	AbortedReLUKSIPCTest,
-#	IOErrorReLUKSIPCTest,
+	SimpleLUKSIPCTest,
+	AbortedLUKSIPCTest,
+	IOErrorLUKSIPCTest,
+	SimpleReLUKSIPCTest1,
+	SimpleReLUKSIPCTest2,
+	AbortedReLUKSIPCTest,
+	IOErrorReLUKSIPCTest,
 	LargeHeaderLUKSIPCTest,
 ]
 
 assumptions = {
-	"default_luks_hdr_size":	2048 * 1024,
-	"default_backup_hdr_size":	128 * 1024 * 1024,
+	"default_luks_hdr_size":	16 * 1024 * 1024,
+	"default_backup_hdr_size":	512 * 1024 * 1024,
 }
 
 #device = "/dev/sdh1"

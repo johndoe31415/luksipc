@@ -34,7 +34,7 @@ class LUKSIPCTest(object):
 		LUKSification and also hash the part that is going to be in the header
 		backup (128 MiB). Typically called to test LUKSification."""
 		if expected_sizediff is None:
-			expected_sizediff = -self["default_luks_hdr_size"]
+			expected_sizediff = self["default_luks_hdr_size"]
 
 		devsize_pre = self._engine.rawdevsize
 		devsize_post = devsize_pre + expected_sizediff
@@ -43,7 +43,7 @@ class LUKSIPCTest(object):
 		plain_data_hash = self._engine.patternize_rawdev(expected_sizediff, seed)
 		backup_header_hash = self._engine.hash_rawdev(total_size = self["default_backup_hdr_size"])
 		return self._PreTestParameters(seed = seed, plain_data_hash = plain_data_hash, backup_header_hash = backup_header_hash, source = "plain", expected_sizediff = expected_sizediff, devsize_pre = devsize_pre, devsize_post = devsize_post)
-	
+
 	def prepare_luksdevice(self, luksformat_params = None, expected_sizediff = 0):
 		"""Prepare a LUKS device and fill the plain part of the device with a
 		PRNG pattern.  Hash the whole plain data of the LUKS device container
@@ -61,7 +61,7 @@ class LUKSIPCTest(object):
 			plain_data_hash = self._engine.patternize_device(container.unlockedblkdev, seed = seed)
 		finally:
 			self._engine.luksClose(container)
-		
+
 		devsize_post = devsize_pre + expected_sizediff
 		backup_header_hash = self._engine.hash_rawdev(total_size = self["default_backup_hdr_size"])
 		return self._PreTestParameters(seed = seed, plain_data_hash = plain_data_hash, backup_header_hash = backup_header_hash, source = "luks", expected_sizediff = expected_sizediff, devsize_pre = devsize_pre, devsize_post = devsize_post)
@@ -119,7 +119,7 @@ class TestEngine(object):
 			print("Warning: no kill list found.")
 		if self._destroy_dev not in self._kill_list:
 			raise Exception("The device you want to work with for testing purposes is not on the kill list, refusing to work with that device. Please add it to the file 'kill_list.txt' if you're okay with the irrevocable destruction of all data on it.")
-	
+
 	def _log(self, msg):
 		msg = "%s: %s" % (datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), msg)
 		print(msg)
@@ -137,11 +137,11 @@ class TestEngine(object):
 	@property
 	def rawdevsize(self):
 		return self._rawdevsize
-	
+
 	@staticmethod
 	def _randstr(length):
 		return "".join(random.choice(string.ascii_lowercase) for i in range(length))
-	
+
 	@staticmethod
 	def _getsizeof(blkdev):
 		f = open(blkdev, "rb")
@@ -196,7 +196,7 @@ class TestEngine(object):
 			msg = "FAIL: %s is supposed to have hash %s, but had hash %s." % (blkdevname, expect_hash, calc_hash)
 			self._log(msg)
 			raise Exception(msg)
-	
+
 	def verify_file(self, filename, expect_hash):
 		self._log("Verification of hash of file %s" % (filename))
 		f = open(filename, "rb")
@@ -221,11 +221,11 @@ class TestEngine(object):
 	def scrub_device(self):
 		self._log("Scrubbing raw device")
 		self._execute_sync([ "dd", "if=/dev/zero", "of=" + self._destroy_dev, "bs=1M" ], success_codes = [ 1 ])
-	
+
 	def scrub_device_hdr(self):
 		self._log("Scrubbing raw device header")
-		self._execute_sync([ "dd", "if=/dev/zero", "of=" + self._destroy_dev, "bs=1M", "count=10" ])
-	
+		self._execute_sync([ "dd", "if=/dev/zero", "of=" + self._destroy_dev, "bs=1M", "count=32" ])
+
 	def patternize_device(self, device, exclude_bytes = 0, seed = 0):
 		pattern_size = self._getsizeof(device) - exclude_bytes
 		self._log("Patternizing %s with seed %d for %d bytes (%.1f MiB)" % (device, seed, pattern_size, pattern_size / 1024 / 1024))
@@ -250,7 +250,7 @@ class TestEngine(object):
 	def _execute_sync(self, cmd, **kwargs):
 		success_codes = kwargs.get("success_codes", [ 0 ])
 		cmd_str = " ".join(cmd)
-		logfile = self._get_log_file(cmd_str)		
+		logfile = self._get_log_file(cmd_str)
 		proc = subprocess.Popen(cmd, stdout = logfile, stderr = logfile)
 		if "abort" in kwargs:
 			time.sleep(kwargs["abort"])
@@ -281,10 +281,10 @@ class TestEngine(object):
 		cmd += [ "-l", "4", ]
 		cmd += [ "--i-know-what-im-doing" ]
 		cmd += [ "--keyfile", _DEFAULTS["key_file"] ]
-		cmd += [ "--backupfile", _DEFAULTS["hdrbackup_file"] ]	
-		cmd += [ "--resume-file", _DEFAULTS["resume_file"] ]	
+		cmd += [ "--backupfile", _DEFAULTS["hdrbackup_file"] ]
+		cmd += [ "--resume-file", _DEFAULTS["resume_file"] ]
 		if "resume" in kwargs:
-			cmd += [ "--resume" ]	
+			cmd += [ "--resume" ]
 		if "unlockedcontainer" in kwargs:
 			cmd += [ "--readdev", kwargs["unlockedcontainer"].unlockedblkdev ]
 		cmd += self._additional_params
@@ -302,7 +302,7 @@ class TestEngine(object):
 			return self._execute_sync(cmd, success_codes = success_codes)
 		else:
 			return self._execute_sync(cmd, abort = kwargs["abort"], success_codes = success_codes)
-	
+
 	def luksOpen(self):
 		dmname = self._randstr(8)
 		cmd = [ "cryptsetup", "luksOpen", self._destroy_dev, dmname, "-d", _DEFAULTS["key_file"] ]
@@ -311,7 +311,7 @@ class TestEngine(object):
 
 	def luksClose(self, openlukscontainer):
 		self._execute_sync([ "cryptsetup", "luksClose", openlukscontainer.dmname ])
-	
+
 	def luksFormat(self, params = None):
 		if params is None:
 			params = [ ]
@@ -331,7 +331,7 @@ class TestEngine(object):
 		fullmegs = (ldsize + (1024 * 1024) - 1) // (1024 * 1024)
 		self._execute_sync([ "losetup", "-d", self._destroy_dev ], success_codes = [ 0, 1 ])
 		self._execute_sync([ "dd", "if=/dev/zero", "of=%s" % (ldbase), "bs=1M", "count=%d" % (fullmegs) ])
-		
+
 		# Then truncate loopy file
 		f = open(ldbase, "r+")
 		f.truncate(ldsize)
@@ -339,7 +339,7 @@ class TestEngine(object):
 
 		# Then attach loop device again
 		self._execute_sync([ "losetup", self._destroy_dev, ldbase ])
-		
+
 		self._rawdevsize = self._getsizeof(self._destroy_dev)
 
 if __name__ == "__main__":
@@ -356,7 +356,7 @@ if __name__ == "__main__":
 #		"filltype":		("prng_constant", 123456),
 #		"filltype":		("zero", ),
 	}
-	
+
 	for iteration in range(10):
 		teng.new_testcase("basic")
 		teng.cleanup_files()
@@ -388,7 +388,7 @@ if __name__ == "__main__":
 		finally:
 			teng.luksClose(container)
 
-		# Reluksify	
+		# Reluksify
 		header_hash = teng.hash_rawdev(total_size = 128 * 1024 * 1024)
 		container = teng.luksOpen()
 		try:
