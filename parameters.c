@@ -264,6 +264,7 @@ void parseParameters(struct conversionParameters *aParams, int argc, char **argv
 
 			case '?':
 				fprintf(stderr, "\n");
+				// fall-through
 
 			case 'h':
 				syntax(argv, NULL, EC_SUCCESS);
