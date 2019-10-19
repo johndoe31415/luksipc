@@ -2,3 +2,9 @@
 luksipc
 docs/build
 .*.swp
+__pycache__
+tests/data
+tests/logs
+tests/prng/prng_crc64
+resume.bin
+header_backup.img

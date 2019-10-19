@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'luksipc'
-copyright = '2011-2017, Johannes Bauer'
+copyright = '2011-2019, Johannes Bauer'
 author = 'Johannes Bauer'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -55,7 +55,7 @@ author = 'Johannes Bauer'
 # built documents.
 #
 # The short X.Y version.
-version = '0.04'
+version = '0.05'
 # The full version, including alpha/beta/rc tags.
 release = '0.04'
 
