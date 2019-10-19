@@ -1,4 +1,4 @@
-Summary of changes of v0.0x (2019-10-xx)
+Summary of changes of v0.05 (2019-10-19)
 ========================================
 	* Updated default values to handle the new default of 16 MiB headers
 	* Fixed an issue with uint64_t values in printf and used inttypes.h
