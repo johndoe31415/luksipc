@@ -17,41 +17,35 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="luksipc 0.04 documentation" href="index.html"/>
-        <link rel="prev" title="Conversion problems" href="problems.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Conversion problems" href="problems.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -65,7 +59,7 @@
             
             
               <div class="version">
-                0.04
+                0.05
               </div>
             
           
@@ -106,7 +100,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">luksipc</a>
@@ -114,9 +108,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -165,7 +160,7 @@ by some unknown author a shot to handle your precious data. Here’s a hint how
 you could do this. I’ve setup some garbage partition on a drive which is
 exactly 1234 MiB in size (1293942784 bytes). That partition is filled
 completely with zeros:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span># dd if=/dev/zero of=/dev/sda1 bs=1M
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># dd if=/dev/zero of=/dev/sda1 bs=1M
 dd: error writing ‘/dev/sda1’: No space left on device
 1235+0 records in
 1234+0 records out
@@ -173,7 +168,7 @@ dd: error writing ‘/dev/sda1’: No space left on device
 </pre></div>
 </div>
 <p>Let’s check that the pattern matches:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/sda1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/sda1</span>
 <span class="n">e83b40511b7b154b1816ef4c03d6be7d</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda1</span>
 
 <span class="c1"># dd if=/dev/zero bs=1M count=1234 | md5sum</span>
@@ -185,7 +180,7 @@ dd: error writing ‘/dev/sda1’: No space left on device
 </div>
 <p>Alright, so the partition is <strong>really</strong> filled with 1234 MiB of zeros.</p>
 <p>Let’s LUKSify it:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span># luksipc -d /dev/sda1
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># luksipc -d /dev/sda1
 WARNING! luksipc will perform the following actions:
    =&gt; Normal LUKSification of plain device /dev/sda1
    -&gt; luksFormat will be performed on /dev/sda1
@@ -229,18 +224,18 @@ Are all these conditions satisfied, then answer uppercase yes: YES
 </pre></div>
 </div>
 <p>Then luksOpen it:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/sda1 myluksdev -d /root/initial_keyfile.bin</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/sda1 myluksdev -d /root/initial_keyfile.bin</span>
 </pre></div>
 </div>
 <p>And check the hash:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/mapper/myluksdev</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/mapper/myluksdev</span>
 <span class="n">e2226de7d184a3c9bd4c1e3d8a56b1b2</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">myluksdev</span>
 </pre></div>
 </div>
 <p>The hash value differs from what it said before - this is absolutely to be
 expected! The reason for this is that the device is now shorter (because part
 of the space is used for the 2 MiB LUKS header). Proof:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># dd if=/dev/zero bs=1M count=1232 | md5sum</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># dd if=/dev/zero bs=1M count=1232 | md5sum</span>
 <span class="mi">1232</span><span class="o">+</span><span class="mi">0</span> <span class="n">records</span> <span class="ow">in</span>
 <span class="mi">1232</span><span class="o">+</span><span class="mi">0</span> <span class="n">records</span> <span class="n">out</span>
 <span class="mi">1291845632</span> <span class="nb">bytes</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span> <span class="n">GB</span><span class="p">)</span> <span class="n">copied</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span><span class="mi">6588</span> <span class="n">s</span><span class="p">,</span> <span class="mi">486</span> <span class="n">MB</span><span class="o">/</span><span class="n">s</span>
@@ -249,7 +244,7 @@ of the space is used for the 2 MiB LUKS header). Proof:</p>
 </div>
 <p>Now let’s check the current key and reLUKSify it with a different key and
 algorithm! First, let’s check out the “before” values:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># dmsetup table myluksdev --showkeys</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># dmsetup table myluksdev --showkeys</span>
 <span class="mi">0</span> <span class="mi">2523136</span> <span class="n">crypt</span> <span class="n">aes</span><span class="o">-</span><span class="n">xts</span><span class="o">-</span><span class="n">plain64</span> <span class="n">d164b3fd2b7d482fc6e0a2d0e58f51c5dafe4560507322cb29af4bd8f552ba4f</span> <span class="mi">0</span> <span class="mi">8</span><span class="p">:</span><span class="mi">1</span> <span class="mi">4096</span>
 
 <span class="c1"># cryptsetup luksDump /dev/sda1</span>
@@ -283,7 +278,7 @@ algorithm! First, let’s check out the “before” values:</p>
 </pre></div>
 </div>
 <p>Then reLUKSify:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span># my /root/initial_keyfile.bin /root/initial_keyfile_old.bin
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span># my /root/initial_keyfile.bin /root/initial_keyfile_old.bin
 
 # luksipc -d /dev/sda1 --readdev /dev/mapper/myluksdev --luksparams=&#39;-c,twofish-lrw-benbi,-s,320,-h,sha256&#39;
 WARNING! luksipc will perform the following actions:
@@ -331,20 +326,20 @@ Are all these conditions satisfied, then answer uppercase yes: YES
 </div>
 <p>Now, let’s detach the mapping of the old LUKS container first (this container
 now contains complete garbage):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksClose myluksdev</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksClose myluksdev</span>
 </pre></div>
 </div>
 <p>And reopen it with the correct key:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/sda1 mynewluksdev -d /root/initial_keyfile.bin</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/sda1 mynewluksdev -d /root/initial_keyfile.bin</span>
 </pre></div>
 </div>
 <p>Check that the content is still the same:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cat /dev/mapper/mynewluksdev | md5sum</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cat /dev/mapper/mynewluksdev | md5sum</span>
 <span class="n">e2226de7d184a3c9bd4c1e3d8a56b1b2</span>  <span class="o">-</span>
 </pre></div>
 </div>
 <p>It sure is. Now look at the luksDump output:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">LUKS</span> <span class="n">header</span> <span class="n">information</span> <span class="k">for</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">LUKS</span> <span class="n">header</span> <span class="n">information</span> <span class="k">for</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">sda1</span>
 
 <span class="n">Version</span><span class="p">:</span>        <span class="mi">1</span>
 <span class="n">Cipher</span> <span class="n">name</span><span class="p">:</span>    <span class="n">twofish</span>
@@ -374,7 +369,7 @@ now contains complete garbage):</p>
 </pre></div>
 </div>
 <p>And the used key internally:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># dmsetup table mynewluksdev --showkeys</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># dmsetup table mynewluksdev --showkeys</span>
 <span class="mi">0</span> <span class="mi">2523136</span> <span class="n">crypt</span> <span class="n">twofish</span><span class="o">-</span><span class="n">lrw</span><span class="o">-</span><span class="n">benbi</span> <span class="n">d6b007ce62de58b62331f800edf5864da390eb274b908506b368035e7a0f8ea1c3583c2b939928c3</span> <span class="mi">0</span> <span class="mi">8</span><span class="p">:</span><span class="mi">1</span> <span class="mi">4096</span>
 </pre></div>
 </div>
@@ -388,16 +383,14 @@ some.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
       
-        <a href="problems.html" class="btn btn-neutral" title="Conversion problems" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="problems.html" class="btn btn-neutral float-left" title="Conversion problems" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -406,11 +399,11 @@ some.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2011-2017, Johannes Bauer.
+        &copy; Copyright 2011-2019, Johannes Bauer
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -423,36 +416,15 @@ some.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.04',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>

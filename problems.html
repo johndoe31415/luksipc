@@ -17,42 +17,36 @@
   
 
   
+  <script type="text/javascript" src="_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script type="text/javascript" src="_static/jquery.js"></script>
+        <script type="text/javascript" src="_static/underscore.js"></script>
+        <script type="text/javascript" src="_static/doctools.js"></script>
+        <script type="text/javascript" src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
 
-  
-  
     
 
   
-
-  
-  
-    <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
-  
-
-  
-
-  
-        <link rel="index" title="Index"
-              href="genindex.html"/>
-        <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="luksipc 0.04 documentation" href="index.html"/>
-        <link rel="next" title="Testing" href="testing.html"/>
-        <link rel="prev" title="Usage" href="usage.html"/> 
-
-  
-  <script src="_static/js/modernizr.min.js"></script>
-
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Testing" href="testing.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
 </head>
 
-<body class="wy-body-for-nav" role="document">
+<body class="wy-body-for-nav">
 
    
   <div class="wy-grid-for-nav">
-
     
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
-        <div class="wy-side-nav-search">
+        <div class="wy-side-nav-search" >
           
 
           
@@ -66,7 +60,7 @@
             
             
               <div class="version">
-                0.04
+                0.05
               </div>
             
           
@@ -111,7 +105,7 @@
     <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
 
       
-      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+      <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
           <a href="index.html">luksipc</a>
@@ -119,9 +113,10 @@
       </nav>
 
 
-      
       <div class="wy-nav-content">
+        
         <div class="rst-content">
+        
           
 
 
@@ -176,16 +171,16 @@ conversion will be discussed first and errors with LUKS to LUKS conversion
 so that it is robust against these issues.</p>
 <p>Basically, to be able to resume a luksipc process you need to have two things:</p>
 <ol class="arabic simple">
-<li>The data of the last overwritten block (there’s always one “shadow” block
+<li><p>The data of the last overwritten block (there’s always one “shadow” block
 that needs to be kept in memory, because usually the destination partition is
-smaller than the source partition because of the LUKS header)</li>
-<li>The exact location of where the interruption occured.</li>
+smaller than the source partition because of the LUKS header)</p></li>
+<li><p>The exact location of where the interruption occured.</p></li>
 </ol>
 <p>luksipc stores exactly this (incredibly critical) information in a “resume
 file” should the resume process be interrupted. It is usually called
 “resume.bin”. For example, say I interrupt the LUKS conversion of a disk, this
 will be shown:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/sdf1</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/sdf1</span>
 <span class="p">[</span><span class="o">...</span><span class="p">]</span>
 <span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">32.1</span><span class="o">%</span>       <span class="mi">110</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">343</span> <span class="n">MiB</span>     <span class="mf">6.4</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">233</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
 <span class="o">^</span><span class="n">C</span><span class="p">[</span><span class="n">C</span><span class="p">]:</span> <span class="n">Shutdown</span> <span class="n">requested</span> <span class="n">by</span> <span class="n">user</span> <span class="n">interrupt</span><span class="p">,</span> <span class="n">please</span> <span class="n">be</span> <span class="n">patient</span><span class="o">...</span>
@@ -195,7 +190,7 @@ will be shown:</p>
 </pre></div>
 </div>
 <p>If you go into more detail (log level increase) here’s what you’ll see:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/sdf1 -l4</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/sdf1 -l4</span>
 <span class="p">[</span><span class="o">...</span><span class="p">]</span>
 <span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">32.1</span><span class="o">%</span>       <span class="mi">110</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">343</span> <span class="n">MiB</span>     <span class="mf">6.2</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">233</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
 <span class="o">^</span><span class="n">C</span><span class="p">[</span><span class="n">C</span><span class="p">]:</span> <span class="n">Shutdown</span> <span class="n">requested</span> <span class="n">by</span> <span class="n">user</span> <span class="n">interrupt</span><span class="p">,</span> <span class="n">please</span> <span class="n">be</span> <span class="n">patient</span><span class="o">...</span>
@@ -215,7 +210,7 @@ offset 136314880 (130 MiB), the write pointer was at offset 115343360 (110 MiB)
 and there are currently 10 MiB of data in the shadow buffer. Everything was
 saved to a resume file. Here’s an illustration of what it looks like. Every
 block is 10 MiB in size:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span>   <span class="mi">100</span>    <span class="mi">110</span>    <span class="mi">120</span>    <span class="mi">130</span>    <span class="mi">140</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>   <span class="mi">100</span>    <span class="mi">110</span>    <span class="mi">120</span>    <span class="mi">130</span>    <span class="mi">140</span>
     <span class="o">|</span>      <span class="o">|</span>      <span class="o">|</span>      <span class="o">|</span>      <span class="o">|</span>
     <span class="n">v</span>      <span class="n">v</span>      <span class="n">v</span>      <span class="n">v</span>      <span class="n">v</span>
 <span class="o">----+------+------+------+------+----</span>
@@ -235,7 +230,7 @@ between read- and write disk!). Therefore both have to be kept in memory.</p>
 <p>But since the system was interrupted, it is fully sufficient to only save BUF1
 to disk together with the write pointer location.</p>
 <p>With the help of this resume file, you can continue the conversion process:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/sdf1 --resume resume.bin</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/sdf1 --resume resume.bin</span>
 <span class="p">[</span><span class="o">...</span><span class="p">]</span>
 <span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Starting</span> <span class="n">copying</span> <span class="n">of</span> <span class="n">data</span><span class="p">,</span> <span class="n">read</span> <span class="n">offset</span> <span class="mi">125829120</span><span class="p">,</span> <span class="n">write</span> <span class="n">offset</span> <span class="mi">115343360</span>
 <span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">64.1</span><span class="o">%</span>       <span class="mi">220</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">343</span> <span class="n">MiB</span>     <span class="mf">6.6</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">123</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
@@ -284,12 +279,12 @@ device with the old key, we can just resume the process as we normally would.</p
 <p>First, this is the reLUKSificiation process that aborts. We assume our
 container is unlocked at /dev/mapper/oldluks. Let’s check the MD5 of the
 container first (to verify everything ran smoothly):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/mapper/oldluks</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/mapper/oldluks</span>
 <span class="mi">41</span><span class="n">dc86251cba7992719bbc85de5628ab</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">oldluks</span>
 </pre></div>
 </div>
 <p>Alright, let’s start the luksipc process (which will be interrupted):</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/loop0 --readdev /dev/mapper/oldluks</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/loop0 --readdev /dev/mapper/oldluks</span>
 <span class="p">[</span><span class="o">...</span><span class="p">]</span>
 <span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">10.8</span><span class="o">%</span>       <span class="mi">110</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>     <span class="mf">0.0</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">912</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
 <span class="o">^</span><span class="n">C</span><span class="p">[</span><span class="n">C</span><span class="p">]:</span> <span class="n">Shutdown</span> <span class="n">requested</span> <span class="n">by</span> <span class="n">user</span> <span class="n">interrupt</span><span class="p">,</span> <span class="n">please</span> <span class="n">be</span> <span class="n">patient</span><span class="o">...</span>
@@ -300,11 +295,11 @@ container first (to verify everything ran smoothly):</p>
 <p>Now let’s say we’ve closed /dev/mapper/oldluks (e.g. by a system reboot). We
 need to find a way to reopen it with the old header and old key in order to
 successfully resume the proces. For this, we do:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen --header=header_backup.img /dev/loop0 oldluks</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen --header=header_backup.img /dev/loop0 oldluks</span>
 </pre></div>
 </div>
 <p>And then, finally, we’re able to resume luksipc:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/loop0 --readdev /dev/mapper/oldluks --resume resume.bin</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># luksipc -d /dev/loop0 --readdev /dev/mapper/oldluks --resume resume.bin</span>
 <span class="p">[</span><span class="o">...</span><span class="p">]</span>
 <span class="p">[</span><span class="n">I</span><span class="p">]:</span> <span class="n">Starting</span> <span class="n">copying</span> <span class="n">of</span> <span class="n">data</span><span class="p">,</span> <span class="n">read</span> <span class="n">offset</span> <span class="mi">220200960</span><span class="p">,</span> <span class="n">write</span> <span class="n">offset</span> <span class="mi">209715200</span>
 <span class="p">[</span><span class="n">I</span><span class="p">]:</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span>  <span class="mf">30.3</span><span class="o">%</span>       <span class="mi">310</span> <span class="n">MiB</span> <span class="o">/</span> <span class="mi">1022</span> <span class="n">MiB</span>     <span class="mf">0.0</span> <span class="n">MiB</span><span class="o">/</span><span class="n">s</span>   <span class="n">Left</span><span class="p">:</span>     <span class="mi">712</span> <span class="n">MiB</span>  <span class="mi">0</span><span class="p">:</span><span class="mi">00</span> <span class="n">h</span><span class="p">:</span><span class="n">m</span>
@@ -312,17 +307,17 @@ successfully resume the proces. For this, we do:</p>
 </pre></div>
 </div>
 <p>Now after the process is run, let’s do some cleanups:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># dmsetup remove oldluks</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># dmsetup remove oldluks</span>
 <span class="c1"># dmsetup remove hybrid</span>
 <span class="c1"># losetup -d /dev/loop3</span>
 </pre></div>
 </div>
 <p>And open our successfully converted device:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/loop0 newluks -d /root/initial_keyfile.bin</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># cryptsetup luksOpen /dev/loop0 newluks -d /root/initial_keyfile.bin</span>
 </pre></div>
 </div>
 <p>But did it really work? We can check:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/mapper/newluks</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># md5sum /dev/mapper/newluks</span>
 <span class="mi">41</span><span class="n">dc86251cba7992719bbc85de5628ab</span>  <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mapper</span><span class="o">/</span><span class="n">newluks</span>
 </pre></div>
 </div>
@@ -337,9 +332,7 @@ check everything.</p>
 
 
            </div>
-           <div class="articleComments">
-            
-           </div>
+           
           </div>
           <footer>
   
@@ -348,7 +341,7 @@ check everything.</p>
         <a href="testing.html" class="btn btn-neutral float-right" title="Testing" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="usage.html" class="btn btn-neutral" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -357,11 +350,11 @@ check everything.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2011-2017, Johannes Bauer.
+        &copy; Copyright 2011-2019, Johannes Bauer
 
     </p>
   </div>
-  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
 
@@ -374,36 +367,15 @@ check everything.</p>
   
 
 
-  
-
-    <script type="text/javascript">
-        var DOCUMENTATION_OPTIONS = {
-            URL_ROOT:'./',
-            VERSION:'0.04',
-            COLLAPSE_INDEX:false,
-            FILE_SUFFIX:'.html',
-            HAS_SOURCE:  true,
-            SOURCELINK_SUFFIX: '.txt'
-        };
-    </script>
-      <script type="text/javascript" src="_static/jquery.js"></script>
-      <script type="text/javascript" src="_static/underscore.js"></script>
-      <script type="text/javascript" src="_static/doctools.js"></script>
-
-  
-
-  
-  
-    <script type="text/javascript" src="_static/js/theme.js"></script>
-  
-
-  
-  
   <script type="text/javascript">
       jQuery(function () {
-          SphinxRtdTheme.StickyNav.enable();
+          SphinxRtdTheme.Navigation.enable(true);
       });
   </script>
+
+  
+  
+    
    
 
 </body>
